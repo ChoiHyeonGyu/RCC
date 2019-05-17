@@ -1,0 +1,108 @@
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<html>
+
+<head>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#header").load("../header/logo.html");
+            $("#header2").load("../header/main_header.html");
+            $("#header3").load("../header/navigator.html");
+            $("#header4").load("../header/navigator_side.html");
+            $("#footer").load("../footer.html");
+        });
+    </script>
+    <style>
+        th {
+            width: 2000px;
+        }
+
+        .hotBriefing h2,
+        .hotEditor h2 {
+            text-align: center;
+        }
+
+        .hotBriefing,
+        .hotEditor {
+            border: 2px solid gray;
+            padding: 20px 50px 20px 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header2"></div>
+    <div id="header" class="container"></div>
+    <div id="header3" class="container"></div>
+    <div id="header4"></div>
+    <div class="briefingContents container" style="margin-top:10px;">
+        <div class="briefingCategory" style="display:inline-block;width:10%;">
+            <nav class="nav flex-column">
+                <a class="nav-link active" href="#">Active</a>
+                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </nav>
+        </div>
+        <div class="hotBriefing container" style="display:inline-block;width:67%;padding-right:50px">
+            <h2>Hot Briefings</h2>
+            <table class="table col-sm-8" style="display:inline;">
+                <tbody>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="hotEditor container" style="display:inline-block;width:17%;padding-right:50px">
+            <h2>Editors</h2>
+            <table class="table col-sm-8" style="display:inline;">
+                <tbody>
+                    <tr>
+                        <th scope="row">TaeYong</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">RyuDing</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">HyeunGyu</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">HyeunGyu</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div id="footer"></div>
+</body>
+
+</html>
