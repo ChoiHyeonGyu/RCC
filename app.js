@@ -24,7 +24,7 @@ app.all("*", function (req, res, next) {
     next();
 });
 
-app.get("/", function (req, res) {//get방식으로 '/' 경로로 요청이 왔을 때
+app.get("/", function (req, res) {//get방식으로 '/' 경로로 요청이 왔을 때    
     var str = "welcome 인덱스 page<hr>";
     str += "<form method='post' action=''>";
     str += "<button>post로 인덱스 페이지에 가면??</button>";
@@ -43,42 +43,7 @@ app.get("/join", function (req, res) {
 });
 
 app.post("/join", function (req, res) {
-    // 데이터가 post로 넘어왔을 때 - body-parser모듈이 있어야 한다.
-    console.log(req.body);
-    oracledb.autoCommit = true;
-    oracledb.getConnection({
-        user: "projectdb",
-        password: "1234",
-        connectString: "localhost:1521/xe"
-    }, (err, conn) => {
-        if (err) console.log(err);
-        else {
-            var qry = "insert into member (mno,id,pw,nick,email) values (mno_seq.nextval,'" + req.body.id + "','" + req.body.pw + "','" + req.body.nick + "','" + req.body.email + "')";
-
-            conn.execute(qry, (err2, result) => {
-                if (err2) {
-                    console.log(err2);
-                    res.end("<script>history.back();</script>");
-                }
-                else {
-                    console.log(result);
-
-                    if (result.rowsAffected > 0) {
-                        // 로그인 페이지로 redirect
-                        console.log(111);
-                        //console.log(res);
-                        res.redirect('/');
-                    } else {
-                        // insert 되지 않으면...
-                        console.log(222);
-                        res.end("<script>history.back();</script>");
-                    }
-                }
-            });
-        }
-    });
-
-    //res.end(req.body.id);
+    console.log("Join Page")
 });
 
 app.get("/login", function (req, res) {
@@ -86,6 +51,6 @@ app.get("/login", function (req, res) {
 });
 
 http.createServer(app).listen(9999, 'localhost');
-console.log('웹서버 구동중~~~~??');
+console.log('Server On');
 
 
