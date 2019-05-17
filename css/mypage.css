@@ -1,0 +1,45 @@
+#channel_info {
+    margin-top: 8%;
+}
+
+#channel_info #channel_name {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#channel_info .channel_num {
+    margin-right: 20px;
+}
+
+#channel_info .channel_list {
+    margin-right: 100px;
+}
+
+#empty {
+    height: 350px;
+}
+
+#account_info #account_address {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#account_info .account_num {
+    margin-right: 20px;
+}
+
+#font-30 {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#side_list {
+    width: 200px;
+    position: fixed;
+    top: 30%;
+    right: 0px;
+}
+
+#buy_view, #sell_view {
+    display: none;
+}

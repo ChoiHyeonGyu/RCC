@@ -1,27 +1,283 @@
 <html>
     <head>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/mypage.css">
     </head>
-    <body>
+    <body class="sort-center">
         <div id="channel_info">
-            <div>채널 이름 = Nickname</div><div>구독자 구독자 수</div><div>후원 후원 총액(누적)</div><div>게시글 수</div>
-            <div>구독 리스트</div><div>후원 리스트</div>
+            <span id="channel_name" class="channel_num">채널 이름 = Nickname</span><span class="channel_num">Subscriber 12,034,257</span>
+            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post 202</span><br><br>
+            <ul class="nav nav-pills nav-fill container">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Subscriber List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Donate List</a>
+                </li>
+            </ul>
+            <table class="table table-striped container">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">7</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">8</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">9</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">10</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        <div id="empty"></div>
         <div id="account_info">
-            <div>계좌 주소</div><div>보유 코인</div>
-            <div>거래 내역</div>
+            <span id="account_address" class="account_num">Account Address</span><span class="account_num">0xea674fdde714fd979de3edf0f56aa9716b898ec8</span>
+            <span class="account_num">Coin 3,000,000</span><button class="btn btn-light">Buy</button><button class="btn btn-light">Sell</button><br><br>
+            <span id="font-30">Transactions</span>
+            <table class="table table-striped container">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">7</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">8</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">9</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">10</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        <div id="empty"></div>
         <div id="post_list">
-            <div>자신이 쓴 게시글</div><div>자신이 쓴 댓글</div>
-            <div>글 리스트</div>
+            <ul class="nav nav-pills nav-fill container">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Post List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Reply List</a>
+                </li>
+            </ul>
+            <table class="table table-striped container">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">7</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">8</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">9</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">10</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        <div id="empty"></div>
         <div id="user_modify">
 
         </div>
         <div id="side_list">
-            <a href="#channel_info">Channel Information</a>
-            <a href="#account_info">Account Information</a>
-            <a href="#post_list">Post List</a>
-            <a href="#user_modify">Modify User Information</a>
+            <label>MyPage</label><hr>
+            <a href="#channel_info">Channel Information</a><br><br>
+            <a href="#account_info">Account Information</a><br><br>
+            <a href="#post_list">Post List</a><br><br>
+            <a href="#user_modify">Modify User Information</a><br><br>
+        </div>
+        <div id="buy_view">
+            <h1>Buy</h1>
+            <input type="text" placeholder="Buy Coin">
+            <input type="text" placeholder="Total Coin">
+            <button class="btn btn-light">Buy</button>
+        </div>
+        <div id="sell_view">
+            <h1>Sell</h1>
+            <input type="text" placeholder="Sell Coin">
+            <input type="text" placeholder="Total Coin">
+            <input type="text" placeholder="Deposit Account">
+            <button class="btn btn-light">Sell</button>
         </div>
     </body>
 </html>
