@@ -1,26 +1,22 @@
-// B03_express_02_html가져오기.js
-// 
-
 var express = require('express');
 var http = require('http');
 var fs = require('fs');
 var app = express();
-
 var oracledb = require('oracledb');
-
 var bodyParser = require('body-parser');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use("/js", express.static(__dirname + '/index/js'));
 app.use("/fonts", express.static(__dirname + '/index/fonts'));
 app.use("/images", express.static(__dirname + '/index/images'));
 app.use("/css", express.static(__dirname + '/index/css'));
 app.use("/vendor", express.static(__dirname + '/index/vendor'));
 
+
+
 app.all("*", function (req, res, next) {
-    //res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     next();
 });
 
