@@ -1,14 +1,46 @@
 <html>
     <head>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/donate.css">
     </head>
-    <body>
-        <div>Trade Coin</div>
-        <div>후원약관</div>
+    <body class="sort-center">
+        <textarea readonly id="donate_terms">
+후원약관
+1. 책임의 제한
+법률이 허용하는 최대 범위 내에서, RCC, RCC의 임직원, 이사나 대리인은 보증, 계약, 불법행위나 기타 법리에 근거한 것인지 여부에 관계없이, 또한 회사가 그러한 손해의 가능성에 대하여 고지받았는지 여부와 관계없이 어떠한 경우에도 (i) 콘텐츠의 오류, 과실이나 부정확성, 
+(ii) 당사의 서비스에 대한 귀하의 접속 및 사용으로 인하여 발생하는 여하한 성질의 상해(personal injury) 또는 재산적 손해(property damage), (iii) 당사의 보안서버 및/또는 그에 저장된 모든 개인정보 및/또는 금융정보에 대한 무단 접속 또는 무단 사용, (iv) 당사 서비스로 또는 
+당사 서비스로부터의 전송 장애 또는 중단, (iv) 제3자가 당사 서비스로 또는 당사 서비스를 통하여 전송하는 버그, 바이러스, 트로이 목마 및 유사한 것, 및/또는 (v) 콘텐츠의 오류 또는 누락이나 본 서비스에 게재, 이메일 송부, 전송되거나 달리 본 서비스를 통하여 제공된 콘텐츠의 
+귀하의 사용으로 인하여 발생하는 여하한 종류의 손실이나 손해로부터 발생하는 직접, 간접, 부수적, 특별, 징벌적인 손실이나 경비 또는 결과적 손해에 있어서 귀하에 대하여 책임을 부담하지 않습니다.
+당사는 일부 관할권에서는 법적으로 배제될 수 없는 보증, 포기 및 조건이 적용될 수 있다는 점을 이해합니다. 귀하의 관할권이 이에 해당하는 경우, 법률이 허용하는 범위 내에서 RCC는 그러한 보증이나 조건에 근거한 청구에 대한 RCC의 책임을 귀하에게 본 서비스를 다시 제공하는 
+것 또는 본 서비스를 귀하에게 다시 제공하는데 소요되는 비용으로 한정합니다.
+귀하는 특별히 RCC는 제3자의 콘텐츠 또는 비방, 공격적이거나 불법적인 행위에 대하여 책임지지 아니하며, 그러한 콘텐츠나 행위로 인한 위해 또는 손해의 위험을 전적으로 귀하가 부담한다는 사실을 인정합니다.
+RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능하다고 진술하지 않습니다. 다른 관할지역에서 본 서비스에 접속하거나 이용하는 이용자들은 스스로의 결단으로서 본 서비스에 접속하거나 이용하는 것이고, 현지 법률을 준수할 책임이 있습니다.
+
+2. 면책
+법률이 허용하는 범위 내에서, 귀하는 (i) 귀하의 본 서비스 이용 및 접속, (ii) 귀하의 본 약관 규정의 위반, (iii) 귀하의 제3자의 저작권, 재산권 내지 프라이버시권 등 권리침해, (iv) 귀하의 콘텐츠가 제3자에게 손해를 야기했다는 주장으로 인한 일체의 청구, 손해, 의무, 손실, 책임, 
+비용 및 부채와 경비(변호사 비용을 포함하나 이에 한정되지 않음)로부터 RCC, RCC의 모기업, 임직원, 이사 및 대리인을 보호하고 면책하며 이로 인하여 손해를 입지 않도록 하기로 동의합니다. 이러한 방어 및 면책 의무는 본 약관이나 귀하의 본 서비스 이용이 종료된 이후에도 
+유효하게 존속합니다.
+
+3. 본 약관의 수락 능력
+귀하는 귀하가 18세 이상이거나, 미성년이지만 성인으로서의 권한을 가지거나, 법적인 부모 또는 후견인의 동의를 받았으며, 본 약관에 규정된 조건, 의무, 확인, 진술 및 보증에 합의하고 본 약관을 준수할 수 있는 완전한 권한이 있음을 확인합니다. 
+본 서비스는 13세 미만의 아동을 대상으로 한 서비스가 아니므로 어떠한 경우라도 귀하는 귀하가 13세를 넘었음을 확인합니다. 귀하가 13세 미만인 경우에는 본 서비스를 이용하실 수 없습니다. 귀하에게 적합한 다양한 웹사이트가 있으므로, 
+귀하에게 적절한 사이트에 대하여 부모님과 상의하시기 바랍니다.
+당사는 귀하의 본 서비스 이용에 어떠한 조건이 적용되는지 귀하가 알 수 있도록 본 서비스와 함께 본 약관을 제공합니다. 귀하는 당사자 본 약관을 검토할 수 있는 합리적인 기회를 귀하에게 제공하였으며 귀하가 이에 동의하였음을 인정합니다.
+
+4. 양도
+본 약관 및 본 약관상의 허여된 여하한 권리 및 라이센스는, 귀하가 양도하거나 이전할 수는 없으나, YouTube는 제한없이 양도할 수 있습니다.
+        </textarea>
         <div>
-            <input type="text" id="sender"><input type="text" id="receiver">
-            <input type="text" id="mycoin">
-            <input type="text" id="money">
-            <button>Send</button><button>Cancel</button>
+            <input type="text" id="sender" placeholder="Sender"><input type="text" id="receiver" placeholder="Receiver"><br><br>
+            <input type="text" id="mycoin" placeholder="Mycoin"><button class="btn btn-light">Trade Coin</button><br><br>
+            <input type="text" id="sending_money" placeholder="Sending Money"><br><br>
+            <button class="btn btn-light">Send</button><button class="btn btn-light">Cancel</button>
         </div>
     </body>
 </html>
