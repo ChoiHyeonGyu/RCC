@@ -4,3 +4,16 @@
     margin-top: 8%;
     resize: none;
 }
+
+#sender {
+    margin-top: 2%;
+    margin-right: 5%;
+}
+
+#mycoin {
+    margin-right: 161px;
+}
+
+#sending_money {
+    margin-right: 265px;
+}

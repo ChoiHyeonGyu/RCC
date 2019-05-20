@@ -8,17 +8,18 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css/common.css">
         <link rel="stylesheet" href="css/mypage.css">
+        <link rel="stylesheet" href="css/signup.css">
     </head>
     <body class="sort-center">
         <div id="channel_info">
             <span id="channel_name" class="channel_num">채널 이름 = Nickname</span><span class="channel_num">Subscriber 12,034,257</span>
             <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post 202</span><br><br>
-            <ul class="nav nav-pills nav-fill container">
+            <ul class="nav nav-pills nav-fill container pad-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Subscriber List</a>
+                    <a class="nav-link btn-light active" href="#">Subscriber List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Donate List</a>
+                    <a class="nav-link btn-light" href="#">Donate List</a>
                 </li>
             </ul>
             <table class="table table-striped container">
@@ -174,12 +175,12 @@
         </div>
         <div id="empty"></div>
         <div id="post_list">
-            <ul class="nav nav-pills nav-fill container">
+            <ul class="nav nav-pills nav-fill container pad-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Post List</a>
+                    <a class="nav-link btn-light active" href="#">Post List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Reply List</a>
+                    <a class="nav-link btn-light" href="#">Reply List</a>
                 </li>
             </ul>
             <table class="table table-striped container">
@@ -257,8 +258,22 @@
         </div>
         <div id="empty"></div>
         <div id="user_modify">
-
+            <div class="signup-block">
+                <form action="main.html" method="post">
+                    <h1>회원정보 수정</h1>
+                    <input type="text" value="" placeholder="아이디" id="id" />
+                    <input type="button" value="아이디 중복확인" class="btn btn-light"/>
+                    <input type="password" value="" placeholder="비밀번호" id="pw" />
+                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck" />
+                    <input type="text" value="" placeholder="닉네임" id="nickname" />
+                    <input type="text" value="" placeholder="이메일" id="email" />
+                    <input type="tel" value="" placeholder="폰번호" id="cellphone"/>
+                    <input type="submit" value="회원가입" class="btn btn-light"/>
+                    <input type="button" value="취소" class="btn btn-light" onclick="location.href='main.html'"/>
+                </form>
+            </div>
         </div>
+        <div id="empty"></div>
         <div id="side_list">
             <label>MyPage</label><hr>
             <a href="#channel_info">Channel Information</a><br><br>

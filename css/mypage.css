@@ -33,6 +33,10 @@
     font-size: 30px;
 }
 
+.pad-0 {
+    padding-right: 0px;
+}
+
 #side_list {
     width: 200px;
     position: fixed;
