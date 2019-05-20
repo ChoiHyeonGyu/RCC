@@ -1,0 +1,30 @@
+
+
+.mainContents{
+    display:inline-block;
+    width:98%;
+    text-align: center;  
+    border: 2px solid gray;
+    padding:10px;
+}
+
+
+.w85{
+    width:85%;
+}
+
+
+
+
+.commTable{
+    width:80%;
+}
+.w10{
+    width:10%;
+}
+.table {
+    color:gray;
+    border-top:none;
+    font-size:14px;
+    padding-top:0px;
+}

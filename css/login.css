@@ -2,12 +2,6 @@
 
 
 
-#loginbox{
-    display:inline-block;
-    border:1px black;
-    background:lightgreen;
-}
-
 
 
 .login-block {
@@ -39,6 +33,10 @@
     font-family: Montserrat;
     padding: 0 20px 0 50px;
     outline: none;
+}
+
+input.button{
+    padding: 0px;
 }
 
 .login-block input#id {

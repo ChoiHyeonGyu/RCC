@@ -39,8 +39,8 @@ router.get("/imsi", function(req, res) {
     fs.readFile("header/contentsSideNav.html", "utf-8", function(error, data) {
         contentsSideNav = data;
     });
-    
-    fs.readFile("breifing/breifing.html", "utf-8", function(error, data) {
+
+    fs.readFile("mypage.html", "utf-8", function(error, data) {
         res.send(ejs.render(data, {
             logo: logo,
             main_header: main_header,
