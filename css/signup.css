@@ -35,43 +35,76 @@
     outline: none;
 }
 
-.signup-block-block input#id {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
+.signup-block input#id {
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
 .signup-block input#id:focus {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px bottom no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
 .signup-block input#pw {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/1096/1096513.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
 .signup-block input#pw:focus {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px bottom no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/1096/1096513.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
 .signup-block input#pwcheck {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/1096/1096513.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
 .signup-block input#pwcheck:focus {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px bottom no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/1096/1096513.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
+
+
+
+.signup-block input#name {
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.signup-block input#name:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+
+
+.signup-block input#nickname {
+    background: #fff url('https://image.flaticon.com/icons/svg/1251/1251797.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.signup-block input#nickname:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/1251/1251797.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+
+
+
 
 .signup-block input#email {
-    background: #fff url('https://image.flaticon.com/icons/svg/27/27630.svg') 20px center no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.signup-block input#email:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
-.signup-block input#email:focus {
-    background: #fff url('https://image.flaticon.com/icons/svg/27/27630.svg') 20px center no-repeat;
+
+.signup-block input#cellphone {
+    background: #fff url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.signup-block input#cellphone:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
