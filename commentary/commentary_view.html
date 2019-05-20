@@ -10,21 +10,10 @@
             $("#header3").load("../header/navigator.html");
             $("#header4").load("../header/navigator_side.html");
             $("#footer").load("../footer.html");
+            $("#contentsSideNav").load("../header/contentsSideNav.html");
         });
     </script>
-    <style>
-        th {
-            width: 2000px;
-        }
-
-        .hotBriefing h2{
-            text-align: center;
-        }
-
-        .hotBriefing {
-            padding: 20px 50px 20px 50px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
 </head>
 
 <body>
@@ -32,62 +21,83 @@
     <div id="header" class="container"></div>
     <div id="header3" class="container"></div>
     <div id="header4"></div>
-    <div class="briefingContents container" style="margin-top:10px;">
-        <div class="briefingCategory" style="display:inline-block;width:10%;">
-            <nav class="nav flex-column">
-                <a class="nav-link active" href="#">Active</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </nav>
-        </div>
-        <div class="hotBriefing container" style="display:inline-block;width:85%;padding-right:50px">
+    <div class="briefingContents container contentsBox">
+        <div id="contentsSideNav"></div>
+        <div class="hotBriefing mainContents w85">
             <h2>Hot Briefings</h2>
-            <table class="table col-sm-8" style="display:inline;">
-                <thead>
-                    <tr>
-                        <th class='col-sm-8'>Briefing</th>
-                        <td class='col-sm-4'>HashTag</td>
-                    </tr>
-                </thead>
+            <table class="table hashTable">
                 <tbody>
                     <tr>
                         <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td>#it #blockchain #5G #AI</td>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
                     </tr>
                     <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                        <td>#it #blockchain</td>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
                     </tr>
                     <tr>
                         <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td>#it #blockchain</td>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
                     </tr>
                     <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                        <td>#it #blockchain</td>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
                     </tr>
                     <tr>
                         <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td>#it #blockchain</td>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
                     </tr>
                     <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
                     </tr>
                     <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                        <td>#it #blockchain</td>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
+                    </tr>
+                    <tr>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
+                    </tr>
+                    <tr>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
+                    </tr>
+                    <tr>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
+                    </tr>
+                    <tr>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
+                    </tr>
+                    <tr>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                        <td class='w10' rowspan="2">RyuDing</td>
+                        <td class='w10' rowspan="2">0.00$</td>
+                    </tr>
+                    <tr>
+                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
                     </tr>
                 </tbody>
             </table>

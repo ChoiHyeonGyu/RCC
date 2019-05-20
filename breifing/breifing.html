@@ -10,24 +10,10 @@
             $("#header3").load("../header/navigator.html");
             $("#header4").load("../header/navigator_side.html");
             $("#footer").load("../footer.html");
+            $("#contentsSideNav").load("../header/contentsSideNav.html");
         });
     </script>
-    <style>
-        th {
-            width: 2000px;
-        }
-
-        .hotBriefing h2,
-        .hotEditor h2 {
-            text-align: center;
-        }
-
-        .hotBriefing,
-        .hotEditor {
-            border: 2px solid gray;
-            padding: 20px 50px 20px 50px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
 </head>
 
 <body>
@@ -35,20 +21,11 @@
     <div id="header" class="container"></div>
     <div id="header3" class="container"></div>
     <div id="header4"></div>
-    <div class="briefingContents container" style="margin-top:10px;">
-        <div class="briefingCategory" style="display:inline-block;width:10%;">
-            <nav class="nav flex-column">
-                <a class="nav-link active" href="#">Active</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link" href="#">Link</a>
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </nav>
-        </div>
-        <div class="hotBriefing container" style="display:inline-block;width:67%;padding-right:50px">
+    <div class="briefingContents container contentsBox">
+        <div id="contentsSideNav"></div>
+        <div class="hotBriefing mainContents">
             <h2>Hot Briefings</h2>
-            <table class="table col-sm-8" style="display:inline;">
+            <table class="table mainTable">
                 <tbody>
                     <tr>
                         <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
@@ -80,9 +57,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="hotEditor container" style="display:inline-block;width:17%;padding-right:50px">
+        <div class="hotEditor rightNav sideContents">
             <h2>Editors</h2>
-            <table class="table col-sm-8" style="display:inline;">
+            <table class="table">
                 <tbody>
                     <tr>
                         <th scope="row">TaeYong</th>
