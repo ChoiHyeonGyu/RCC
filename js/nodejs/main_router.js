@@ -21,6 +21,8 @@ router.get("/imsi", function(req, res) {
     var footer = '';
     var contentsSideNav = '';
 
+    var import_default = '';
+
     fs.readFile("header/logo.html", "utf-8", function(error, data) {
         logo = data;
     });
@@ -40,14 +42,13 @@ router.get("/imsi", function(req, res) {
         contentsSideNav = data;
     });
 
+    fs.readFile("header/import_default.html", "utf-8", function(error, data) {
+        import_default = data;
+    });
+
     fs.readFile("mypage.html", "utf-8", function(error, data) {
-        res.send(ejs.render(data, {
-            logo: logo,
-            main_header: main_header,
-            navigator: navigator,
-            navigator_side: navigator_side,
-            footer: footer,
-            contentsSideNav: contentsSideNav
+        res.send(ejs.render(import_default + data, {
+            data: "되냐?"
         }));
     });
 });

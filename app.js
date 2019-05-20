@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use("/css",express.static(__dirname + "/css"));
+
 var main_router = require('./js/nodejs/main_router.js');
 app.use(main_router);
 
