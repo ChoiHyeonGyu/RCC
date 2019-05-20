@@ -9,6 +9,7 @@
             $("#footer").load("../footer.html");
         });
     </script>
+    <script src="../js/htmljs/breifingWrite.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/writeContents.css">
 </head>
 
@@ -30,7 +31,7 @@
                         <option value='IT'>AI</option>
                     </select>
             </div>
-            <div class='formDiv'>
+            <div class='formDiv' id='formDiv1'>
                 <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input type='text' placeholder="title">
                 </div>
                 <div class='divBox cw65'><span class='titleWord'>URL</span> <input type='text' placeholder="url"></div>
@@ -40,8 +41,8 @@
         </form>
         <div class='optionContainer'>
             <div class='dib w100'>
-                <button class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;'>+</button>
-                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'>-</button>
+                <button class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;' onclick='addPage();'>+</button>
+                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;' onclick='removePage();'>-</button>
             </div>
             <br>
             <div class='dib w100'>
