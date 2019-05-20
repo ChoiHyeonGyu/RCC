@@ -1,0 +1,19 @@
+.sideNav{
+    position: absolute;
+    right:-90px;
+    top:48%;
+    display: inline-block;
+    width:150px;
+    background-color:white;
+    padding:15px;
+}
+.navBtn{
+    display: inline-block;
+    width:45px;
+    float:left;
+}
+.navSide{
+    display: inline-block;
+    width:75px;
+    float:right;
+}
