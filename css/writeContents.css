@@ -1,0 +1,72 @@
+.inputText{
+    display: block;
+    padding:8px 20px;
+}
+.formBox, .divBox{
+    display:block;
+}
+.divBox{
+    margin:10px;
+}
+.formDiv{
+    border-bottom:1px solid #BBBBBB
+}
+.cw65 input, .cw65 textarea{
+    width:65%;
+}
+.divBox input, .divBox textarea{
+    border:1px solid #DDDDDD;
+    padding:10px;
+}
+.divBox span{
+    float:left;
+}
+.divBox input:hover, .divBox textarea:hover{
+    border:1px solid #AAAAAA;
+}
+.titleWord{
+    display:inline-block;
+    width:30%;
+    font-weight: bold;
+    font-family: 'consolas';
+    font-size: 20px;
+}
+.writeButton{
+    font-weight:bold;
+    font-size:20px;
+}
+.dib{
+    display: inline-block;
+}
+.w65{
+    width:65%;
+}
+.cw100 input{
+    width:100%;
+}
+.fr{
+    float:right;
+}
+.r0{
+    right:0px;
+}
+.optionContainer{
+    margin:20px;
+    text-align:right;
+}
+.w100{
+    width:100%;
+}
+.selectBox{
+    margin:10px;
+    padding:10px;
+    font-weight:bold;
+    font-size:20px;
+    width:47%;
+}
+.fileDiv{
+    text-align: center;
+}
+.divBox textarea{
+    resize:none;
+}

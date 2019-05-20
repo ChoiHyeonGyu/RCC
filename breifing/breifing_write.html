@@ -1,0 +1,60 @@
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<html>
+
+<head>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#header").load("../header/logo.html");
+            $("#footer").load("../footer.html");
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="../css/writeContents.css">
+</head>
+
+<body>
+    <div id="header" class="container"></div>
+    <div class="container briefingWrite">
+        <form class='formBox' id='writeFormBox'>
+            <div class='dropboxDiv'>
+                <select class='selectBox' name='category'>
+                    <option value='all'>all</option>
+                    <option value='politics'>politics</option>
+                    <option value='Sports'>Sports</option>
+                    <option value='IT'>IT</option>
+                </select>
+                <select class='selectBox' name='detail'>
+                        <option value='all'>all</option>
+                        <option value='politics'>5G</option>
+                        <option value='Sports'>BlockChain</option>
+                        <option value='IT'>AI</option>
+                    </select>
+            </div>
+            <div class='formDiv'>
+                <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input type='text' placeholder="title">
+                </div>
+                <div class='divBox cw65'><span class='titleWord'>URL</span> <input type='text' placeholder="url"></div>
+                <div class='divBox cw65'><span class='titleWord'>Summary</span> <textarea
+                        placeholder="summary"></textarea></div>
+            </div>
+        </form>
+        <div class='optionContainer'>
+            <div class='dib w100'>
+                <button class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;'>+</button>
+                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'>-</button>
+            </div>
+            <br>
+            <div class='dib w100'>
+                <div class='divBox cw100 w65 dib r0'><input class='inputText' id='hashtag' type='text'
+                        placeholder="hashtag"></div>
+                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                    onclick="">Write</button>
+                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                    onclick="">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+</body>
+
+</html>
