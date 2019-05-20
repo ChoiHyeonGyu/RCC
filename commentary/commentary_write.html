@@ -1,19 +1,9 @@
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <html>
-
 <head>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#header").load("../header/logo.html");
-            $("#footer").load("../footer.html");
-        });
-    </script>
     <link rel="stylesheet" type="text/css" href="../css/writeContents.css">
 </head>
-
 <body>
-    <div id="header" class="container"></div>
+    <div id="header" class="container"><%- logo %></div>
     <div class="container briefingWrite">
         <form class='formBox' id='writeFormBox'>
             <div class='dropboxDiv'>
@@ -51,7 +41,6 @@
             </div>
         </div>
     </div>
-    <div id="footer"></div>
+    <div id="footer"><%- footer %></div>
 </body>
-
 </html>
