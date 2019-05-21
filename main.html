@@ -1,13 +1,18 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="C:\Users\Ryu\Desktop\닭\css\main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css?before" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset='utf-8'>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <script>
+            onload = function(){
+                $("#mainNavBtn01").addClass("active");
+            }
+    </script>
 </head>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-
 <body>
+    <div id="header2"><%- main_header %></div>
+    <div id="header" class="container"><%- logo %></div>
+    <div id="header3" class="container"><%- navigator %></div>
+    <div id="header4"><%- navigator_side %></div>
     <div class='main2 container' style='background:aliceblue'>
         <table style='padding:5px'>
             <tr>
@@ -123,6 +128,7 @@
             </tr>
         </table> 
     </div>
+    
+    <div id="footer"><%- footer %></div>
 </body>
-
 </html>

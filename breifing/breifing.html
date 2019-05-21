@@ -1,28 +1,19 @@
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <html>
-
 <head>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#header").load("../header/logo.html");
-            $("#header2").load("../header/main_header.html");
-            $("#header3").load("../header/navigator.html");
-            $("#header4").load("../header/navigator_side.html");
-            $("#footer").load("../footer.html");
-            $("#contentsSideNav").load("../header/contentsSideNav.html");
-        });
+    <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
+    <script>
+        onload = function(){
+            $("#mainNavBtn02").addClass("active");
+        }
     </script>
-    <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
 </head>
-
 <body>
-    <div id="header2"></div>
-    <div id="header" class="container"></div>
-    <div id="header3" class="container"></div>
-    <div id="header4"></div>
+    <div id="header2"><%- main_header %></div>
+    <div id="header" class="container"><%- logo %></div>
+    <div id="header3" class="container"><%- navigator %></div>
+    <div id="header4"><%- navigator_side %></div>
     <div class="briefingContents container contentsBox">
-        <div id="contentsSideNav"></div>
+        <div id="contentsSideNav"><%- contentsSideNav %></div>
         <div class="hotBriefing mainContents">
             <h2>Hot Briefings</h2>
             <table class="table mainTable">
@@ -77,9 +68,6 @@
             </table>
         </div>
     </div>
-
-
-    <div id="footer"></div>
+    <div id="footer"><%- footer %></div>
 </body>
-
 </html>
