@@ -35,20 +35,8 @@
     font-weight:bold;
     font-size:20px;
 }
-.dib{
-    display: inline-block;
-}
-.w65{
-    width:65%;
-}
 .cw100 input{
     width:100%;
-}
-.fr{
-    float:right;
-}
-.r0{
-    right:0px;
 }
 .optionContainer{
     margin:20px;
@@ -56,18 +44,6 @@
 }
 .optionContainer .divBox{
     text-align:left;
-}
-.w100{
-    width:100%;
-}
-.w80{
-    width:80%;
-}
-.w60{
-    width:60%;
-}
-.w15{
-    width:15%;
 }
 .selectBox{
     margin:10px;
