@@ -11,7 +11,14 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/", function(req, res) {
     fs.readFile("main.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data));
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(),
+            navigator: include.navigator(),
+            navigator_side: include.navigator_side(),
+            footer: include.footer(),
+            contentsSideNav: include.contentsSideNav()
+        }));
     });
 });
 
