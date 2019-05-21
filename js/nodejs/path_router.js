@@ -36,7 +36,10 @@ router.get("/signup", function(req, res) {
 
 router.get("/my", function(req, res) {
     fs.readFile("mypage.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data));
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(),
+        }));
     });
 });
 
