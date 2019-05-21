@@ -37,6 +37,30 @@ fs.readFile("header/contentsSideNav.html", "utf-8", function(error, data) {
     contentsSideNav = data;
 });
 
+router.get("/", function(req, res) {
+    fs.readFile("main.html", "utf-8", function(error, data) {
+        res.send(ejs.render(import_default + data));
+    });
+});
+
+router.get("/login", function(req, res) {
+    fs.readFile("login.html", "utf-8", function(error, data) {
+        res.send(ejs.render(import_default + data));
+    });
+});
+
+router.get("/signup", function(req, res) {
+    fs.readFile("signup.html", "utf-8", function(error, data) {
+        res.send(ejs.render(import_default + data));
+    });
+});
+
+router.get("/my", function(req, res) {
+    fs.readFile("mypage.html", "utf-8", function(error, data) {
+        res.send(ejs.render(import_default + data));
+    });
+});
+
 router.get("/breifing", function(req, res) {
     fs.readFile("breifing/breifing.html", "utf-8", function(error, data) {
         res.send(ejs.render(import_default + data, {
