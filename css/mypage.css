@@ -47,11 +47,13 @@
 #buy_view, #sell_view {
     display: none;
 }
+
 .mypageATag{
     display:inline-block;
     width:100%;
     padding:10px 5px;
 }
+
 .mypageATag:hover{
     background-color:#EEEEEE;
     color:mediumpurple;

@@ -10,7 +10,9 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/", function(req, res) {
-    console.log(dbconn.rQuery("select * from category"));
+    dbconn.resultQuery("select * from category", function(result){
+        console.log(result);
+    });
     fs.readFile("main.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
@@ -19,33 +21,6 @@ router.get("/", function(req, res) {
             navigator_side: include.navigator_side(),
             footer: include.footer(),
             contentsSideNav: include.contentsSideNav()
-        }));
-    });
-});
-
-router.get("/login", function(req, res) {
-    fs.readFile("login.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
-        }));
-    });
-});
-
-router.get("/signup", function(req, res) {
-    fs.readFile("signup.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
-        }));
-    });
-});
-
-router.get("/my", function(req, res) {
-    fs.readFile("mypage.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
         }));
     });
 });
@@ -124,24 +99,6 @@ router.get("/commentary_detail", function(req, res) {
             navigator_side: include.navigator_side(),
             footer: include.footer(),
             contentsSideNav: include.contentsSideNav()
-        }));
-    });
-});
-
-router.get("/channel", function(req, res) {
-    fs.readFile("channel.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
-        }));
-    });
-});
-
-router.get("/donate", function(req, res) {
-    fs.readFile("donate.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
         }));
     });
 });
