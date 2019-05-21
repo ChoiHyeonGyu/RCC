@@ -24,13 +24,19 @@ router.get("/", function(req, res) {
 
 router.get("/login", function(req, res) {
     fs.readFile("login.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data));
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(),
+        }));
     });
 });
 
 router.get("/signup", function(req, res) {
     fs.readFile("signup.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data));
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(),
+        }));
     });
 });
 
@@ -123,19 +129,28 @@ router.get("/commentary_detail", function(req, res) {
 
 router.get("/channel", function(req, res) {
     fs.readFile("channel.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data));
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(),
+        }));
     });
 });
 
 router.get("/donate", function(req, res) {
     fs.readFile("donate.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data));
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(),
+        }));
     });
 });
 
 router.get("/search_result", function(req, res) {
     fs.readFile("search_result.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data));
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(),
+        }));
     });
 });
 

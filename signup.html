@@ -9,20 +9,22 @@
         </style>
     </head>
     <body>
+        <div id="header2"><%- main_header %></div>
+        <div id="header" class="container"><%- logo %></div>
         <div class="signup container">
             <div class="signup-block">
                 <form action="main.html" method="post">
                     <h1>회원가입</h1>
                     <input type="text" value="" placeholder="아이디" id="id" />
                     <br>
-                    <input type="button" value="아이디 중복확인" class="button"/>
+                    <input type="button" value="아이디 중복확인" class="button btn btn-light"/>
                     <input type="password" value="" placeholder="비밀번호" id="pw" />
                     <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck" />
                     <input type="text" value="" placeholder="닉네임" id="nickname" />
                     <input type="text" value="" placeholder="이메일" id="email" />
                     <input type="tel" value="" placeholder="폰번호" id="cellphone"/>
-                    <input type="submit" value="회원가입" class="button"/>
-                    <input type="button" value="취소" class="button" onclick="location.href='main.html'"/>
+                    <input type="submit" value="회원가입" class="button btn btn-light"/>
+                    <input type="button" value="취소" class="button btn btn-light" onclick="location.href='main.html'"/>
                 </form>
             </div>
         </div>
