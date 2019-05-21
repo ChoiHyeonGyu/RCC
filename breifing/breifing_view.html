@@ -1,72 +1,66 @@
 <html>
+
 <head>
     <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
+    <script>
+        onload = function () {
+            $("#mainNavBtn02").addClass("active");
+            $("#Cate03").addClass("active");
+            for (var i = 1; i <= 5; i++) {
+                var id = "#Cate0" + i;
+                $(id).click(function () { location.href = '/breifing_detail'; });
+            }
+        }
+    </script>
 </head>
+
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
     <div id="header3" class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
-    <div class="briefingContents container contentsBox">
+    <div class="briefingView container contentsBox">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
-        <div class="hotBriefing mainContents w85">
-            <h2>Hot Briefings</h2>
-            <table class="table hashTable">
-                <tbody>
-                    <tr>
-                        <th scope="row" >택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
-                            <br>택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
-                            <br>택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
-                        </th>
-                        <td>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                        </th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                    <tr>
-                        <th scope="row" >한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                        <td>#it #blockchain</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="showFrame mainContents w85">
+            <div class="showInfo show">
+                <span class="infospan">Curator</span>
+                <span class="infospan">RyuDing</span>
+                <span class="infospan">DATE : 19.05.21</span>
+            </div>
+            <div class="showHeader show">
+                <span class="showspan">Header</span>
+                <div class="headerURL dib">
+                    <a href='www.google.co.kr'>[종합] 버닝썬ing…승리 구속영장 기각→윤 총경, 경찰청장-靑 약속주선</a>
+                    <a href='www.google.co.kr'>[종합] 버닝썬ing…승리 구속영장 기각→윤 총경, 경찰청장-靑 약속주선</a>
+                    <a href='www.google.co.kr'>[종합] 버닝썬ing…승리 구속영장 기각→윤 총경, 경찰청장-靑 약속주선</a>
+                </div>
+            </div>
+            <div class="showSummary show">
+                <span class="showspan">Summary</span>
+                <div class="summaryDiv dib">
+                    승리는 구속 전 피의자 심문(영장실질심사)에서 말을 바꿔 직접 성매매한 사실을 인정했다.<br>그러나 기타 혐의에 대해서는 모두 부인했다.<br>법원은 "다툼의 여지가 있다"며
+                    그에 대한 구속영장을 기각했다.<br>
+                    승리는 구속 전 피의자 심문(영장실질심사)에서 말을 바꿔 직접 성매매한 사실을 인정했다.<br>그러나 기타 혐의에 대해서는 모두 부인했다.<br>법원은 "다툼의 여지가 있다"며
+                    그에 대한 구속영장을 기각했다.<br>
+                    승리는 구속 전 피의자 심문(영장실질심사)에서 말을 바꿔 직접 성매매한 사실을 인정했다.<br>그러나 기타 혐의에 대해서는 모두 부인했다.<br>법원은 "다툼의 여지가 있다"며
+                    그에 대한 구속영장을 기각했다.<br>
+                </div>
+            </div>
+            <div class="showHash show">
+                <span class="showspan">HashTag</span>
+                <div class="hashDiv dib">
+                    <span id="hash01">#연예</span>
+                    <span id="hash02">#승리</span>
+                    <span id="hash03">#버닝썬</span>
+                    <span id="hash04">#구속영장</span>
+                </div>
+            </div>
+            <button class="btn btn-light" value="Subscribe">Subscribe</button>
+            <button class="btn btn-light" value="Donate">Donate</button>
+            <button class="btn btn-light" onclick="history.back();">Back</button>
         </div>
     </div>
     <div id="footer"><%- footer %></div>
 </body>
+
 </html>

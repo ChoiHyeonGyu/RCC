@@ -1,94 +1,101 @@
 <html>
+
 <head>
     <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
+    <script>
+        onload = function () {
+            $("#mainNavBtn03").addClass("active");
+            $("#Cate02").addClass("active");
+            for (var i = 1; i <= 5; i++) {
+                var id = "#Cate0" + i;
+                $(id).click(function () { location.href = '/commentary_detail'; });
+            }
+        }
+    </script>
 </head>
+
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
     <div id="header3" class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
-    <div class="briefingContents container contentsBox">
+    <div class="commentaryView container contentsBox">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
-        <div class="hotBriefing mainContents w85">
-            <h2>Hot Briefings</h2>
-            <table class="table hashTable">
-                <tbody>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10' rowspan="2">RyuDing</td>
-                        <td class='w10' rowspan="2">0.00$</td>
-                    </tr>
-                    <tr>
-                        <td class='commentaryHash'>#it #blockchain #AI #smartcar</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="showFrame mainContents w85">
+            <div class="showInfo show">
+                <span class="infospan">Writer</span>
+                <span class="infospan">RyuDing</span>
+                <span class="infospan">DATE : 19.05.21</span>
+                <span class="infospan">Value : 0.00$</span>
+            </div>
+            <div class="showTitle show">
+                이번 승리 기각으로 또 다시 느낀게 있네요
+            </div>
+
+            <div class="showContents show">
+                와.. 승리 기각 뭐죠? 구속영장 기각 됐다고 합니다;<br>
+                어느정도 예상은 했지만 진짜 이럴줄은 몰랐네요<br>
+                이번 승리 기각으로 다시 한번 이런 나라에 <br>
+                살고 있는 제가 부끄럽게만 느껴지네요<br>
+                구속영장 승리 기각은 정말 말도 안되지 않나요?<br>
+            </div>
+
+            <div class="showHash show">
+                <span class="showspan">HashTag</span>
+                <div class="hashDiv dib">
+                    <span id="hash01">#연예</span>
+                    <span id="hash02">#승리</span>
+                    <span id="hash03">#버닝썬</span>
+                    <span id="hash04">#구속영장</span>
+                </div>
+            </div>
+            <button class="btn btn-light" value="Donate">Donate</button>
+            <button class="btn btn-light" onclick="history.back();">Back</button>
+            <div class="commentDiv">
+                <div class="commentWrite tar">
+                    <form class="dib commentForm">
+                        <input type="text" placeholder="Comment">
+                    </form>
+                    <button class="btn btn-light">Comment</button>
+                </div>
+                <div class="commentList">
+                    <table class="table mainTable commTable">
+                        <tbody>
+                            <tr>
+                                <td class='commentInfo'>RyuDing 19.05.21</td>
+                            </tr>
+                            <tr>
+                                <td class="commentContents" scope="row" colspan="2">아니 기각이 말이 되나...;</td>
+                            </tr>
+
+                            <tr>
+                                <td class='commentInfo'>RyuDing 19.05.21</td>
+                            </tr>
+                            <tr>
+                                <td class="commentContents" scope="row" colspan="2">이 정도면 판사가 돈 먹은 거 아닌가요?</td>
+                            </tr>
+
+                            <tr>
+                                <td class='commentInfo'>RyuDing 19.05.21</td>
+                            </tr>
+                            <tr>
+                                <td class="commentContents" scope="row" colspan="2">뒷돈먹었다는 말도 많던데..</td>
+                            </tr>
+
+                            <tr>
+                                <td class='commentInfo'>RyuDing 19.05.21</td>
+                            </tr>
+                            <tr>
+                                <td class="commentContents" scope="row" colspan="2">제가 알기론...보통 증거 한번 써서 재판 끝나고 나면은 또
+                                    못쓸텐데..아닌가?</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div id="footer"><%- footer %></div>
 </body>
+
 </html>

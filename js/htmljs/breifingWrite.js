@@ -7,7 +7,7 @@ function addPage(){
     var newForm = "<div class='formDiv' id='formDiv"+count+"'>"+
     "<div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input type='text' placeholder='title'></div>"+
     "<div class='divBox cw65'><span class='titleWord'>URL</span> <input type='text' placeholder='url'></div>"+
-    "<div class='divBox cw65'><span class='titleWord'>Summary</span> <textarea placeholder='summary'></textarea></div><div>";
+    "<div>";
     target.innerHTML+=newForm;
 }
 function removePage(){
