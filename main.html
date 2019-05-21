@@ -1,13 +1,21 @@
 <html>
+
 <head>
     <meta charset='utf-8'>
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <script>
-            onload = function(){
-                $("#mainNavBtn01").addClass("active");
+        onload = function () {
+            $("#mainNavBtn01").addClass("active");
+            var ths = document.getElementsByTagName("th");
+            for (var i = 0; i < ths.length; i++) {
+                ths[i].addEventListener("click", function () {
+                    location.href = "/breifing_view";
+                });
             }
+        }
     </script>
 </head>
+
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
@@ -70,7 +78,7 @@
                         </table>
                     </div>
                 </td>
-                
+
                 <td style='padding-left:5px;'>
                     <div class="hotCommentary mainContents">
                         <h2>Hot Commetaries</h2>
@@ -126,9 +134,10 @@
                     </div>
                 </td>
             </tr>
-        </table> 
+        </table>
     </div>
-    
+
     <div id="footer"><%- footer %></div>
 </body>
+
 </html>

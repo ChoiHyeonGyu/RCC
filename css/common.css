@@ -6,3 +6,45 @@
 .hover-pointer:hover {
     cursor: pointer;
 }
+.w85{
+    width:85%;
+}
+.dib{
+    display:inline-block;
+}
+.fr{
+    float:right;
+}
+.w10{
+    width:10%;
+}
+.tac{
+    text-align: center;
+}
+.tar{
+    text-align:right;
+}
+.w100{
+    width:100%;
+}
+.w80{
+    width:80%;
+}
+.w60{
+    width:60%;
+}
+.w15{
+    width:15%;
+}
+.fr{
+    float:right;
+}
+.r0{
+    right:0px;
+}
+.dib{
+    display: inline-block;
+}
+.w65{
+    width:65%;
+}

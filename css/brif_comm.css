@@ -13,9 +13,6 @@
     border: 2px solid gray;
     padding:10px;
 }
-.w85{
-    width:85%;
-}
 .sideContents{
     text-align: center;  
     border: 2px solid gray;
@@ -30,9 +27,6 @@
 }
 .commTable{
     width:80%;
-}
-.w10{
-    width:10%;
 }
 .table .commentaryHash{
     color:gray;
@@ -54,14 +48,8 @@
     border-right:1px solid #DDDDDD;
     float:left;
 }
-.dib{
-    display:inline-block;
-}
 .show a{
     display:inline-block;
-}
-.fr{
-    float:right;
 }
 .headerURL, .summaryDiv, .hashDiv{
     display:inline-block;
@@ -76,12 +64,6 @@
 }
 .btn{
     border: 1px solid #BBBBBB;
-}
-.tac{
-    text-align: center;
-}
-.tar{
-    text-align:right;
 }
 .showTitle{
     font-weight:bold;
