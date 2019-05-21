@@ -63,6 +63,19 @@ router.get("/breifing_view", function(req, res) {
     });
 });
 
+router.get("/breifing_detail", function(req, res) {
+    fs.readFile("breifing/breifing_detail.html", "utf-8", function(error, data) {
+        res.send(ejs.render(import_default + data, {
+            logo: logo,
+            main_header: main_header,
+            navigator: navigator,
+            navigator_side: navigator_side,
+            footer: footer,
+            contentsSideNav: contentsSideNav
+        }));
+    });
+});
+
 router.get("/commentary", function(req, res) {
     fs.readFile("commentary/commentary.html", "utf-8", function(error, data) {
         res.send(ejs.render(import_default + data, {
@@ -78,6 +91,19 @@ router.get("/commentary", function(req, res) {
 
 router.get("/commentary_view", function(req, res) {
     fs.readFile("commentary/commentary_view.html", "utf-8", function(error, data) {
+        res.send(ejs.render(import_default + data, {
+            logo: logo,
+            main_header: main_header,
+            navigator: navigator,
+            navigator_side: navigator_side,
+            footer: footer,
+            contentsSideNav: contentsSideNav
+        }));
+    });
+});
+
+router.get("/commentary_detail", function(req, res) {
+    fs.readFile("commentary/commentary_detail.html", "utf-8", function(error, data) {
         res.send(ejs.render(import_default + data, {
             logo: logo,
             main_header: main_header,

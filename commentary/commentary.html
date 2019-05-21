@@ -4,6 +4,11 @@
     <script>
         onload = function(){
             $("#mainNavBtn03").addClass("active");
+                $("#Cate02").addClass("active");
+                for(var i=1;i<=5;i++){
+                    var id = "#Cate0"+i;
+                    $(id).click(function(){location.href='/commentary_detail';}); 
+                }
         }
     </script>
 </head>
