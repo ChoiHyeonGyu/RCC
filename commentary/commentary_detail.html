@@ -1,17 +1,25 @@
 <html>
+
 <head>
     <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
     <script>
-            onload = function(){
-                $("#mainNavBtn03").addClass("active");
-                $("#Cate02").addClass("active");
-                for(var i=1;i<=5;i++){
-                    var id = "#Cate0"+i;
-                    $(id).click(function(){location.href='/commentary_detail';}); 
-                }
+        onload = function () {
+            $("#mainNavBtn03").addClass("active");
+            $("#Cate02").addClass("active");
+            for (var i = 1; i <= 5; i++) {
+                var id = "#Cate0" + i;
+                $(id).click(function () { location.href = '/commentary_detail'; });
             }
-        </script>
+            var ths = document.getElementsByTagName("th");
+            for (var i = 0; i < ths.length; i++) {
+                ths[i].addEventListener("click", function () {
+                    location.href = "/commentary_view";
+                });
+            }
+        }
+    </script>
 </head>
+
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
@@ -101,4 +109,5 @@
     </div>
     <div id="footer"><%- footer %></div>
 </body>
+
 </html>

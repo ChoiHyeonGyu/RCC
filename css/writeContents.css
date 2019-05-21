@@ -54,8 +54,20 @@
     margin:20px;
     text-align:right;
 }
+.optionContainer .divBox{
+    text-align:left;
+}
 .w100{
     width:100%;
+}
+.w80{
+    width:80%;
+}
+.w60{
+    width:60%;
+}
+.w15{
+    width:15%;
 }
 .selectBox{
     margin:10px;

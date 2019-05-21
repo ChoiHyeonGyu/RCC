@@ -1,8 +1,20 @@
 <html>
+
 <head>
     <script src="js/htmljs/breifingWrite.js"></script>
     <link rel="stylesheet" type="text/css" href="css/writeContents.css">
+    <script>
+        onload = function () {
+            $("#mainNavBtn02").addClass("active");
+            $("#Cate03").addClass("active");
+            for (var i = 1; i <= 5; i++) {
+                var id = "#Cate0" + i;
+                $(id).click(function () { location.href = '/breifing_detail'; });
+            }
+        }
+    </script>
 </head>
+
 <body>
     <div id="header" class="container"><%- logo %></div>
     <div class="container briefingWrite">
@@ -15,26 +27,28 @@
                     <option value='IT'>IT</option>
                 </select>
                 <select class='selectBox' name='detail'>
-                        <option value='all'>all</option>
-                        <option value='politics'>5G</option>
-                        <option value='Sports'>BlockChain</option>
-                        <option value='IT'>AI</option>
-                    </select>
+                    <option value='all'>all</option>
+                    <option value='politics'>5G</option>
+                    <option value='Sports'>BlockChain</option>
+                    <option value='IT'>AI</option>
+                </select>
             </div>
             <div class='formDiv' id='formDiv1'>
                 <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input type='text' placeholder="title">
                 </div>
                 <div class='divBox cw65'><span class='titleWord'>URL</span> <input type='text' placeholder="url"></div>
-                <div class='divBox cw65'><span class='titleWord'>Summary</span> <textarea
-                        placeholder="summary"></textarea></div>
             </div>
         </form>
         <div class='optionContainer'>
             <div class='dib w100'>
-                <button class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;' onclick='addPage();'>+</button>
-                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;' onclick='removePage();'>-</button>
+                <button class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;'
+                    onclick='addPage();'>+</button>
+                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                    onclick='removePage();'>-</button>
             </div>
             <br>
+            <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea placeholder="summary"
+                    class="w80"></textarea></div>
             <div class='dib w100'>
                 <div class='divBox cw100 w65 dib r0'><input class='inputText' id='hashtag' type='text'
                         placeholder="hashtag"></div>
@@ -47,4 +61,5 @@
     </div>
     <div id="footer"><%- footer %></div>
 </body>
+
 </html>

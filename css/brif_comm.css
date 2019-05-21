@@ -40,3 +40,73 @@
     font-size:14px;
     padding-top:0px;
 }
+.show{
+    border-bottom: 1px solid #DDDDDD;
+    margin:10px;
+    padding:10px 10px;
+    text-align: left;
+}
+.showspan{
+    font-weight: bold;
+    display: inline-block;
+    margin:0px 10px;
+    width:15%;
+    border-right:1px solid #DDDDDD;
+    float:left;
+}
+.dib{
+    display:inline-block;
+}
+.show a{
+    display:inline-block;
+}
+.fr{
+    float:right;
+}
+.headerURL, .summaryDiv, .hashDiv{
+    display:inline-block;
+    width:80%;
+}
+.infospan{
+    font-weight: bold;
+    display: inline-block;
+    margin:0px 10px;
+    width:15%;
+    border-right:1px solid #DDDDDD;
+}
+.btn{
+    border: 1px solid #BBBBBB;
+}
+.tac{
+    text-align: center;
+}
+.tar{
+    text-align:right;
+}
+.showTitle{
+    font-weight:bold;
+    font-size: 20px;
+}
+.commentDiv{
+    margin-top:30px;
+}
+.commentForm input{
+    padding:10px 15px;
+    width:100%;
+}
+.commentForm{
+    width:70%;
+}
+.commentList table tbody tr td{
+    font-size:14px;
+}
+.table .commentInfo{
+    color:gray;
+    border-bottom:none;
+    font-size:14px;
+    padding-bottom:1px;
+}
+.table .commentContents{
+    padding-top:1px;
+    border-top:none;
+}

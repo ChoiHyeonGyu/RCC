@@ -1,17 +1,25 @@
 <html>
+
 <head>
     <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
     <script>
-            onload = function(){
-                $("#mainNavBtn02").addClass("active");
-                $("#Cate03").addClass("active");
-                for(var i=1;i<=5;i++){
-                    var id = "#Cate0"+i;
-                    $(id).click(function(){location.href='/breifing_detail';}); 
-                }
+        onload = function () {
+            $("#mainNavBtn02").addClass("active");
+            $("#Cate03").addClass("active");
+            for (var i = 1; i <= 5; i++) {
+                var id = "#Cate0" + i;
+                $(id).click(function () { location.href = '/breifing_detail'; });
             }
-        </script>
+            var ths = document.getElementsByTagName("th");
+            for(var i = 0; i<ths.length; i++){
+                ths[i].addEventListener("click",function(){
+                    location.href="/breifing_view";
+                });
+            }
+        }
+    </script>
 </head>
+
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
@@ -24,53 +32,53 @@
             <table class="table hashTable">
                 <tbody>
                     <tr>
-                        <th scope="row" >택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
                             <br>택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
                             <br>택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
                         </th>
                         <td>#it #blockchain #AI #smartcar</td>
                     </tr>
                     <tr>
-                        <th scope="row" >'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
+                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
                             <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
                             <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
                         </th>
                         <td>#it #blockchain</td>
                     </tr>
                     <tr>
-                        <th scope="row" >한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
                         <td>#it #blockchain</td>
                     </tr>
                     <tr>
-                        <th scope="row" >택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
                         <td>#it #blockchain</td>
                     </tr>
                     <tr>
-                        <th scope="row" >'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
                         <td>#it #blockchain</td>
                     </tr>
                     <tr>
-                        <th scope="row" >한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
-                                <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고
+                            <br>'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
                         <td>#it #blockchain</td>
                     </tr>
                     <tr>
-                        <th scope="row" >택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
+                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
                         <td>#it #blockchain</td>
                     </tr>
                     <tr>
-                        <th scope="row" >'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
+                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
                         <td>#it #blockchain</td>
                     </tr>
                     <tr>
-                        <th scope="row" >한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
+                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
                         <td>#it #blockchain</td>
                     </tr>
                 </tbody>
@@ -79,4 +87,5 @@
     </div>
     <div id="footer"><%- footer %></div>
 </body>
+
 </html>
