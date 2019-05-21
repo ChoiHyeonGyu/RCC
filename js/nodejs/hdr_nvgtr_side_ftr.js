@@ -29,3 +29,35 @@ fs.readFile("footer.html", "utf-8", function(error, data) {
 fs.readFile("header/contentsSideNav.html", "utf-8", function(error, data) {
     contentsSideNav = data;
 });
+
+function getImport_default(){
+    return import_default;
+}
+function getLogo(){
+    return logo;
+}
+function getMain_header(){
+    return main_header;
+}
+function getNavigator(){
+    return navigator;
+}
+function getNavigator_side(){
+    return navigator_side;
+}
+function getFooter(){
+    return footer;
+}
+function getContentsSideNav(){
+    return contentsSideNav;
+}
+
+module.exports = {
+    import_default: getImport_default,
+    logo: getLogo,
+    main_header: getMain_header,
+    navigator: getNavigator,
+    navigator_side: getNavigator_side,
+    footer: getFooter,
+    contentsSideNav: getContentsSideNav
+};
