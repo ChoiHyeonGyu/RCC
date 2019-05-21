@@ -10,6 +10,7 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/", function(req, res) {
+    console.log(dbconn.rQuery("select * from category"));
     fs.readFile("main.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
