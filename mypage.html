@@ -9,7 +9,7 @@
         <div id="header" class="container"><%- logo %></div>
         <div id="channel_info">
             <span id="channel_name" class="channel_num">채널 이름 = Nickname</span><span class="channel_num">Subscriber 12,034,257</span>
-            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post 202</span><br><br>
+            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post 202</span><span class="channel_num">Reply 44</span><br><br>
             <ul class="nav nav-pills nav-fill container pad-0">
                 <li class="nav-item">
                     <a class="nav-link btn-light active" href="#">Subscriber List</a>
@@ -182,13 +182,16 @@
             <div class="signup-block">
                 <form action="main.html" method="post">
                     <h1>회원정보 수정</h1>
-                    <input type="text" value="" placeholder="아이디" id="id" />
-                    <input type="password" value="" placeholder="비밀번호" id="pw" />
-                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck" />
-                    <input type="text" value="" placeholder="닉네임" id="nickname" />
-                    <input type="text" value="" placeholder="이메일" id="email" />
-                    <input type="tel" value="" placeholder="폰번호" id="cellphone"/>
-                    <input type="submit" value="회원정보 수정     " class="button"/>
+                    <input type="text" value="" placeholder="아이디" id="id" name="id1">
+                    <br>
+                    <input type="password" value="" placeholder="비밀번호" id="pw" name="pw1" oninput="pw1(this);">
+                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck1" name="pwcheck" oninput="pwcheck1(this);">
+                    <div id="pwcheckmsg" style="color:white;">1</div>
+                    <input type="text" value="" placeholder="이름" id="name"  name="name1">
+                    <input type="text" value="" placeholder="닉네임" id="nickname"  name="nickname1">
+                    <input type="text" value="" placeholder="이메일" id="email" name="email1">
+                    <input type="tel" value="" placeholder="폰번호" id="cellphone" name="cellphone1">
+                    <input type="submit" value="회원정보 수정      " class="button">
                 </form>
             </div>
         </div>

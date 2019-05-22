@@ -65,7 +65,7 @@ router.get("/breifing", function(req, res) {
                 navigator_side: include.navigator_side(),
                 footer: include.footer(),
                 contentsSideNav: cateNavPage,
-                result:result
+                result: result
             }));
         }); 
     });
