@@ -9,8 +9,6 @@ var dbconn = require('./oracledb_connect.js');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-<<<<<<< HEAD
-=======
 var cateNav = false;
 var categoryNav = "";
 var cateNavPage = "";
@@ -38,7 +36,6 @@ function initCategoryNav(callback){
     }
 }
 
->>>>>>> 52d25a5360a3c662a9569ab2ebc8976ccbe6e1da
 router.get("/", function(req, res) {
     dbconn.resultQuery("select * from category", function(result){
         console.log(result);
