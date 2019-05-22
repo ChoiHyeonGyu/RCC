@@ -9,40 +9,6 @@ var dbconn = require('./oracledb_connect.js');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-var cateNav = false;
-var categoryNav = "";
-var cateNavPage = "";
-
-console.log(include)
-console.log(dbconn)
-
-router.get("*",function(req,res,next){
-    
-console.log(include)
-console.log(dbconn)
-    init();
-    if(cateNav){
-        next();
-    }
-});
-
-function init(){
-    initCategoryNav();
-};
-
-function initCategoryNav(){
-    if(!cateNav){
-        dbconn.resultQuery("select * from category", function(result){
-            for(var i = 1; i<=result.rows.length; i++){
-                categoryNav += '<a class="nav-link btn-light hover-pointer" id="Cate'+i+'">'+result.rows[i-1][1]+'</a>';
-            }
-            cateNavPage = ejs.render(include.contentsSideNav(), { categoryNav: categoryNav });
-            cateNav = true;
-        });
-        next();
-    }
-}
-
 router.get("/", function(req, res) {
     dbconn.resultQuery("select * from category", function(result){
         console.log(result);
