@@ -13,24 +13,17 @@ var cateNav = false;
 var categoryNav = "";
 var cateNavPage = "";
 
-console.log(include)
-console.log(dbconn)
-
 router.get("*",function(req,res,next){
-    
-console.log(include)
-console.log(dbconn)
-    init();
-    if(cateNav){
-        next();
-    }
+
+    if(!cateNav)init(function(){next()});
+    else next();
 });
 
-function init(){
-    initCategoryNav();
+function init(callback){
+    initCategoryNav(callback);
 };
 
-function initCategoryNav(){
+function initCategoryNav(callback){
     if(!cateNav){
         dbconn.resultQuery("select * from category", function(result){
             for(var i = 1; i<=result.rows.length; i++){
@@ -38,8 +31,8 @@ function initCategoryNav(){
             }
             cateNavPage = ejs.render(include.contentsSideNav(), { categoryNav: categoryNav });
             cateNav = true;
+            callback();
         });
-        next();
     }
 }
 

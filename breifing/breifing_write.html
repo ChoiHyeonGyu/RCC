@@ -7,8 +7,8 @@
         onload = function () {
             $("#mainNavBtn02").addClass("active");
             $("#Cate03").addClass("active");
-            for (var i = 1; i <= 5; i++) {
-                var id = "#Cate0" + i;
+            for (var i = 1; i <= document.getElementsByTagName('a').length; i++) {
+                var id = "#Cate" + i;
                 $(id).click(function () { location.href = '/breifing_detail'; });
             }
         }
