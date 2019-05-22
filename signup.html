@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="js/htmljs/login.js"></script>
+        <script src="js/htmljs/signup.js"></script>
         <link rel="stylesheet" type='text/css' href="/css/signup.css?ver=1">
         <style>
             input.button{
@@ -14,18 +14,20 @@
         <div id="header" class="container"><%- logo %></div>
         <div class="signup container">
             <div class="signup-block">
-                <form action="/login" method="get">
+                <form action="/signup" method="post" onsubmit="return checkval();">
                     <h1>회원가입</h1>
-                    <input type="text" value="" placeholder="아이디" id="id" />
+                    <input type="text" value="" placeholder="아이디" id="id" name="id"/>
                     <br>
-                    <input type="button" value="아이디 중복확인" class="button"/>
-                    <input type="password" value="" placeholder="비밀번호" id="pw" />
-                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck" />
-                    <input type="text" value="" placeholder="닉네임" id="nickname" />
-                    <input type="text" value="" placeholder="이메일" id="email" />
-                    <input type="tel" value="" placeholder="폰번호" id="cellphone"/>
+                    <input type="button" value="아이디 중복확인" class="button"  onclick="idcheck();"/>
+                    <input type="password" value="" placeholder="비밀번호" id="pw" name="pw" oninput="pw1(this);"/>
+                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck" name="pwcheck" oninput="pwcheck1(this);"/>
+                    <div id="pwcheckmsg" style="color:white;">1</div>
+                    <input type="text" value="" placeholder="이름" id="name"  name="name"/>
+                    <input type="text" value="" placeholder="닉네임" id="nickname"  name="nickname"/>
+                    <input type="text" value="" placeholder="이메일" id="email" name="email"/>
+                    <input type="tel" value="" placeholder="폰번호" id="cellphone" name="cellphone"/>
                     <input type="submit" value="회원가입" class="button"/>
-                    <input type="button" value="취소" class="button" onclick="location.href='/'"/>
+                    <input type="button" value="취소" class="button" onclick="history.back()"/>
                 </form>
             </div>
         </div>

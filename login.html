@@ -9,10 +9,10 @@
         <div id="header" class="container"><%- logo %></div>
         <div class="login container">
             <div class="login-block">
-                <form action="/" method="get">
+                <form action="/login" method="post" onsubmit="return checkval();">
                     <h1>로그인</h1>
-                    <input type="text" value="" placeholder="id" id="id" />
-                    <input type="password" value="" placeholder="Password" id="pw" />
+                    <input type="text" value="" placeholder="id" id="아이디" name="id" name="id"/>
+                    <input type="password" value="" placeholder="비밀번호" id="pw" name="pw"/>
                     <input type="submit" value="로그인" class="button">
                     <input type="button" value="회원가입" class="button" onclick="location.href='/signup'">
                     <div style="text-align:center;"><a href="/id_find">아이디 찾기</a>/<a href="/pw_find">비밀번호찾기</a></div>
