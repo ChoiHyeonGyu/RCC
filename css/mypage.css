@@ -44,17 +44,21 @@
     right: 0px;
 }
 
-#buy_view, #sell_view {
-    display: none;
+.modal-body div {
+    margin-bottom: 20px;
 }
 
-.mypageATag{
+.modal-body label {
+    width: 100%;
+}
+
+.mypageATag {
     display:inline-block;
     width:100%;
     padding:10px 5px;
 }
 
-.mypageATag:hover{
+.mypageATag:hover {
     background-color:#EEEEEE;
     color:mediumpurple;
 }
