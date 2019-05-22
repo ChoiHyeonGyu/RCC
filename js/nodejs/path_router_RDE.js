@@ -16,6 +16,8 @@ router.get("/login", function(req, res) {
             main_header: include.main_header(),
         }));
     });
+    console.log(req.body);
+
 });
 
 router.get("/signup", function(req, res) {
