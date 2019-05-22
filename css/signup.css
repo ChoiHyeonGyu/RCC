@@ -153,3 +153,12 @@
 a {
     text-align:center;
 }
+
+#pwcheckmsg{
+    text-align:center;
+    padding:5px;
+}
+
+#pwcheck{
+    margin-bottom:0px;
+}

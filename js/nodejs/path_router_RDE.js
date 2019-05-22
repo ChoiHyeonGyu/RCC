@@ -16,6 +16,7 @@ router.get("/login", function(req, res) {
             main_header: include.main_header(),
         }));
     });
+
 });
 
 router.get("/signup", function(req, res) {
@@ -26,5 +27,12 @@ router.get("/signup", function(req, res) {
         }));
     });
 });
+
+
+router.post("/login",function(req,res){
+// 1. login처리를 함.디비
+// 2. 이전 페이지로
+});
+
 
 module.exports = router;
