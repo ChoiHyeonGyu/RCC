@@ -1,17 +1,22 @@
 var express = require('express');
 var app = express();
 var cookieParser = require('cookie-parser');
-var expressSession = require('express-session');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
-app.use(expressSession({
-    secret: 'my key',
-    resave: true,
-    saveUninitialized:true
+
+app.use(session({
+    key: 'sid', 
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 24000 * 60 * 60 // 쿠키 유효기간 24시간
+    }
 }));
 
 app.use("/css",express.static(__dirname + "/css"));

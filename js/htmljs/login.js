@@ -10,5 +10,4 @@ function checkval(){
         alert("비밀번호를 입력해주세요.");
         return false;
     }
-    alert("로그인");
 }
