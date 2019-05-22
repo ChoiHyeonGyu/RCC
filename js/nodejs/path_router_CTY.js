@@ -9,6 +9,40 @@ var dbconn = require('./oracledb_connect.js');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
+var cateNav = false;
+var categoryNav = "";
+var cateNavPage = "";
+
+console.log(include)
+console.log(dbconn)
+
+router.get("*",function(req,res,next){
+    
+console.log(include)
+console.log(dbconn)
+    init();
+    if(cateNav){
+        next();
+    }
+});
+
+function init(){
+    initCategoryNav();
+};
+
+function initCategoryNav(){
+    if(!cateNav){
+        dbconn.resultQuery("select * from category", function(result){
+            for(var i = 1; i<=result.rows.length; i++){
+                categoryNav += '<a class="nav-link btn-light hover-pointer" id="Cate'+i+'">'+result.rows[i-1][1]+'</a>';
+            }
+            cateNavPage = ejs.render(include.contentsSideNav(), { categoryNav: categoryNav });
+            cateNav = true;
+        });
+        next();
+    }
+}
+
 router.get("/", function(req, res) {
     dbconn.resultQuery("select * from category", function(result){
         console.log(result);
@@ -20,7 +54,7 @@ router.get("/", function(req, res) {
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            contentsSideNav: cateNavPage
         }));
     });
 });
@@ -33,7 +67,7 @@ router.get("/breifing", function(req, res) {
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            contentsSideNav: cateNavPage
         }));
     });
 });
@@ -46,7 +80,7 @@ router.get("/breifing_view", function(req, res) {
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            contentsSideNav: cateNavPage
         }));
     });
 });
@@ -59,7 +93,7 @@ router.get("/breifing_detail", function(req, res) {
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            contentsSideNav: cateNavPage
         }));
     });
 });
@@ -72,7 +106,7 @@ router.get("/commentary", function(req, res) {
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            contentsSideNav: cateNavPage
         }));
     });
 });
@@ -85,7 +119,7 @@ router.get("/commentary_view", function(req, res) {
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            contentsSideNav: cateNavPage
         }));
     });
 });
@@ -98,7 +132,7 @@ router.get("/commentary_detail", function(req, res) {
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            contentsSideNav: cateNavPage
         }));
     });
 });
@@ -115,12 +149,7 @@ router.get("/search_result", function(req, res) {
 router.get("/breifing_write", function(req, res) {
     fs.readFile("breifing/breifing_write.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
-            navigator: include.navigator(),
-            navigator_side: include.navigator_side(),
-            footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            logo: include.logo()
         }));
     });
 });
@@ -128,12 +157,7 @@ router.get("/breifing_write", function(req, res) {
 router.get("/commentary_write", function(req, res) {
     fs.readFile("commentary/commentary_write.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
-            navigator: include.navigator(),
-            navigator_side: include.navigator_side(),
-            footer: include.footer(),
-            contentsSideNav: include.contentsSideNav()
+            logo: include.logo()
         }));
     });
 });
