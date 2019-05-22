@@ -2,7 +2,6 @@ var oracledb = require('oracledb');
 
 
 function connection(){
-    var c = null;
     oracledb.autoCommit = true;
     oracledb.getConnection({
         user: "rcc",
@@ -10,9 +9,9 @@ function connection(){
         connectString: "localhost:1521/xe"
     },(err, conn)=>{
         if(err) console.log(err);
-        c = conn;
+        console.log(conn);
+        return conn;
     });
-    return c;
 }
 //success, false
 //result
