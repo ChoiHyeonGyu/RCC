@@ -45,6 +45,9 @@ router.post("/login", function(req, res){
             res.write("<script>alert('login!');</script>")
             req.session.id = req.body.id;
             console.log(req.session.id);
+            req.session.user = {
+                id: id
+            };
             res.write('<script>history.back();</script>')
         }
     });

@@ -10,7 +10,7 @@ app.use(session({
     key: 'SID',
     secret: "0x5050594520737061726b706f6f6c2d6574682d636e2d687a",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
       maxAge: 24000 * 60 * 60
     }
