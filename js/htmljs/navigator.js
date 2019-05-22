@@ -11,3 +11,9 @@ function sideBarClick(){
         sidebar = false;
     }
 }
+
+function search(){
+    if(event.keyCode == "13"){
+        alert("검색어 : "+document.getElementsByClassName("navSearch")[0].value);
+    }
+}
