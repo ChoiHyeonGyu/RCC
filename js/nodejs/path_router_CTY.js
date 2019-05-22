@@ -9,6 +9,36 @@ var dbconn = require('./oracledb_connect.js');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
+<<<<<<< HEAD
+=======
+var cateNav = false;
+var categoryNav = "";
+var cateNavPage = "";
+
+router.get("*",function(req,res,next){
+
+    if(!cateNav)init(function(){next()});
+    else next();
+});
+
+function init(callback){
+    initCategoryNav(callback);
+};
+
+function initCategoryNav(callback){
+    if(!cateNav){
+        dbconn.resultQuery("select * from category", function(result){
+            for(var i = 1; i<=result.rows.length; i++){
+                categoryNav += '<a class="nav-link btn-light hover-pointer" id="Cate'+i+'">'+result.rows[i-1][1]+'</a>';
+            }
+            cateNavPage = ejs.render(include.contentsSideNav(), { categoryNav: categoryNav });
+            cateNav = true;
+            callback();
+        });
+    }
+}
+
+>>>>>>> 52d25a5360a3c662a9569ab2ebc8976ccbe6e1da
 router.get("/", function(req, res) {
     dbconn.resultQuery("select * from category", function(result){
         console.log(result);
