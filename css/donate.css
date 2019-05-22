@@ -5,15 +5,15 @@
     resize: none;
 }
 
+#donate_input div {
+    margin-bottom: 20px;
+}
+
 #sender {
     margin-top: 2%;
     margin-right: 5%;
 }
 
-#mycoin {
-    margin-right: 265px;
-}
-
-#sending_money {
-    margin-right: 265px;
+#mycoin, #sending_money {
+    margin-right: 13.8%;
 }
