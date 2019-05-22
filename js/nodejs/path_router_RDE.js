@@ -36,7 +36,16 @@ router.post("/login",function(req,res){
     dbconn.resultQuery("select ID,PW from users where id='"+id+"' and pw='"+pw+"'", function(result){
         console.log(result);
         if (result.rows.length==0){//false
+            res.write("<script>alert('fail!.');</script>");
+            res.write('<script>history.href="/login"</script>')
 
+            // res.write("<script language=\"javascript\">alert('테스트')</script>");
+            // res.write("<script language=\"javascript\">window.location=\"codezip.aspx\"</script>");
+        }else{
+            res.write("<script>alert('login!');</script>")
+            req.session.id = req.body.id;
+            console.log(req.session.id);
+            res.write('<script>history.back();</script>')
         }
 
     });
@@ -46,13 +55,15 @@ router.post("/login",function(req,res){
 // 2. 이전 페이지로
 });
 
-router.post("/submit",function(req,res){
+router.post("/signup",function(req,res){
     var id=req.body.id1;
     var pw=req.body.pw1;
     
-    dbconn.Query("select ID,PW from users where id='"+id+"' and pw='"+pw+"'", function(result){
+    dbconn.booleanQuery("select ID,PW from users where id='"+id+"' and pw='"+pw+"'", function(result){
         console.log(result);
         if (result.rows.length==0){//false
+            
+        }else{
             
         }
 

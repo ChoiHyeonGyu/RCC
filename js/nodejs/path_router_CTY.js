@@ -38,7 +38,7 @@ function initCategoryNav(callback){
 
 router.get("/", function(req, res) {
     dbconn.resultQuery("select * from category", function(result){
-        console.log(result);
+       
     });
     fs.readFile("main.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
