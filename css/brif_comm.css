@@ -97,3 +97,15 @@
 .table{
     width:100%;
 }
+.pagingDiv button{
+    border:1px solid #999999;
+    font-weight:bold;
+    width:8%;
+}
+.detailDiv{
+    display:none;
+}
+.contentsSideNavDetail{
+    border:1px solid;
+    border-radius: 7px;
+}

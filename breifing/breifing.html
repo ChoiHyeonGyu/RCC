@@ -5,11 +5,6 @@
     <script>
         onload = function () {
             $("#mainNavBtn02").addClass("active");
-            $("#Cate03").addClass("active");
-            for (var i = 1; i <= document.getElementsByTagName('a').length; i++) {
-                var id = "#Cate" + i;
-                $(id).click(function () { location.href = '/breifing_detail'; });
-            }
             var ths = document.getElementsByTagName("th");
             for (var i = 0; i < ths.length; i++) {
                 ths[i].addEventListener("click", function () {
@@ -43,18 +38,36 @@
                                     <%
                                 }
                                 pid = result.rows[i][0];
-                                string = "<tr><th scope='row'>";
+                                string = "<tr class='hover-pointer hover-underline hover-bold'><th scope='row'>";
                             }
                             string+=result.rows[i][2]+"<br>";
                         }
                         string+="</th></tr>";
                     %>
                     <%- string %>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                    </tr>
                 </tbody>
             </table>
+            
+            <div class="">
+                    <%
+                        console.log("p1",pagingResult);
+                        var paging="";
+                        if(pagingResult.preBtn == '1'){
+                            paging="<button class='btn btn-light' onclick=location.href='"+"/breifing?pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"
+                        }
+                    %><%- paging %><%
+                        paging="";
+                        for(var i=pagingResult.startPage; i<=pagingResult.endPage;i++){
+                            if(i==pagingResult.curPage) paging+="<button class='btn btn-light active' onclick=location.href='"+"/breifing?pageNo="+i+"'>"+i+"</button>"
+                            else paging+="<button class='btn btn-light' onclick=location.href='"+"/breifing?pageNo="+i+"'>"+i+"</button>"
+                        }
+                    %><%- paging %><%
+                        paging="";
+                        if(pagingResult.nextBtn == '1'){
+                        paging="<button class='btn btn-light' onclick=location.href='"+"/breifing?pageNo="+(parseInt(pagingResult.endPage)+1)+"'>&gt;</button>"
+                        }
+                    %><%- paging %>
+                </div>
         </div>
         <div class="hotEditor rightNav sideContents">
             <h2>Editors</h2>
