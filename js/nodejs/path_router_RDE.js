@@ -80,14 +80,6 @@ router.post("/signup", function(req, res){
 // 2. 이전 페이지로
 });
 
-router.post("/signup",function(req,res){
-    var id=req.body.id1;
-    var pw=req.body.pw1;
-    var pwcheck=req.body.pwcheck1;
-    var name=req.body.name1;
-    var nickname=req.body.nickname1;
-    var email=req.body.email1;
-    var cellphone=req.body.cellphone1;
 
    
 
