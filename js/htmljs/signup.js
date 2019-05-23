@@ -1,3 +1,6 @@
+
+var a=false;
+
 function checkval(){
     var id=document.getElementById('id');
     var pw=document.getElementById('pw');
@@ -6,7 +9,6 @@ function checkval(){
     var nickname=document.getElementById('nickname');
     var email=document.getElementById('email');
     var cellphone=document.getElementById('cellphone');
-    
     if(id.value=="" || id.value==null){
         alert("아이디를 입력해주세요.");
         return false;
@@ -20,6 +22,14 @@ function checkval(){
         alert("비밀번호를 확인해주세요.");
         return false;
     }
+
+    if((pw.value!="" && pw.value!=null)&&(pwcheck.value!="" && pwcheck.value!=null)){
+        if(pw.value!=pwcheck.value){
+            alert("비밀번호가 틀렸습니다. 다시 확인해 주세요.");
+            return false;
+        }    
+    }
+
     if(name.value=="" || name.value==null){
         alert("이름을 입력해주세요.");
         return false;
@@ -32,9 +42,27 @@ function checkval(){
         alert("이메일을 입력해주세요.");
         return false;
     }
+    
+    if(email.value.indexOf('@')==-1){
+        alert('이메일 형식이 잘못됐습니다.')
+        return false;
+    }
+
     if(cellphone.value=="" || cellphone.value==null){
         alert("전화번호를 입력해주세요.");
         return false;
+    }
+
+    if(cellphone.value.indexOf('-')!=-1){
+        // -1이 아니다!! => -이 존재 한다.!!
+        cellphone.value=cellphone.value.replace("-","");
+        if(cellphone.value.indexOf('-')!=-1){
+            cellphone.value=cellphone.value.replace("-","");
+            if(cellphone.value.indexOf('-')!=-1){
+                cellphone.value=cellphone.value.replace("-","");   
+            }   
+        }
+        
     }
 }
 
@@ -42,13 +70,28 @@ function checkval(){
 
 
 
-
-
 // 비밀번호 지웠을 때 빈화면 출력.
-function pw1(pw){
-    var pwcheck=document.getElementById("pwcheck");
+function pw2(){
+    var pw=document.forms[0].pw1;
+    var pwcheck=document.forms[0].pwcheck1;
     var div=document.getElementById("pwcheckmsg");
+    
 
+    if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
+        if(pw.value != pwcheck.value){
+            div.style.color="red";
+            div.innerHTML="비밀번호 불일치!";
+        }else if(pw.value == pwcheck.value){
+            div.style.color="green";
+            div.innerHTML="비밀번호 일치!";
+        }
+    else{
+            div.innerHTML=" ";
+        }
+    }
+
+    
+    
     if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
         div.innerHTML="1";
         div.style.color='white';
@@ -57,31 +100,20 @@ function pw1(pw){
 
 
 
-
-
-
-
-
-
-
-
-
 // 키 눌렀을 때 비밀번호 확인메세지 출력.
-function pwcheck1(pwcheck){
-    var pw=document.getElementById("pw");
+function pwcheck2(){
+    var pw=document.forms[0].pw1;
+    var pwcheck=document.forms[0].pwcheck1;
     var div=document.getElementById("pwcheckmsg");
     if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
         if(pw.value != pwcheck.value){
-            console.log("1");
             div.style.color="red";
             div.innerHTML="비밀번호 불일치!";
         }
         else if(pw.value == pwcheck.value){
-            console.log("2");
             div.style.color="green";
             div.innerHTML="비밀번호 일치!";
         }else{
-            console.log("3");
             div.innerHTML=" ";
         }
     }else if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
@@ -94,11 +126,3 @@ function pwcheck1(pwcheck){
 
 
 
-// 아이디 중복확인.
-function idcheck(){
-    if(true){
-
-    }else{
-        
-    }
-}

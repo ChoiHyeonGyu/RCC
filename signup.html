@@ -18,18 +18,30 @@
                     <h1>회원가입</h1>
                     <input type="text" value="" placeholder="아이디" id="id" name="id1"/>
                     <br>
-                    <input type="button" value="아이디 중복확인" class="button"  onclick="idcheck();"/>
-                    <input type="password" value="" placeholder="비밀번호" id="pw" name="pw1" oninput="pw1(this);"/>
-                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck" name="pwcheck1" oninput="pwcheck1(this);"/>
+                    <input type="button" value="아이디 중복확인" class="button" id="id-check"  onclick="location.href='';"/>
+                    <input type="password" value="" placeholder="비밀번호" id="pw" name="pw1" oninput="pw2();"/>
+                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck" name="pwcheck1" oninput="pwcheck2();"/>
                     <div id="pwcheckmsg" style="color:white;">1</div>
                     <input type="text" value="" placeholder="이름" id="name"  name="name1"/>
                     <input type="text" value="" placeholder="닉네임" id="nickname"  name="nickname1"/>
-                    <input type="text" value="" placeholder="이메일" id="email" name="email1"/>
-                    <input type="tel" value="" placeholder="폰번호" id="cellphone" name="cellphone1"/>
+                    <input type="text" value="" placeholder="abc@abcd.abc" id="email" name="email1"/>
+                    <input type="tel" value="" placeholder="01011112222" id="cellphone" name="cellphone1"/>
                     <input type="submit" value="회원가입" class="button"/>
                     <input type="button" value="취소" class="button" onclick="history.back()"/>
                 </form>
             </div>
         </div>
     </body>
+    <script>
+    $('#id-check').click(function(){
+        $.ajax({
+            url: 'http://localhost:3000/ajax',
+            dataType:'json',
+            type:'POST',
+            data:{'id':$('#id').val()},
+            
+
+        })
+    });
+    </script>
 </html>

@@ -33,20 +33,16 @@ router.post("/login",function(req,res){
     var id=req.body.id1;
     var pw=req.body.pw1;
     
-    dbconn.resultQuery("select ID,PW from users where id='"+id+"' and pw='"+pw+"'", function(err,result){
-        console.log(id);
+    dbconn.resultQuery("select ID,PW from users where id='"+id+"' and pw='"+pw+"'", function(result){
         console.log(result);
-        if (result==null){//false
+        if (result.rows.length==0){//false
             res.write("<script>alert('fail!.');</script>");
             res.end('<script>history.back();</script>')
-
-            // res.write("<script language=\"javascript\">alert('테스트')</script>");
-            // res.write("<script language=\"javascript\">window.location=\"codezip.aspx\"</script>");
         }else{
             res.write("<script>alert('login!');</script>")
             req.session.id = req.body.id;
             console.log(req.session.id);
-            res.write('<script>history.back();</script>')
+            res.end('<script>history.go(-2);</script>')
         }
 
     });
@@ -65,15 +61,15 @@ router.post("/signup",function(req,res){
     var email=req.body.email1;
     var cellphone=req.body.cellphone1;
 
-    dbconn.resultQuery("insert into USERS values('"+id+"','"+pw+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
+    dbconn.booleanQuery("insert into USERS values('"+id+"','"+pw+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
         console.log(result);
-        if (result.rows.length==0){//false
-            
+        if (result==false){//false
+            res.write("<script>alert('fail!');</script>")
+            res.write('<script>history.back();</script>')
         }else{
             res.write("<script>alert('signup!');</script>")
-            res.write('<script>history.back();</script>')
+            res.write('<script>history.go(-2);</script>')
         }
-
     });
 
 

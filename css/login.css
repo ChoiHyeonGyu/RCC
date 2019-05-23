@@ -2,6 +2,12 @@
 
 
 
+.login-naver{
+    background: url( "https://www.teachforkorea.go.kr/wp-includes/img/ico/sns_naver_ico_login.png" ) no-repeat;
+}
+.login-daum{
+    background: url( "images/button_search.png" ) no-repeat;
+}
 
 
 .login-block {
