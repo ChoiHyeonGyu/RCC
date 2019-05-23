@@ -43,11 +43,10 @@ router.post("/login", function(req, res){
             // res.write("<script language=\"javascript\">window.location=\"codezip.aspx\"</script>");
         } else {
             res.write("<script>alert('login!');</script>")
-            req.session.id = req.body.id;
-            console.log(req.session.id);
-            req.session.user = {
-                id: id
-            };
+            req.session.user_id = id;
+            req.session.save(function(err){
+                if(err) console.log(err);
+            });
             res.write('<script>history.back();</script>')
         }
     });

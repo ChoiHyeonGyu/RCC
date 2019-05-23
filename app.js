@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
@@ -10,10 +11,17 @@ app.use(session({
     key: 'SID',
     secret: "0x5050594520737061726b706f6f6c2d6574682d636e2d687a",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
       maxAge: 24000 * 60 * 60
-    }
+    },
+    store: new MySQLStore({
+      host: '192.168.0.8',
+      port: 3306,
+      user: 'rcc',
+      password: '1234',
+      database: 'rcc_db'
+    })
 }));
 
 app.use("/css",express.static(__dirname + "/css"));

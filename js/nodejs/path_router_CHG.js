@@ -10,7 +10,6 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res) {
-    console.log(req.session.user);
     dbconn.resultQuery("", function(result) {
         
     });
