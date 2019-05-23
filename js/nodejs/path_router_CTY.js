@@ -41,6 +41,12 @@ function query(str,callback){
     });
 }
 
+function paging(result,page_size,page_list_size,currPage, callback){
+    //쿼리결과 = result
+    var totalPageCount = result.rows.length;
+    callback();
+}
+
 router.get("/", function(req, res) {
     //query("select * from category",function(result){console.log(result)});
     fs.readFile("main.html", "utf-8", function(error, data) {
@@ -56,7 +62,11 @@ router.get("/", function(req, res) {
 });
 
 router.get("/breifing", function(req, res) {
-    query("select * from post, briefingdetail where post.briefing=1 and briefingdetail.pid=post.pid",function(result){
+    query("select pid, bid, headline "+
+    "from( select post.pid, briefingdetail.bid, briefingdetail.headline, "+
+    "row_number() over(partition by post.pid order by briefingdetail.bid) "+
+    "rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3",
+    function(result){
         fs.readFile("breifing/breifing.html", "utf-8", function(error, data) {
             res.send(ejs.render(include.import_default() + data, {
                 logo: include.logo(),

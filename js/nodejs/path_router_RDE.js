@@ -37,7 +37,7 @@ router.post("/login", function(req, res){
         console.log(result);
         if(result.rows.length == 0){//false
             res.write("<script>alert('fail!.');</script>");
-            res.write('<script>history.href="/login"</script>')
+            res.end('<script>history.back()</script>')
 
             // res.write("<script language=\"javascript\">alert('테스트')</script>");
             // res.write("<script language=\"javascript\">window.location=\"codezip.aspx\"</script>");
