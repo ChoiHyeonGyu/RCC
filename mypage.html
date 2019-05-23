@@ -8,98 +8,71 @@
         <div id="header2"><%- main_header %></div>
         <div id="header" class="container"><%- logo %></div>
         <div id="channel_info">
-            <span id="channel_name" class="channel_num">채널 이름 = Nickname</span><span class="channel_num">Subscriber 12,034,257</span>
-            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post 202</span><span class="channel_num">Reply 44</span><br><br>
+            <span id="channel_name" class="channel_num"><%- my.rows[0][3] %></span><span class="channel_num">Subscriber <%- my.rows[0][8] %></span>
+            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%- my.rows[0][9] %></span>
+            <span class="channel_num">Reply <%- my.rows[0][10] %></span><br><br>
             <ul class="nav nav-pills nav-fill container pad-0">
                 <li class="nav-item">
-                    <a class="nav-link btn-light active" href="#">Subscriber List</a>
+                    <a class="nav-link btn-light active" href="/my">Subscriber List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light" href="#">Donate List</a>
+                    <a class="nav-link btn-light" href="/my?s=1">Donate List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light" href="#">Post List</a>
+                    <a class="nav-link btn-light" href="/my?s=2">Post List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light" href="#">Reply List</a>
+                    <a class="nav-link btn-light" href="/my?s=3">Reply List</a>
                 </li>
             </ul>
             <table class="table table-striped container">
                 <thead>
+                    <% if(list.metaData[0].name == 'SID'){ %>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">No</th>
+                        <th scope="col">SUBSCRIBER</th>
                     </tr>
+                    <% } %>
+                    <% if(list.metaData[0].name == 'PID'){ %>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">HEADLINE / TITLE</th>
+                        <th scope="col">CATEGORY</th>
+                        <th scope="col">CATEGORYDETAIL</th>
+                        <th scope="col">VIEWS</th>
+                        <th scope="col">WRITE DATE</th>
+                        <th scope="col">MODIFY DATE</th>
+                    </tr>
+                    <% } %>
                 </thead>
                 <tbody>
+                    <% if(list.metaData[0].name == 'SID'){ %>
+                        <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th scope="row"><%- list.rows[i][0] %></th>
+                        <td><%- list.rows[i][1] %></td>
                     </tr>
+                        <% } %>
+                    <% } %>
+                    <% if(list.metaData[0].name == 'PID'){ %>
+                        <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
+                        <th scope="row"><%- list.rows[i][0] %></th>
+                        <td><%- list.rows[i][6] %><%- list.rows[i][7] %></td>
+                        <td><%- list.rows[i][4] %></td>
+                        <td><%- list.rows[i][5] %></td>
+                        <td><%- list.rows[i][2] %></td>
+                        <td><%- list.rows[i][1] %></td>
+                        <td><%- list.rows[i][3] %></td>
                     </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">5</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">6</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">7</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">8</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">9</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">10</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                        <% } %>
+                    <% } %>
                 </tbody>
             </table>
         </div>
         <div id="empty"></div>
         <div id="account_info">
-            <span id="account_address" class="account_num">Account Address</span><span class="account_num">0xea674fdde714fd979de3edf0f56aa9716b898ec8</span>
+            <span id="account_address" class="account_num">Account Address</span><span class="account_num"><%- my.rows[4] %></span>
             <span class="account_num">Coin 3,000,000</span>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#buy_view">Buy</button>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
@@ -182,15 +155,15 @@
             <div class="signup-block">
                 <form action="main.html" method="post">
                     <h1>회원정보 수정</h1>
-                    <input type="text" value="" placeholder="아이디" id="id" name="id1">
+                    <input type="text" value="<%- my.rows[0][0] %>" placeholder="아이디" id="id" name="id1" disabled>
                     <br>
-                    <input type="password" value="" placeholder="비밀번호" id="pw" name="pw1" oninput="pw1(this);">
+                    <input type="password" value="<%- my.rows[0][1] %>" placeholder="비밀번호" id="pw" name="pw1" oninput="pw1(this);">
                     <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck1" name="pwcheck" oninput="pwcheck1(this);">
                     <div id="pwcheckmsg" style="color:white;">1</div>
-                    <input type="text" value="" placeholder="이름" id="name"  name="name1">
-                    <input type="text" value="" placeholder="닉네임" id="nickname"  name="nickname1">
-                    <input type="text" value="" placeholder="이메일" id="email" name="email1">
-                    <input type="tel" value="" placeholder="폰번호" id="cellphone" name="cellphone1">
+                    <input type="text" value="<%- my.rows[0][2] %>" placeholder="이름" id="name"  name="name1">
+                    <input type="text" value="<%- my.rows[0][3] %>" placeholder="닉네임" id="nickname"  name="nickname1">
+                    <input type="text" value="<%- my.rows[0][5] %>" placeholder="이메일" id="email" name="email1">
+                    <input type="tel" value="<%- my.rows[0][6] %>" placeholder="폰번호" id="cellphone" name="cellphone1">
                     <input type="submit" value="회원정보 수정      " class="button">
                 </form>
             </div>
