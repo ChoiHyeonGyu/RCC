@@ -31,6 +31,25 @@
             <h2>Hot Briefings</h2>
             <table class="table mainTable">
                 <tbody>
+                    <%  
+                        var pid=-1;
+                        var string="";
+                        for(var i=0; i<result.rows.length; i++){
+                            if(result.rows[i][0]!=pid){
+                                if(pid!=-1){
+                                    //저장값출력
+                                    string+="</th></tr>";%>
+                                    <%- string %>
+                                    <%
+                                }
+                                pid = result.rows[i][0];
+                                string = "<tr><th scope='row'>";
+                            }
+                            string+=result.rows[i][2]+"<br>";
+                        }
+                        string+="</th></tr>";
+                    %>
+                    <%- string %>
                     <tr>
                         <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
                     </tr>
