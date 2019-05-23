@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var ejs = require('ejs');
+var moment = require('moment');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
@@ -13,39 +14,46 @@ router.get("/my", function(req, res) {
     dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
     "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
     "where id = '"+req.session.user_id+"'", function(result) {
-        var sel = req.url.charAt(req.url.length-1);
-
-        if(sel == 'y'){
+        if(req.url.match('s=1')) {
             dbconn.resultQuery("select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"'", function(result2){
                 listing(result2);
             });
-        } else if(sel == '1') {
-            dbconn.resultQuery("select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"'", function(result2){
-                listing(result2);
-            });
-        } else if(sel == '2') {
+        } else if(req.url.match('s=2')) {
             dbconn.resultQuery("select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b full join "+
             "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on "+
             "u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
             "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid", function(result2){
                 var point = -1;
                 var pid = 0;
+                var cnt = 0;
                 for(var i = 0; i < result2.rows.length; i++){
                     if(result2.rows[i][6] == null){
                         if(pid == result2.rows[i][0]){
-                            result2.rows[point][7] += ',' + result2.rows[i][7];
+                            if(cnt < 2){
+                                result2.rows[point][7] += ',' + result2.rows[i][7];
+                            }
                             result2.rows.splice(i, 1);
+                            cnt++;
                             i--;
                         } else {
                             point = i;
                             pid = result2.rows[i][0];
+                            cnt = 0;
                         }
                     }
+                    result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
+                    result2.rows[i][3] = moment(result2.rows[i][3]).format("YYYY-MM-DD HH:mm:ss");
                 }
-                console.log(result2);
                 listing(result2);
             });
-        } else if(sel == '3') {
+        } else if(req.url.match('s=3')) {
+            dbconn.resultQuery("select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where userid = '"+req.session.user_id+"'", function(result2){
+                for(var i = 0; i < result2.rows.length; i++){
+                    result2.rows[i][2] = moment(result2.rows[i][2]).format("YYYY-MM-DD HH:mm:ss");
+                }
+                listing(result2);
+            });
+        } else {
             dbconn.resultQuery("select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"'", function(result2){
                 listing(result2);
             });
@@ -60,6 +68,25 @@ router.get("/my", function(req, res) {
                     list: result2
                 }));
             });
+        }
+    });
+});
+
+router.post("/user/modify", function(req, res){
+    var id = req.session.user_id;
+    var pw = req.body.pw1;
+    var name = req.body.name1;
+    var nickname = req.body.nickname1;
+    var email = req.body.email1;
+    var cellphone = req.body.cellphone1;
+    
+    dbconn.booleanQuery("update users set pw='"+pw+"', name='"+name+"', nickname='"+nickname+"', coinaddress='0x111111', email='"+email+"', cellphone='"+cellphone+"' where id='"+id+"'", function(result){
+        if(result == false){
+            res.write("<script>alert('fail!');</script>");
+            res.write('<script>history.back();</script>');
+        } else {
+            res.write("<script>alert('update completed!');</script>");
+            res.write('<script>history.go(-1);</script>');
         }
     });
 });

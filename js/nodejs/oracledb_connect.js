@@ -4,7 +4,7 @@ var conn = null;
 
 oracledb.autoCommit = true;
 oracledb.getConnection({
-    user: "rcc",
+    user: "c##rcc2",
     password: "1234",
     connectString: "localhost:1521/xe"
 },(err, conn)=>{
@@ -30,7 +30,7 @@ function resultQuery(sql, callback){
 }
 
 function booleanQuery(sql, callback){
-    conn.execute(sql,(err, result)=>{
+    conn.execute(sql, (err, result)=>{
         if(err != null){
             console.log(err);
             callback(false);
