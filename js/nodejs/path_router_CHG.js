@@ -10,6 +10,9 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res) {
+    dbconn.resultQuery("", function(result) {
+        
+    });
     fs.readFile("mypage.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),

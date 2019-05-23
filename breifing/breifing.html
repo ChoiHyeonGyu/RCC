@@ -11,9 +11,9 @@
                 $(id).click(function () { location.href = '/breifing_detail'; });
             }
             var ths = document.getElementsByTagName("th");
-            for(var i = 0; i<ths.length; i++){
-                ths[i].addEventListener("click",function(){
-                    location.href="/breifing_view";
+            for (var i = 0; i < ths.length; i++) {
+                ths[i].addEventListener("click", function () {
+                    location.href = "/breifing_view";
                 });
             }
         }
@@ -31,32 +31,27 @@
             <h2>Hot Briefings</h2>
             <table class="table mainTable">
                 <tbody>
+                    <%  
+                        var pid=-1;
+                        var string="";
+                        for(var i=0; i<result.rows.length; i++){
+                            if(result.rows[i][0]!=pid){
+                                if(pid!=-1){
+                                    //저장값출력
+                                    string+="</th></tr>";%>
+                                    <%- string %>
+                                    <%
+                                }
+                                pid = result.rows[i][0];
+                                string = "<tr><th scope='row'>";
+                            }
+                            string+=result.rows[i][2]+"<br>";
+                        }
+                        string+="</th></tr>";
+                    %>
+                    <%- string %>
                     <tr>
                         <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
                     </tr>
                 </tbody>
             </table>

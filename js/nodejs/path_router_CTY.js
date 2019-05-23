@@ -14,7 +14,6 @@ var categoryNav = "";
 var cateNavPage = "";
 
 router.get("*",function(req,res,next){
-
     if(!cateNav)init(function(){next()});
     else next();
 });
@@ -27,7 +26,7 @@ function initCategoryNav(callback){
     if(!cateNav){
         dbconn.resultQuery("select * from category", function(result){
             for(var i = 1; i<=result.rows.length; i++){
-                categoryNav += '<a class="nav-link btn-light hover-pointer" id="Cate'+i+'">'+result.rows[i-1][1]+'</a>';
+                categoryNav += '<a class="nav-link btn-light hover-pointer" id="Cate'+i+' cateId'+result.rows[i-1][0]+'">'+result.rows[i-1][1]+'</a>';
             }
             cateNavPage = ejs.render(include.contentsSideNav(), { categoryNav: categoryNav });
             cateNav = true;
@@ -36,10 +35,20 @@ function initCategoryNav(callback){
     }
 }
 
-router.get("/", function(req, res) {
-    dbconn.resultQuery("select * from category", function(result){
-       
+function query(str,callback){
+    dbconn.resultQuery(str, function(result){
+        callback(result);
     });
+}
+
+function paging(result,page_size,page_list_size,currPage, callback){
+    //쿼리결과 = result
+    var totalPageCount = result.rows.length;
+    callback();
+}
+
+router.get("/", function(req, res) {
+    //query("select * from category",function(result){console.log(result)});
     fs.readFile("main.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
@@ -53,15 +62,22 @@ router.get("/", function(req, res) {
 });
 
 router.get("/breifing", function(req, res) {
-    fs.readFile("breifing/breifing.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(),
-            navigator: include.navigator(),
-            navigator_side: include.navigator_side(),
-            footer: include.footer(),
-            contentsSideNav: cateNavPage
-        }));
+    query("select pid, bid, headline "+
+    "from( select post.pid, briefingdetail.bid, briefingdetail.headline, "+
+    "row_number() over(partition by post.pid order by briefingdetail.bid) "+
+    "rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3",
+    function(result){
+        fs.readFile("breifing/breifing.html", "utf-8", function(error, data) {
+            res.send(ejs.render(include.import_default() + data, {
+                logo: include.logo(),
+                main_header: include.main_header(),
+                navigator: include.navigator(),
+                navigator_side: include.navigator_side(),
+                footer: include.footer(),
+                contentsSideNav: cateNavPage,
+                result: result
+            }));
+        }); 
     });
 });
 
