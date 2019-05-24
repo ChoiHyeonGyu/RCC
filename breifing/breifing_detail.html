@@ -3,11 +3,24 @@
 <head>
     <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
     <script>
-        var curPage = '#detail'+<%= cateId %>
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return results[1] || 0;
+            }
+        }
         onload = function () {
+            var curPage = '#detail' + $.urlParam('cateId');
+            var activeCate = '#categoryId' + $.urlParam('cateId');
+            var activeDetail = '#categoryDetailId' + $.urlParam('detailId');
             $("#mainNavBtn02").addClass("active");
             $("#Cate03").addClass("active");
-            $(curPage).css('display','block');
+            $(curPage).css('display', 'block');
+            $(activeCate).addClass("active");
+            $(activeDetail).addClass("active");
         }
     </script>
 </head>
@@ -63,26 +76,32 @@
             </table>
             <div class="">
                     <%
-                        console.log("p1",pagingResult);
+                        var detail="";
+                        if(detailId!=null)detail="detailId="+detailId+"&";
+
                         var paging="";
                         if(pagingResult.preBtn == '1'){
-                            paging="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?cateId="+cateId+"&pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"
+                            paging="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?"+detail+"cateId="+cateId+"&pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"
                         }
                     %><%- paging %><%
                         paging="";
                         for(var i=pagingResult.startPage; i<=pagingResult.endPage;i++){
-                            if(i==pagingResult.curPage) paging+="<button class='btn btn-light active' onclick=location.href='"+"/breifing_detail?cateId="+cateId+"&pageNo="+i+"'>"+i+"</button>"
-                            else paging+="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?cateId="+cateId+"&pageNo="+i+"'>"+i+"</button>"
+                            if(i==pagingResult.curPage) paging+="<button class='btn btn-light active' onclick=location.href='"+"/breifing_detail?"+detail+"cateId="+cateId+"&pageNo="+i+"'>"+i+"</button>"
+                            else paging+="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?"+detail+"cateId="+cateId+"&pageNo="+i+"'>"+i+"</button>"
                         }
                     %><%- paging %><%
                         paging="";
                         if(pagingResult.nextBtn == '1'){
-                        paging="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?cateId="+cateId+"&pageNo="+(parseInt(pagingResult.endPage)+1)+"'>&gt;</button>"
+                        paging="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?"+detail+"cateId="+cateId+"&pageNo="+(parseInt(pagingResult.endPage)+1)+"'>&gt;</button>"
                         }
                     %><%- paging %>
-                </div>
+                    <div>
+                        <button class='btn btn-light fr' onclick='location.href="/breifing_write"'>글쓰기</button>
+                    </div>
+            </div>
         </div>
     </div>
     <div id="footer"><%- footer %></div>
 </body>
+
 </html>
