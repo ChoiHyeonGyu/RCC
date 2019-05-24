@@ -16,7 +16,7 @@ app.use(session({
       maxAge: 24000 * 60 * 60
     },
     store: new MySQLStore({
-      host: '192.168.55.62',
+      host: '192.168.0.8',
       port: 3306,
       user: 'rcc',
       password: '1234',
