@@ -3,19 +3,23 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
     <script>
+        $.urlParam = function (name) {
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if (results == null) {
+                return null;
+            }
+            else {
+                return results[1] || 0;
+            }
+        }
         onload = function () {
+            var curPage = '#detail' + $.urlParam('cateId');
+            var activeCate = '#categoryId' + $.urlParam('cateId');
+            var activeDetail = '#categoryDetailId' + $.urlParam('detailId');
             $("#mainNavBtn03").addClass("active");
-            $("#Cate02").addClass("active");
-            for (var i = 1; i <= document.getElementsByTagName('a').length; i++) {
-                var id = "#Cate" + i;
-                $(id).click(function () { location.href = '/commentary_detail'; });
-            }
-            var ths = document.getElementsByTagName("th");
-            for (var i = 0; i < ths.length; i++) {
-                ths[i].addEventListener("click", function () {
-                    location.href = "/commentary_view";
-                });
-            }
+            $(curPage).css('display','block');
+            $(activeCate).addClass("active");
+            $(activeDetail).addClass("active");
         }
     </script>
 </head>

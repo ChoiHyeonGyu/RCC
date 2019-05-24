@@ -8,9 +8,9 @@
         <div id="header2"><%- main_header %></div>
         <div id="header" class="container"><%- logo %></div>
         <div id="channel_info">
-            <span id="channel_name" class="channel_num"><%- my.rows[0][3] %></span><span class="channel_num">Subscriber <%- my.rows[0][8] %></span>
-            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%- my.rows[0][9] %></span>
-            <span class="channel_num">Reply <%- my.rows[0][10] %></span><br><br>
+            <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num">Subscriber <%= my.rows[0][8] %></span>
+            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][9] %></span>
+            <span class="channel_num">Reply <%= my.rows[0][10] %></span><br><br>
             <ul class="nav nav-pills nav-fill container pad-0">
                 <li class="nav-item">
                     <a class="nav-link btn-light active" href="/my">Subscriber List</a>
@@ -44,26 +44,44 @@
                         <th scope="col">MODIFY DATE</th>
                     </tr>
                     <% } %>
+                    <% if(list.metaData[0].name == 'CMNTID'){ %>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">TITLE</th>
+                        <th scope="col">COMMENTS</th>
+                        <th scope="col">WRITE DATE</th>
+                    </tr>
+                    <% } %>
                 </thead>
                 <tbody>
                     <% if(list.metaData[0].name == 'SID'){ %>
                         <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr>
-                        <th scope="row"><%- list.rows[i][0] %></th>
-                        <td><%- list.rows[i][1] %></td>
+                        <th scope="row"><%= list.rows[i][0] %></th>
+                        <td><%= list.rows[i][1] %></td>
                     </tr>
                         <% } %>
                     <% } %>
                     <% if(list.metaData[0].name == 'PID'){ %>
                         <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr>
-                        <th scope="row"><%- list.rows[i][0] %></th>
-                        <td><%- list.rows[i][6] %><%- list.rows[i][7] %></td>
-                        <td><%- list.rows[i][4] %></td>
-                        <td><%- list.rows[i][5] %></td>
-                        <td><%- list.rows[i][2] %></td>
-                        <td><%- list.rows[i][1] %></td>
-                        <td><%- list.rows[i][3] %></td>
+                        <th scope="row"><%= list.rows[i][0] %></th>
+                        <td><%= list.rows[i][6] %><%= list.rows[i][7] %></td>
+                        <td><%= list.rows[i][4] %></td>
+                        <td><%= list.rows[i][5] %></td>
+                        <td><%= list.rows[i][2] %></td>
+                        <td><%= list.rows[i][1] %></td>
+                        <td><%= list.rows[i][3] %></td>
+                    </tr>
+                        <% } %>
+                    <% } %>
+                    <% if(list.metaData[0].name == 'CMNTID'){ %>
+                        <% for(var i = 0; i < list.rows.length; i++){ %>
+                    <tr>
+                        <th scope="row"><%= list.rows[i][0] %></th>
+                        <td><%= list.rows[i][3] %></td>
+                        <td><%= list.rows[i][1] %></td>
+                        <td><%= list.rows[i][2] %></td>
                     </tr>
                         <% } %>
                     <% } %>
@@ -72,7 +90,7 @@
         </div>
         <div id="empty"></div>
         <div id="account_info">
-            <span id="account_address" class="account_num">Account Address</span><span class="account_num"><%- my.rows[4] %></span>
+            <span id="account_address" class="account_num">Account Address</span><span class="account_num"><%= my.rows[0][4] %></span>
             <span class="account_num">Coin 3,000,000</span>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#buy_view">Buy</button>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
@@ -152,18 +170,18 @@
         </div>
         <div id="empty"></div>
         <div id="user_modify">
-            <div class="pw-find">
-                <form action="main.html" method="post">
+            <div class="signup-block">
+                <form action="/user/modify" method="post" onsubmit="return checkval();">
                     <h1>회원정보 수정</h1>
-                    <input type="text" value="<%- my.rows[0][0] %>" placeholder="아이디" id="id" name="id1" disabled>
+                    <input type="text" value="<%= my.rows[0][0] %>" placeholder="아이디" id="id" disabled>
                     <br>
-                    <input type="password" value="<%- my.rows[0][1] %>" placeholder="비밀번호" id="pw" name="pw1" oninput="pw1(this);">
-                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck1" name="pwcheck" oninput="pwcheck1(this);">
+                    <input type="password" value="<%= my.rows[0][1] %>" placeholder="비밀번호" id="pw" name="pw1" oninput="pw2();">
+                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck1" name="pwcheck" oninput="pwcheck2();">
                     <div id="pwcheckmsg" style="color:white;">1</div>
-                    <input type="text" value="<%- my.rows[0][2] %>" placeholder="이름" id="name"  name="name1">
-                    <input type="text" value="<%- my.rows[0][3] %>" placeholder="닉네임" id="nickname"  name="nickname1">
-                    <input type="text" value="<%- my.rows[0][5] %>" placeholder="이메일" id="email" name="email1">
-                    <input type="tel" value="<%- my.rows[0][6] %>" placeholder="폰번호" id="cellphone" name="cellphone1">
+                    <input type="text" value="<%= my.rows[0][2] %>" placeholder="이름" id="name"  name="name1">
+                    <input type="text" value="<%= my.rows[0][3] %>" placeholder="닉네임" id="nickname"  name="nickname1">
+                    <input type="text" value="<%= my.rows[0][5] %>" placeholder="이메일" id="email" name="email1">
+                    <input type="tel" value="<%= my.rows[0][6] %>" placeholder="폰번호" id="cellphone" name="cellphone1">
                     <input type="submit" value="회원정보 수정      " class="button">
                 </form>
             </div>

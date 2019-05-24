@@ -30,7 +30,7 @@ function resultQuery(sql, callback){
 }
 
 function booleanQuery(sql, callback){
-    conn.execute(sql,(err, result)=>{
+    conn.execute(sql, (err, result)=>{
         if(err != null){
             console.log(err);
             callback(false);
