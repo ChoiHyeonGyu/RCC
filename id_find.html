@@ -1,20 +1,54 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" type='text/css' href="css/id_find.css">
     </head>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <body>
+        <div id="header2"><%- main_header %></div>
+       <div id="header" class="container"><%- logo %></div>
         <div class="id-find container">
             <div class="id-find-block">
-                <form action="login.html" method="post">
+                <form action="/id_find" method="post" onsubmit="return checkval();">
                     <h1>아이디 찾기</h1>
-                    <input type="text" value="" placeholder="이름" id="id" />
+                    <input type="text" value="" placeholder="이름" id="name" name="name1" />
+                    <input type="text" value="" placeholder="abc@abc.abc" id="email" name="email1" />
+                    <input type="text" value="" placeholder="01011112222" id="cellphone" name="cellphone1" />
                     <input type="submit" value="확인" class="button">
                 </form>
             </div>
         </div>
     </body>
+    <script>
+        function checkval(){
+            var name=document.forms[0].name1;
+            var email=document.forms[0].email1;
+            var cellphone=document.forms[0].cellphone1;
+            var result1="";
+            if(name.value=="" || name.value==null){
+                alert("이름을 입력해주세요.");
+                return false;
+            }
+            if(email.value=="" || email.value==null){
+                alert("이메일을 입력해주세요.");
+                return false;
+            }
+            if(email.value.indexOf('@')==-1){
+                alert('이메일 형식이 틀렸습니다.');
+                return false;
+            }
+            if(cellphone.value=="" || cellphone.value==null){
+                alert("번호를 입력해주세요.");
+                return false;
+            }
+            
+            if(cellphone.value!="" && cellphone.value!=null){
+                for(var i=0;i<cellphone.value.length;i++){
+                    if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){
+                        result1+=cellphone.value.charAt(i);
+                    }
+                }
+                cellphone.value=result1;
+            }
+    }
+    </script>
 </html>

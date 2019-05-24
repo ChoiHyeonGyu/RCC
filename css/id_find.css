@@ -15,7 +15,7 @@
     padding: 20px;
     background: #fff;
     border-radius: 5px;
-    border-top: 5px solid #ff656c;
+    border-top: 5px solid #bbbbbb;
     margin: 0 auto;
 }
 
@@ -45,12 +45,12 @@ input.button{
     padding: 0px;
 }
 
-.id-find-block input#id {
+.id-find-block input#name {
     background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
     background-size: 16px 80px;
 }
 
-.id-find-block input#id:focus {
+.id-find-block input#name:focus {
     background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px bottom no-repeat;
     background-size: 16px 80px;
 }
@@ -66,17 +66,34 @@ input.button{
 }
 
 .id-find-block input:active, .id-find-block input:focus {
-    border: 1px solid #ff656c;
+    border: 1px solid #ca7bff;
+}
+.id-find-block input#email {
+    background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.id-find-block input#email:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
+    background-size: 16px 80px;
 }
 
+
+.id-find-block input#cellphone {
+    background: #fff url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.id-find-block input#cellphone:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
 
 .id-find-block .button {
     width: 100%;
     height: 40px;
-    background: #ff656c;
+    background: #bbbbbb;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 1px solid #e15960;
+    border: 1px solid #bbbbbb;
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
@@ -88,7 +105,7 @@ input.button{
 }
 
 .id-find-block .button:hover {
-    background: #ff7b81;
+    background: #ca7bff;
 }
 
 a {
