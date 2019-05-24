@@ -53,16 +53,13 @@ function checkval(){
         return false;
     }
 
-    if(cellphone.value.indexOf('-')!=-1){
-        // -1이 아니다!! => -이 존재 한다.!!
-        cellphone.value=cellphone.value.replace("-","");
-        if(cellphone.value.indexOf('-')!=-1){
-            cellphone.value=cellphone.value.replace("-","");
-            if(cellphone.value.indexOf('-')!=-1){
-                cellphone.value=cellphone.value.replace("-","");   
-            }   
+    if(cellphone.value!="" && cellphone.value!=null){
+        for(var i=0;i<cellphone.value.length;i++){
+            if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){
+                result1+=cellphone.value.charAt(i);
+            }
         }
-        
+        cellphone.value=result1;
     }
 }
 

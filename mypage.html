@@ -13,16 +13,16 @@
             <span class="channel_num">Reply <%= my.rows[0][10] %></span><br><br>
             <ul class="nav nav-pills nav-fill container pad-0">
                 <li class="nav-item">
-                    <a class="nav-link btn-light active" href="/my">Subscriber List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[0].name == 'SID'){ %>active<% } %>" href="/my">Subscriber List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light" href="/my?s=1">Donate List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[0].name == 'SID'){ %>active<% } %>" href="/my?s=1">Donate List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light" href="/my?s=2">Post List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[0].name == 'PID'){ %>active<% } %>" href="/my?s=2">Post List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light" href="/my?s=3">Reply List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[0].name == 'CMNTID'){ %>active<% } %>" href="/my?s=3">Reply List</a>
                 </li>
             </ul>
             <table class="table table-striped container">
@@ -53,7 +53,7 @@
                     </tr>
                     <% } %>
                 </thead>
-                <tbody>
+                <tbody id="boardlist">
                     <% if(list.metaData[0].name == 'SID'){ %>
                         <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr>
@@ -87,6 +87,19 @@
                     <% } %>
                 </tbody>
             </table>
+            <% if(list.metaData[0].name == 'PID'){ %>
+            <div class="btn-group mr-2" role="group" id="pagelist">
+                <% for(var i = 0; i < page.length; i++){ %>
+                    <% if(i == 0){ %>
+                <button type="button" class="btn btn-light active pb" nextpid="<%= page[i] %>">1</button>
+                    <% } else if(i == 10) { %>
+                <button type="button" class="btn btn-light nb" nextpid="<%= page[i] %>">&gt;</button>
+                    <% } else { %>
+                <button type="button" class="btn btn-light pb" nextpid="<%= page[i] %>"><%= i + 1 %></button>
+                    <% } %>
+                <% } %>
+            </div>
+            <% } %>
         </div>
         <div id="empty"></div>
         <div id="account_info">

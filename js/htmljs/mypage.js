@@ -1,3 +1,88 @@
+$(function(){
+    var lastnum = 0;
+
+    $(document).on('click', '.pb', function(){
+        $.ajax({
+            url: '/pagelist',
+            data: { pid: $(this).attr('nextpid') },
+            success: function(result){
+                rowsProcessing(result.rows);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+        $('.pb').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(document).on('click', '.nb', function(){
+        $.ajax({
+            url: '/pagelist',
+            data: { pid: $(this).attr('nextpid') },
+            success: function(result){
+                var page = result.page;
+                $('#pagelist button').remove();
+
+                rowsProcessing(result.rows);
+                lastnum += 10;
+                for(var i = 0; i < page.length; i++){
+                    if(i == 0){
+                        $('#pagelist').append("<button type='button' class='btn btn-light preb' nextpid='"+(page[i] + 60)+"'>&lt;</button>");
+                        $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                    } else if(i == 10) {
+                        $('#pagelist').append("<button type='button' class='btn btn-light nb' nextpid='"+page[i]+"'>&gt;</button>");
+                    } else {
+                        $('#pagelist').append("<button type='button' class='btn btn-light pb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                    }
+                }
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    $(document).on('click', '.preb', function(){
+        $.ajax({
+            url: '/pagelist',
+            data: { pid: $(this).attr('nextpid') },
+            success: function(result){
+                var page = result.page;
+                $('#pagelist button').remove();
+
+                rowsProcessing(result.rows);
+                lastnum -= 10;
+                for(var i = 0; i < page.length; i++){
+                    if(i == 0){
+                        $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                    } else if(i == 10) {
+                        $('#pagelist').append("<button type='button' class='btn btn-light nb' nextpid='"+page[i]+"'>&gt;</button>");
+                    } else {
+                        $('#pagelist').append("<button type='button' class='btn btn-light pb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                    }
+                }
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    function rowsProcessing(rows){
+        $('#boardlist tr').remove();
+        for(var i = 0; i < rows.length; i++){
+            if(rows[i][6] != null){
+                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][6]+"</td> <td>"+rows[i][4]+
+                "</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
+            } else {
+                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][7]+"</td> <td>"+rows[i][4]+"</td> <td>"+
+                rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
+            }
+        }
+    }
+});
+
 var a = false;
 
 function checkval(){

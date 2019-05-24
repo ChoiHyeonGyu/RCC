@@ -5,7 +5,7 @@
     padding: 20px;
     background: #fff;
     border-radius: 5px;
-    border-top: 5px solid #ff656c;
+    border-top: 5px solid #bbbbbb;
     margin: 0 auto;
 }
 
@@ -31,42 +31,75 @@
     outline: none;
 }
 
+
 input.button{
     padding: 0px;
 }
 
-.pw-find-block input#id {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
+.pw-find input#id {
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
-.pw-find-block input#id:focus {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px bottom no-repeat;
+.pw-find input#id:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
-.pw-find-block input#pw {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
+.pw-find input#name {
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.pw-find input#name:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
 
-.pw-find-block input#pw:focus {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px bottom no-repeat;
+.pw-find input#email {
+    background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
+.pw-find input#email:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+
+
+.pw-find input#cellphone {
+    background: #fff url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+.pw-find input#cellphone:focus {
+    background: #fff url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
+    background-size: 16px 80px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .pw-find-block input:active, .pw-find-block input:focus {
-    border: 1px solid #ff656c;
+    border: 1px solid #ca7bff;
 }
 
 
 .pw-find-block .button {
     width: 100%;
     height: 40px;
-    background: #ff656c;
+    background: #bbbbbb;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 1px solid #e15960;
+    border: 1px solid #bbbbbb;
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
@@ -78,7 +111,7 @@ input.button{
 }
 
 .pw-find-block .button:hover {
-    background: #ff7b81;
+    background: #ca7bff;
 }
 
 a {
