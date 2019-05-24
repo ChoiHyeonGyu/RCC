@@ -1,9 +1,78 @@
 $(function(){
     var lastnum = 0;
 
+    $(document).on('click', '.sb', function(){
+        $.ajax({
+            url: '/subscriber/pagelist',
+            data: { sid: $(this).attr('nextsid') },
+            success: function(result){
+                rowsSubProcessing(result.rows);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+        $('.sb').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(document).on('click', '.nsb', function(){
+        $.ajax({
+            url: '/subscriber/pagelist',
+            data: { sid: $(this).attr('nextsid') },
+            success: function(result){
+                rowsSubProcessing(result.rows);
+                lastnum += 10;
+                pageSubProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+    
+    $(document).on('click', '.presb', function(){
+        $.ajax({
+            url: '/subscriber/pagelist',
+            data: { sid: $(this).attr('nextsid') },
+            success: function(result){
+                rowsSubProcessing(result.rows);
+                lastnum -= 10;
+                pageSubProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    function rowsSubProcessing(rows){
+        $('#boardlist tr').remove();
+        for(var i = 0; i < rows.length; i++){
+            $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][1]+"</td> </tr>");
+        }
+    }
+
+    function pageSubProcessing(result){
+        var page = result.page;
+        $('#pagelist button').remove();
+        for(var i = 0; i < page.length; i++){
+            if(i == 0){
+                if(result.prevpid){
+                    $('#pagelist').append("<button type='button' class='btn btn-light presb' nextsid='"+(page[i] + 100)+"'>&lt;</button>");
+                }
+                $('#pagelist').append("<button type='button' class='btn btn-light active sb' nextsid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+            } else if(i == 10) {
+                $('#pagelist').append("<button type='button' class='btn btn-light nsb' nextsid='"+page[i]+"'>&gt;</button>");
+            } else {
+                $('#pagelist').append("<button type='button' class='btn btn-light sb' nextsid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+            }
+        }
+    }
+
     $(document).on('click', '.pb', function(){
         $.ajax({
-            url: '/pagelist',
+            url: '/post/pagelist',
             data: { pid: $(this).attr('nextpid') },
             success: function(result){
                 rowsProcessing(result.rows);
@@ -18,24 +87,12 @@ $(function(){
 
     $(document).on('click', '.nb', function(){
         $.ajax({
-            url: '/pagelist',
+            url: '/post/pagelist',
             data: { pid: $(this).attr('nextpid') },
             success: function(result){
-                var page = result.page;
-                $('#pagelist button').remove();
-
                 rowsProcessing(result.rows);
                 lastnum += 10;
-                for(var i = 0; i < page.length; i++){
-                    if(i == 0){
-                        $('#pagelist').append("<button type='button' class='btn btn-light preb' nextpid='"+(page[i] + 60)+"'>&lt;</button>");
-                        $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
-                    } else if(i == 10) {
-                        $('#pagelist').append("<button type='button' class='btn btn-light nb' nextpid='"+page[i]+"'>&gt;</button>");
-                    } else {
-                        $('#pagelist').append("<button type='button' class='btn btn-light pb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
-                    }
-                }
+                pageProcessing(result);
             },
             error: function(error){
                 console.log(error);
@@ -45,23 +102,12 @@ $(function(){
 
     $(document).on('click', '.preb', function(){
         $.ajax({
-            url: '/pagelist',
+            url: '/post/pagelist',
             data: { pid: $(this).attr('nextpid') },
             success: function(result){
-                var page = result.page;
-                $('#pagelist button').remove();
-
                 rowsProcessing(result.rows);
                 lastnum -= 10;
-                for(var i = 0; i < page.length; i++){
-                    if(i == 0){
-                        $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
-                    } else if(i == 10) {
-                        $('#pagelist').append("<button type='button' class='btn btn-light nb' nextpid='"+page[i]+"'>&gt;</button>");
-                    } else {
-                        $('#pagelist').append("<button type='button' class='btn btn-light pb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
-                    }
-                }
+                pageProcessing(result);
             },
             error: function(error){
                 console.log(error);
@@ -78,6 +124,23 @@ $(function(){
             } else {
                 $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][7]+"</td> <td>"+rows[i][4]+"</td> <td>"+
                 rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
+            }
+        }
+    }
+
+    function pageProcessing(result){
+        var page = result.page;
+        $('#pagelist button').remove();
+        for(var i = 0; i < page.length; i++){
+            if(i == 0){
+                if(result.prevpid){
+                    $('#pagelist').append("<button type='button' class='btn btn-light preb' nextpid='"+(page[i] + 60)+"'>&lt;</button>");
+                }
+                $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+            } else if(i == 10) {
+                $('#pagelist').append("<button type='button' class='btn btn-light nb' nextpid='"+page[i]+"'>&gt;</button>");
+            } else {
+                $('#pagelist').append("<button type='button' class='btn btn-light pb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
             }
         }
     }

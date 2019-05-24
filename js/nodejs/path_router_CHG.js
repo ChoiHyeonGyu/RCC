@@ -11,11 +11,12 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res) {
+    //delete req.session.user_id;
     dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
     "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
     "where id = '"+req.session.user_id+"'", function(result) {
         if(req.query.s == '1'){
-            dbconn.resultQuery("select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"'", function(result2){
+            dbconn.resultQuery("select * from (select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by sid desc) where rownum <= 10", function(result2){
                 listing(result2);
             });
         } else if(req.query.s == '2') {
@@ -23,14 +24,19 @@ router.get("/my", function(req, res) {
             "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
             "post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
             "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid order by p.pid desc) p where rownum <= 60", function(result2){
-                result2 = dataSorting(result2);
-                dbconn.resultQuery("select * from (select pid from post order by pid desc) where rownum <= 61",function(result3){
-                    var pagenumlist = [];
-                    for(var i = 0; i < result3.rows.length; i+=6){
-                        pagenumlist.push(result3.rows[i][0]);
-                    }
-                    listing(result2, pagenumlist);
-                });
+                if(result2.rows[0][0] != null){
+                    result2 = dataSorting(result2);
+                    dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"' order by p.pid desc) where rownum <= 61", function(result3){
+                        var pagenumlist = [];
+                        for(var i = 0; i < result3.rows.length; i+=6){
+                            pagenumlist.push(result3.rows[i][0]);
+                        }
+                        listing(result2, pagenumlist);
+                    });
+                } else {
+                    result2.rows = [];
+                    listing(result2, []);
+                }
             });
         } else if(req.query.s == '3') {
             dbconn.resultQuery("select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where userid = '"+req.session.user_id+"'", function(result2){
@@ -40,8 +46,14 @@ router.get("/my", function(req, res) {
                 listing(result2);
             });
         } else {
-            dbconn.resultQuery("select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"'", function(result2){
-                listing(result2);
+            dbconn.resultQuery("select * from (select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by sid desc) where rownum <= 10", function(result2){
+                dbconn.resultQuery("select * from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by sid desc) where rownum <= 101", function(result3){
+                    var pagenumlist = [];
+                    for(var i = 0; i < result3.rows.length; i+=10){
+                        pagenumlist.push(result3.rows[i][0]);
+                    }
+                    listing(result2, pagenumlist);
+                });
             });
         }
         
@@ -59,18 +71,43 @@ router.get("/my", function(req, res) {
     });
 });
 
-router.get("/pagelist", function(req, res){
+router.get("/subscriber/pagelist", function(req, res){
+    console.log(req.query.sid);
+    dbconn.resultQuery("select * from (select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid <= "+req.query.sid+" order by s.sid desc) where rownum <= 10", function(result2){
+        dbconn.resultQuery("select * from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid <= "+req.query.sid+" order by s.sid desc) where rownum <= 101", function(result3){
+            var pagenumlist = [];
+            for(var i = 0; i < result3.rows.length; i+=10){
+                pagenumlist.push(result3.rows[i][0]);
+            }
+            dbconn.resultQuery("select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid = "+(parseInt(req.query.sid) + 100)+"", function(result4){
+                if(result4.rows[0] == null){
+                    res.send({rows: result2.rows, page: pagenumlist});
+                } else {
+                    res.send({rows: result2.rows, page: pagenumlist, prevpid: result4.rows[0][0]});
+                }
+            });
+        });
+    });
+});
+
+router.get("/post/pagelist", function(req, res){
     dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
     "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
     "post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
     "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid <= "+req.query.pid+" order by p.pid desc) p where rownum <= 60", function(result2){
         result2 = dataSorting(result2);
-        dbconn.resultQuery("select * from (select pid from post where pid <= "+req.query.pid+" order by pid desc) where rownum <= 61",function(result3){
+        dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"' and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", function(result3){
             var pagenumlist = [];
             for(var i = 0; i < result3.rows.length; i+=6){
                 pagenumlist.push(result3.rows[i][0]);
             }
-            res.send({rows: result2.rows, page: pagenumlist});
+            dbconn.resultQuery("select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"' and p.pid = "+(parseInt(req.query.pid) + 60)+"", function(result4){
+                if(result4.rows[0] == null){
+                    res.send({rows: result2.rows, page: pagenumlist});
+                } else {
+                    res.send({rows: result2.rows, page: pagenumlist, prevpid: result4.rows[0][0]});
+                }
+            });
         });
     });
 });

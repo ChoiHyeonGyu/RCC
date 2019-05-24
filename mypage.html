@@ -87,8 +87,19 @@
                     <% } %>
                 </tbody>
             </table>
-            <% if(list.metaData[0].name == 'PID'){ %>
             <div class="btn-group mr-2" role="group" id="pagelist">
+            <% if(list.metaData[0].name == 'SID'){ %>
+                <% for(var i = 0; i < page.length; i++){ %>
+                    <% if(i == 0){ %>
+                <button type="button" class="btn btn-light active sb" nextsid="<%= page[i] %>">1</button>
+                    <% } else if(i == 10) { %>
+                <button type="button" class="btn btn-light nsb" nextsid="<%= page[i] %>">&gt;</button>
+                    <% } else { %>
+                <button type="button" class="btn btn-light sb" nextsid="<%= page[i] %>"><%= i + 1 %></button>
+                    <% } %>
+                <% } %>
+            <% } %>
+            <% if(list.metaData[0].name == 'PID'){ %>
                 <% for(var i = 0; i < page.length; i++){ %>
                     <% if(i == 0){ %>
                 <button type="button" class="btn btn-light active pb" nextpid="<%= page[i] %>">1</button>
@@ -98,8 +109,8 @@
                 <button type="button" class="btn btn-light pb" nextpid="<%= page[i] %>"><%= i + 1 %></button>
                     <% } %>
                 <% } %>
-            </div>
             <% } %>
+            </div>
         </div>
         <div id="empty"></div>
         <div id="account_info">
