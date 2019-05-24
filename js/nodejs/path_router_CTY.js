@@ -209,10 +209,8 @@ router.get("/breifing_view", function (req, res) {
         getSummaryByPostNo(postNo,function(summaryResult){
             getHeadlineByPostNo(postNo,function(headlineResult){
                 getHashTagByPostNo(postNo,function(hashtagResult){
-                    console.log(postResult);
-                    console.log(summaryResult);
-                    console.log(headlineResult);
-                    console.log(hashtagResult);
+                    //req.session
+                    var userId='admin';
                     fs.readFile("breifing/breifing_view.html", "utf-8", function (error, data) {
                         res.send(ejs.render(include.import_default() + data, {
                             logo: include.logo(),
@@ -224,7 +222,8 @@ router.get("/breifing_view", function (req, res) {
                             postResult:postResult,
                             summaryResult:summaryResult,
                             headlineResult:headlineResult,
-                            hashtagResult:hashtagResult
+                            hashtagResult:hashtagResult,
+                            user:userId
                         }));
                     });
                 });

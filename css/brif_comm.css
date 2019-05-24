@@ -48,10 +48,9 @@
     margin:0px 10px;
     width:15%;
     border-right:1px solid #DDDDDD;
-    float:left;
 }
 .show a{
-    display:inline-block;
+    display:block;
 }
 .headerURL, .summaryDiv, .hashDiv{
     display:inline-block;
