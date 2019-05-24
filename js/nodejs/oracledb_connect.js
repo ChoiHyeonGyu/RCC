@@ -4,7 +4,7 @@ var conn = null;
 
 oracledb.autoCommit = true;
 oracledb.getConnection({
-    user: "c##rcc2",
+    user: "rcc",
     password: "1234",
     connectString: "localhost:1521/xe"
 },(err, conn)=>{
