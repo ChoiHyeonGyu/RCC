@@ -58,8 +58,8 @@ $(function(){
         $('#pagelist button').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
-                if(result.prevpid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light presb' nextsid='"+(page[i] + 100)+"'>&lt;</button>");
+                if(result.prevsid){
+                    $('#pagelist').append("<button type='button' class='btn btn-light presb' nextsid='"+result.prevsid+"'>&lt;</button>");
                 }
                 $('#pagelist').append("<button type='button' class='btn btn-light active sb' nextsid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
             } else if(i == 10) {
@@ -119,10 +119,10 @@ $(function(){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
             if(rows[i][6] != null){
-                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][6]+"</td> <td>"+rows[i][4]+
+                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][6]+"</td> <td>"+rows[i][4]+
                 "</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
             } else {
-                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][7]+"</td> <td>"+rows[i][4]+"</td> <td>"+
+                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td class='headline'>"+rows[i][7]+"</td> <td>"+rows[i][4]+"</td> <td>"+
                 rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
             }
         }
@@ -134,13 +134,98 @@ $(function(){
         for(var i = 0; i < page.length; i++){
             if(i == 0){
                 if(result.prevpid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light preb' nextpid='"+(page[i] + 60)+"'>&lt;</button>");
+                    $('#pagelist').append("<button type='button' class='btn btn-light preb' nextpid='"+result.prevpid+"'>&lt;</button>");
                 }
                 $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
             } else if(i == 10) {
                 $('#pagelist').append("<button type='button' class='btn btn-light nb' nextpid='"+page[i]+"'>&gt;</button>");
             } else {
                 $('#pagelist').append("<button type='button' class='btn btn-light pb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+            }
+        }
+    }
+
+    $(document).on('click', '.headline', function(){
+        location.href = "/breifing_view?postNo=" + $(this).prev().text();
+    });
+
+    $(document).on('click', '.title', function(){
+        location.href = "/commentary_view?postNo=" + $(this).prev().text();
+    });
+
+    $(document).on('mouseover', 'tr', function(){
+        $(this).addClass('table-info');
+    });
+
+    $(document).on('mouseout', 'tr', function(){
+        $(this).removeClass('table-info');
+    });
+
+    $(document).on('click', '.cb', function(){
+        $.ajax({
+            url: '/reply/pagelist',
+            data: { cmntid: $(this).attr('nextcmntid') },
+            success: function(result){
+                rowsCmntProcessing(result.rows);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+        $('.cb').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(document).on('click', '.ncb', function(){
+        $.ajax({
+            url: '/reply/pagelist',
+            data: { cmntid: $(this).attr('nextcmntid') },
+            success: function(result){
+                rowsCmntProcessing(result.rows);
+                lastnum += 10;
+                pageCmntProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+    
+    $(document).on('click', '.precb', function(){
+        $.ajax({
+            url: '/reply/pagelist',
+            data: { cmntid: $(this).attr('nextcmntid') },
+            success: function(result){
+                rowsCmntProcessing(result.rows);
+                lastnum -= 10;
+                pageCmntProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    function rowsCmntProcessing(rows){
+        $('#boardlist tr').remove();
+        for(var i = 0; i < rows.length; i++){
+            $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][3]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][2]+"</td> </tr>");
+        }
+    }
+
+    function pageCmntProcessing(result){
+        var page = result.page;
+        $('#pagelist button').remove();
+        for(var i = 0; i < page.length; i++){
+            if(i == 0){
+                if(result.prevcmntid){
+                    $('#pagelist').append("<button type='button' class='btn btn-light precb' nextcmntid='"+result.prevcmntid+"'>&lt;</button>");
+                }
+                $('#pagelist').append("<button type='button' class='btn btn-light active cb' nextcmntid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+            } else if(i == 10) {
+                $('#pagelist').append("<button type='button' class='btn btn-light ncb' nextcmntid='"+page[i]+"'>&gt;</button>");
+            } else {
+                $('#pagelist').append("<button type='button' class='btn btn-light cb' nextcmntid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
             }
         }
     }
@@ -190,14 +275,13 @@ function checkval(){
         alert("전화번호를 입력해주세요.");
         return false;
     }
-    if(cellphone.value.indexOf('-') != -1){
-        cellphone.value = cellphone.value.replace("-","");
-        if(cellphone.value.indexOf('-') != -1){
-            cellphone.value = cellphone.value.replace("-","");
-            if(cellphone.value.indexOf('-') != -1){
-                cellphone.value = cellphone.value.replace("-","");   
-            }   
+    if(cellphone.value != "" && cellphone.value != null){
+        for(var i = 0; i < cellphone.value.length; i++){
+            if(48 <= cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i) <= 57){
+                result1 += cellphone.value.charAt(i);
+            }
         }
+        cellphone.value = result1;
     }
 }
 

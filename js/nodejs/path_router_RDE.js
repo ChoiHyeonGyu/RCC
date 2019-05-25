@@ -9,7 +9,7 @@ var dbconn = require('./oracledb_connect.js');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.get("/login", function(req, res) {
+router.get("/login", function(req, res) {     
     fs.readFile("login.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),

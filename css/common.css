@@ -6,9 +6,11 @@
 .hover-pointer:hover {
     cursor: pointer;
 }
+
 .hover-underline:hover{
     text-decoration: underline;
 }
+
 .hover-bold:hover{
     font-weight: bold;
 }
