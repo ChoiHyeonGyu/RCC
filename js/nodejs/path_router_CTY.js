@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var ejs = require('ejs');
+var moment = require('moment');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
@@ -209,7 +210,11 @@ router.get("/breifing_view", function (req, res) {
             getHeadlineByPostNo(postNo,function(headlineResult){
                 getHashTagByPostNo(postNo,function(hashtagResult){
                     //req.session
-                    var userId='admin';
+                    for(var i=0; i<postResult.rows.length;i++){
+                        postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YYYY-MM-DD HH:mm:ss");
+                        postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YYYY-MM-DD HH:mm:ss");
+                    }
+                    var userId=req.session.user_id;
                     fs.readFile("breifing/breifing_view.html", "utf-8", function (error, data) {
                         res.send(ejs.render(include.import_default() + data, {
                             logo: include.logo(),
@@ -232,6 +237,11 @@ router.get("/breifing_view", function (req, res) {
 });
 
 router.get("/breifing_write", function (req, res) {
+    if(req.session.user_id==null){
+        res.write("<script>alert('Login First!');</script>");
+        res.end('<script>history.back()</script>');
+        return;
+    }
     fs.readFile("breifing/breifing_write.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
@@ -268,7 +278,7 @@ function createHashTag(pid, hashTag){
     });
 }
 router.post("/breifing_write", function (req, res) {
-    createPost("admin",req.body.category,req.body.detail,1,function(postId){
+    createPost(req.session.user_id,req.body.category,req.body.detail,1,function(postId){
         if(postId==false){
             res.write("<script>alert('Write Failed');</script>");
             res.end('<script>history.back()</script>')

@@ -11,6 +11,10 @@
             $("#selectBox").change(function(){
                 //ajax실행하여 세부 리스트를 가져옴
                 var resultSet;
+                if(this.value==0) {
+                    $("#detailBox").find('option').remove().end().append("<option value='0'>all</option>");
+                    return;
+                }
                 $.ajax({
                     url: '/ajaxDetailResult',                //주소
                     dataType: 'json',                  //데이터 형식
