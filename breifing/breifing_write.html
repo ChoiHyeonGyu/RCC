@@ -97,6 +97,7 @@
         <div id="header" class="container"><%- logo %></div>
         <div class="container briefingWrite">
             <form action="/breifing_write" name="writeForm" method="POST" class='formBox'>
+                <input type='hidden' value='<%= postResult.rows[0][0] %>' name='modify'>
                 <input type='hidden' value='<%= headlineResult.rows.length %>' name="headCount" id='count'>
                 <div class='dropboxDiv'>
                     <select class='selectBox' name='category' id="selectBox">

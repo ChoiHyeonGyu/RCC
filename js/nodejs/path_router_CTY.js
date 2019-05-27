@@ -251,11 +251,11 @@ router.get("/breifing_write", function (req, res) {
         res.end('<script>history.back()</script>');
         return;
     }
-    if(req.param('postNo')!=null){
-        getHeadlineByPostNo(req.param('postNo'),function(headlineResult){
-            getSummaryByPostNo(req.param('postNo'),function(summaryResult){
-                getHashTagByPostNo(req.param('postNo'),function(hashResult){
-                    getPost(req.param('postNo'),function(postResult){
+    if (req.param('postNo') != null) {
+        getHeadlineByPostNo(req.param('postNo'), function (headlineResult) {
+            getSummaryByPostNo(req.param('postNo'), function (summaryResult) {
+                getHashTagByPostNo(req.param('postNo'), function (hashResult) {
+                    getPost(req.param('postNo'), function (postResult) {
                         fs.readFile("breifing/breifing_write.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
                                 logo: include.logo(),
@@ -266,19 +266,19 @@ router.get("/breifing_write", function (req, res) {
                                 contentsSideNav: BFcateNavPage,
                                 categoryList: categoryList,
                                 categoryDetailList: categoryDetailList,
-                                headlineResult:headlineResult,
-                                summaryResult:summaryResult,
-                                hashResult,hashResult,
-                                postResult:postResult
+                                headlineResult: headlineResult,
+                                summaryResult: summaryResult,
+                                hashResult, hashResult,
+                                postResult: postResult
                             }));
-                        });                    
+                        });
                     });
                 });
             });
         });
         return;
     }
-    var postResult=null;
+    var postResult = null;
     fs.readFile("breifing/breifing_write.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
@@ -289,7 +289,7 @@ router.get("/breifing_write", function (req, res) {
             contentsSideNav: BFcateNavPage,
             categoryList: categoryList,
             categoryDetailList: categoryDetailList,
-            postResult:postResult
+            postResult: postResult
         }));
     });
 });
@@ -315,7 +315,67 @@ function createHashTag(pid, hashTag) {
     dbconn.booleanQuery("insert into hashtag values (hashtag_sequence.nextval," + pid + ",'" + hashTag + "')", function (result) {
     });
 }
+
+function modifyPost(postId, callback) {
+    //글 정보가서 수정함.
+    //기존 헤드라인 삭제 후 재생성
+    //해시태그도 삭제후 재생성
+    //summary의 경우 수정
+    dbconn.booleanQuery("update post set mdate=sysdate where pid=" + postId, function (result) {
+        callback(result);
+    });
+}
+function deleteHeadLine(postId, callback) {
+    dbconn.booleanQuery("delete from briefingdetail where pid=" + postId, function (result) {
+        callback(result);
+    });
+}
+function deleteHashTag(postId, callback){
+    dbconn.booleanQuery("delete from hashtag where pid="+postId,function(result){
+        callback(result);
+    });
+}
+
+function updateSummary(postId,summary,callback){
+    dbconn.booleanQuery("update briefingsummary set bsummary='"+summary+"' where pid="+postId,function(result){
+        callback(result);
+    });
+}
 router.post("/breifing_write", function (req, res) {
+    if (req.param('modify') != null) {
+        var postId = req.param('modify');
+        modifyPost(postId, function (postResult) {
+            if (postResult) {
+                deleteHeadLine(postId, function (dhlresult) {
+                    var head = "headline";
+                    var headUrl = 'url';
+                    for (var i = 1; i <= req.body.headCount; i++) {
+                        var headLine = req.body[(head + i).toString()];
+                        var url = req.body[(headUrl + i).toString()];
+                        if (headLine.length == 0 || url.length == 0) continue;
+                        createBreifingDetail(postId, headLine, url);
+                    }
+                    deleteHashTag(postId,function(dhtresult){
+                        var hashTag = req.body['hashTag'].split("#");
+                        for (var i = 1; i < hashTag.length; i++) {
+                            var hash = hashTag[i].trim();
+                            if (hash.length == 0) continue;
+                            createHashTag(postId, hash);
+                        }
+                        updateSummary(postId,req.body['summary'],function(result){
+                            res.write("<script>alert('Modified');</script>");
+                            res.end('<script>location.href="/"</script>')
+                        });
+                    });
+                });
+            }
+            else {
+                res.write("<script>alert('ERROR');</script>");
+                res.end('<script>history.back()</script>')
+            }
+        });
+        return;
+    }
     createPost(req.session.user_id, req.body.category, req.body.detail, 1, function (postId) {
         if (postId == false) {
             res.write("<script>alert('Write Failed');</script>");
@@ -518,13 +578,13 @@ router.post("/ajaxDetailResult", function (req, res) {
     res.send({ result: true, msg: detailResult });
 })
 
-router.get("/delete",function(req,res){
-    dbconn.booleanQuery("delete from post where pid="+req.param('postNo'),function(result){
-        if(result){
+router.get("/delete", function (req, res) {
+    dbconn.booleanQuery("delete from post where pid=" + req.param('postNo'), function (result) {
+        if (result) {
             res.write('<script>alert("Delete!");</script>')
             res.end('<script>location.href="/"</script>')
         }
-        else{
+        else {
             res.write('<script>alert("Failed!");</script>')
             res.end('<script>history.back()</script>')
         }

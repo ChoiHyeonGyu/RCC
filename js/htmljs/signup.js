@@ -18,10 +18,15 @@ function checkval(){
         alert("비밀번호를 입력해주세요.");
         return false;
     }
+    if (pw.length<8){
+        alert("비밀번호를 8자 이상 입력해주세요.");
+        return false;
+    }
     if(pwcheck.value=="" || pwcheck.value==null){
         alert("비밀번호를 확인해주세요.");
         return false;
     }
+    
 
     if((pw.value!="" && pw.value!=null)&&(pwcheck.value!="" && pwcheck.value!=null)){
         if(pw.value!=pwcheck.value){

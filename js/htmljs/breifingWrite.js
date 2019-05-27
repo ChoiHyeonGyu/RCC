@@ -1,5 +1,6 @@
 var count=1;
 function addPage(){
+    count = document.getElementById('count').value;
     if(count==10)return;
     count++;
     var newForm = "<div class='formDiv' id='formDiv"+count+"'>"+
@@ -10,9 +11,11 @@ function addPage(){
     $("#writeFormBox").append(newForm);
 }
 function removePage(){
+    count = document.getElementById('count').value;
     if(count==1)return;
     var id = "formDiv"+count;
     var target = document.getElementById(id);
     target.parentNode.removeChild(target);
     count--;
+    document.getElementById('count').value = count;
 }
