@@ -1,8 +1,55 @@
-#donate_terms {
-    width: 1000px;
-    height: 500px;
-    margin-top: 2%;
-    resize: none;
+@media screen and (min-width: 1000px) {
+    #donate_terms {
+        width: 1000px;
+        height: 500px;
+        margin-top: 2%;
+        resize: none;
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 999.9px) {
+    #donate_terms {
+        width: 800px;
+        height: 400px;
+        margin-top: 2%;
+        resize: none;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 799.9px) {
+    #donate_terms {
+        width: 600px;
+        height: 300px;
+        margin-top: 2%;
+        resize: none;
+    }
+}
+
+@media screen and (min-width: 400px) and (max-width: 599.9px) {
+    #donate_terms {
+        width: 400px;
+        height: 200px;
+        margin-top: 2%;
+        resize: none;
+    }
+}
+
+@media screen and (min-width: 200px) and (max-width: 399.9px) {
+    #donate_terms {
+        width: 200px;
+        height: 100px;
+        margin-top: 2%;
+        resize: none;
+    }
+}
+
+@media screen and (max-width: 199.9px) {
+    #donate_terms {
+        width: 100px;
+        height: 50px;
+        margin-top: 2%;
+        resize: none;
+    }
 }
 
 #donate_input div {
@@ -14,6 +61,32 @@
     margin-right: 5%;
 }
 
-#mycoin, #sending_money {
-    margin-right: 13.8%;
+@media screen and (min-width: 1200px) {
+    #mycoin, #sending_money {
+        margin-left: -240px;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199.9px) {
+    #mycoin, #sending_money {
+        margin-left: -230.5px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991.9px) {
+    #mycoin, #sending_money {
+        margin-left: -220.5px;
+    }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767.9px) {
+    #mycoin, #sending_money {
+        margin-left: -210.5px;
+    }
+}
+
+@media screen and (max-width: 575.9px) {
+    #mycoin, #sending_money {
+        margin-left: -212px;
+    }
 }

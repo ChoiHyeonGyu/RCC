@@ -54,7 +54,7 @@ router.post("/login", function(req, res){
     var id = req.body.id1;
     var pw = req.body.pw1;
     
-    dbconn.resultQuery("select ID,PW from users where id='"+id+"' and pw='"+pw+"'", function(result){
+    dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+pw+"'", function(result){
         console.log(result);
         if(result.rows.length == 0){//false
             res.write("<script>alert('fail!.');</script>");
@@ -62,6 +62,7 @@ router.post("/login", function(req, res){
         } else {
             res.write("<script>alert('login!');</script>");
             req.session.user_id = id;
+            req.session.nickname = result.rows[0][2];
             req.session.save(function(err){
                 if(err) console.log(err);
             });

@@ -10,7 +10,7 @@ var dbconn = require('./oracledb_connect.js');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get("/my", function(req, res) {
+router.get("/my", function(req, res){
     if(req.session.user_id){
         dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
         "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
@@ -190,7 +190,7 @@ router.post("/user/modify", function(req, res){
     });
 });
 
-router.get("/channel", function(req, res) {
+router.get("/channel", function(req, res){
     dbconn.resultQuery("select * from (select id, nickname from users where id = '"+req.query.subscriberID+"'), "+
     "(select count(*) subscriber from subscribe where channeluser = '"+req.query.subscriberID+"'), "+ 
     "(select count(*) post from post where userid = '"+req.query.subscriberID+"')", function(result) {
@@ -250,7 +250,7 @@ router.get("/channel/post/pagelist", function(req, res){
     });
 });
 
-router.get("/donate", function(req, res) {
+router.get("/donate", function(req, res){
     if(req.session.user_id){
         fs.readFile("donate.html", "utf-8", function(error, data) {
             res.send(ejs.render(include.import_default() + data, {
