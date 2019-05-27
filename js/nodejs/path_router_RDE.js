@@ -48,6 +48,8 @@ router.get("/pw_find", function(req, res) {
 });
 
 
+
+
 router.post("/login", function(req, res){
     var id = req.body.id1;
     var pw = req.body.pw1;
@@ -58,12 +60,12 @@ router.post("/login", function(req, res){
             res.write("<script>alert('fail!.');</script>");
             res.end('<script>history.back()</script>')
         } else {
-            res.write("<script>alert('login!');</script>")
+            res.write("<script>alert('login!');</script>");
             req.session.user_id = id;
             req.session.save(function(err){
                 if(err) console.log(err);
             });
-            res.end('<script>history.go(-2);</script>')
+            res.end('<script>location.href="/";</script>')
         }
     });
 });
@@ -138,17 +140,48 @@ router.post("/pw_find", function(req, res){
     var email = req.body.email1;
     var cellphone = req.body.cellphone1;
     var id23="";
-
+    var str=""
     dbconn.resultQuery("select id,pw,name,email,cellphone from users where id='"+id+"' and name='"+name+"' and email='"+email+"' and cellphone='"+cellphone+"'", function(result){      
+        console.log(result);
+        str=result.rows[0][1];
         if(result.rows.length == 0){//false
             res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-            
+            res.write("<script>alert('회원정보가 없습니다!')</script>");
+            res.end('<script>history.back();</script>');
         } else {
             res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-            
+            for(var i=0;i<3;i++){
+                id23+=str.charAt(i);
+            }
+            for(var i=3;i<str.length;i++){
+                id23+='*';
+
+            }
+            var str1="비밀번호:"+id23;
             res.write("<script>alert('"+str1+"');</script>");
             res.end('<script>history.go(-2);</script>');
         }
     });
 });
+
+
+
+
+router.get("/logout",function(req,res){
+    if(req.session.user_id){
+        console.log("로그아웃 처리");
+        req.session.destroy(function(err){
+            if(err){
+                return;
+            }
+            res.redirect("/");
+        });
+    }else{
+        console.log("로그인 안되 있음.");
+        res.redirect("/");
+    }
+});
+
+
+
 module.exports = router;

@@ -192,11 +192,39 @@ router.post("/user/modify", function(req, res){
 });
 
 router.get("/channel", function(req, res) {
-    fs.readFile("channel.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(req.session.user_id),
-        }));
+    dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.query.subscriberID+"'), "+ 
+    "(select count(*) post from post where userid = '"+req.query.subscriberID+"') where id = '"+req.query.subscriberID+"'", function(result) {
+        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
+        "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
+        "post p on u.id = p.userid where u.id = '"+req.query.subscriberID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid "+
+        "or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid order by p.pid desc) p where rownum <= 60", function(result2){
+            if(result2.rows[0][0] != null){
+                result2 = dataSorting(result2);
+                dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.subscriberID+"' order by p.pid desc) where rownum <= 61", function(result3){
+                    var pagenumlist = [];
+                    for(var i = 0; i < result3.rows.length; i+=6){
+                        pagenumlist.push(result3.rows[i][0]);
+                    }
+                    console.log(result2);
+                    listing(result2, pagenumlist);
+                });
+            } else {
+                result2.rows = [];
+                listing(result2, []);
+            }
+        });
+
+        function listing(result2, pagenumlist){
+            fs.readFile("channel.html", "utf-8", function(error, data) {
+                res.send(ejs.render(include.import_default() + data, {
+                    logo: include.logo(),
+                    main_header: include.main_header(req.session.user_id),
+                    my: result,
+                    list: result2,
+                    page: pagenumlist
+                }));
+            });
+        }
     });
 });
 
