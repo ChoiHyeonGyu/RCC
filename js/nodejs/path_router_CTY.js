@@ -64,7 +64,6 @@ function initCategoryNav(callback) {
                     categoryNav += '</div></div>';
                 }
                 CMcateNavPage = ejs.render(include.contentsSideNav(), { categoryNav: categoryNav });
-
                 cateNav = true;
                 callback();
             });
@@ -136,7 +135,7 @@ router.get("/", function (req, res) {
     fs.readFile("main.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer()
@@ -167,7 +166,7 @@ router.get("/breifing", function (req, res) {
                 fs.readFile("breifing/breifing.html", "utf-8", function (error, data) {
                     res.send(ejs.render(include.import_default() + data, {
                         logo: include.logo(),
-                        main_header: include.main_header(),
+                        main_header: include.main_header(req.session.user_id),
                         navigator: include.navigator(),
                         navigator_side: include.navigator_side(),
                         footer: include.footer(),
@@ -214,7 +213,7 @@ router.get("/breifing_view", function (req, res) {
                     fs.readFile("breifing/breifing_view.html", "utf-8", function (error, data) {
                         res.send(ejs.render(include.import_default() + data, {
                             logo: include.logo(),
-                            main_header: include.main_header(),
+                            main_header: include.main_header(req.session.user_id),
                             navigator: include.navigator(),
                             navigator_side: include.navigator_side(),
                             footer: include.footer(),
@@ -236,7 +235,7 @@ router.get("/breifing_write", function (req, res) {
     fs.readFile("breifing/breifing_write.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
@@ -334,7 +333,7 @@ router.get("/breifing_detail", function (req, res) {
                             fs.readFile("breifing/breifing_detail.html", "utf-8", function (error, data) {
                                 res.send(ejs.render(include.import_default() + data, {
                                     logo: include.logo(),
-                                    main_header: include.main_header(),
+                                    main_header: include.main_header(req.session.user_id),
                                     navigator: include.navigator(),
                                     navigator_side: include.navigator_side(),
                                     footer: include.footer(),
@@ -373,7 +372,7 @@ router.get("/breifing_detail", function (req, res) {
                         fs.readFile("breifing/breifing_detail.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
                                 logo: include.logo(),
-                                main_header: include.main_header(),
+                                main_header: include.main_header(req.session.user_id),
                                 navigator: include.navigator(),
                                 navigator_side: include.navigator_side(),
                                 footer: include.footer(),
@@ -395,7 +394,7 @@ router.get("/commentary", function (req, res) {
     fs.readFile("commentary/commentary.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
@@ -408,7 +407,7 @@ router.get("/commentary_view", function (req, res) {
     fs.readFile("commentary/commentary_view.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
@@ -421,7 +420,7 @@ router.get("/commentary_detail", function (req, res) {
     fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
             navigator: include.navigator(),
             navigator_side: include.navigator_side(),
             footer: include.footer(),
@@ -434,7 +433,7 @@ router.get("/search_result", function (req, res) {
     fs.readFile("search_result.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
         }));
     });
 });

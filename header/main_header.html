@@ -1,10 +1,26 @@
 <div class="mainHeader">
     <ul class="nav justify-content-end">
+        <%
+            if(user == null){        
+        %>
         <li class="nav-item">
             <a class="btn btn-light" href="/login">Login</a>
         </li>
+        <%
+            }
+            else{
+        %>
+        <span style="font-weight:bold;padding:5px 10px;">[<%= user %>]</span>
         <li class="nav-item">
-            <a class="btn btn-light" href="/my">CoinTrade</a>
+            <a class="btn btn-light" href="/logout">logout</a>
         </li>
+        <li class="nav-item">
+            <a class="btn btn-light" href="/my">MyPage</a>
+        </li>
+
+
+        <%
+            }
+        %>
     </ul>
 </div>

@@ -1,4 +1,5 @@
 var fs = require('fs');
+var ejs = require('ejs');
 
 var import_default = '';
 var logo = '';
@@ -36,8 +37,8 @@ function getImport_default(){
 function getLogo(){
     return logo;
 }
-function getMain_header(){
-    return main_header;
+function getMain_header(user){
+    return ejs.render(main_header, { user: user });
 }
 function getNavigator(){
     return navigator;

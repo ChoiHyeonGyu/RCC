@@ -13,7 +13,7 @@ router.get("/login", function(req, res) {
     fs.readFile("login.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
         }));
     });
 
@@ -23,7 +23,7 @@ router.get("/signup", function(req, res) {
     fs.readFile("signup.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
         }));
     });
 });
@@ -32,7 +32,7 @@ router.get("/id_find", function(req, res) {
     fs.readFile("id_find.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
         }));
     });
 
@@ -41,7 +41,7 @@ router.get("/pw_find", function(req, res) {
     fs.readFile("pw_find.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
         }));
     });
 
