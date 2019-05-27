@@ -11,70 +11,74 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res) {
-    dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
-    "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
-    "where id = '"+req.session.user_id+"'", function(result) {
-        if(req.query.s == '1'){
-            dbconn.resultQuery("select * from (select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by sid desc) where rownum <= 10", function(result2){
-                listing(result2);
-            });
-        } else if(req.query.s == '2') {
-            dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
-            "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-            "post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
-            "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid order by p.pid desc) p where rownum <= 60", function(result2){
-                if(result2.rows[0][0] != null){
-                    result2 = dataSorting(result2);
-                    dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"' order by p.pid desc) where rownum <= 61", function(result3){
+    if(req.session.user_id){
+        dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
+        "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
+        "where id = '"+req.session.user_id+"'", function(result) {
+            if(req.query.s == '1'){
+                dbconn.resultQuery("select * from (select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by sid desc) where rownum <= 10", function(result2){
+                    listing(result2);
+                });
+            } else if(req.query.s == '2') {
+                dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
+                "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
+                "post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
+                "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid order by p.pid desc) p where rownum <= 60", function(result2){
+                    if(result2.rows[0][0] != null){
+                        result2 = dataSorting(result2);
+                        dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"' order by p.pid desc) where rownum <= 61", function(result3){
+                            var pagenumlist = [];
+                            for(var i = 0; i < result3.rows.length; i+=6){
+                                pagenumlist.push(result3.rows[i][0]);
+                            }
+                            console.log(result2);
+                            listing(result2, pagenumlist);
+                        });
+                    } else {
+                        result2.rows = [];
+                        listing(result2, []);
+                    }
+                });
+            } else if(req.query.s == '3') {
+                dbconn.resultQuery("select * from (select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 10", function(result2){
+                    dbconn.resultQuery("select * from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 101", function(result3){
                         var pagenumlist = [];
-                        for(var i = 0; i < result3.rows.length; i+=6){
+                        for(var i = 0; i < result2.rows.length; i++){
+                            result2.rows[i][2] = moment(result2.rows[i][2]).format("YYYY-MM-DD HH:mm:ss");
+                        }
+                        for(var i = 0; i < result3.rows.length; i+=10){
                             pagenumlist.push(result3.rows[i][0]);
                         }
-                        console.log(result2);
                         listing(result2, pagenumlist);
                     });
-                } else {
-                    result2.rows = [];
-                    listing(result2, []);
-                }
-            });
-        } else if(req.query.s == '3') {
-            dbconn.resultQuery("select * from (select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 10", function(result2){
-                dbconn.resultQuery("select * from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 101", function(result3){
-                    var pagenumlist = [];
-                    for(var i = 0; i < result2.rows.length; i++){
-                        result2.rows[i][2] = moment(result2.rows[i][2]).format("YYYY-MM-DD HH:mm:ss");
-                    }
-                    for(var i = 0; i < result3.rows.length; i+=10){
-                        pagenumlist.push(result3.rows[i][0]);
-                    }
-                    listing(result2, pagenumlist);
                 });
-            });
-        } else {
-            dbconn.resultQuery("select * from (select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 10", function(result2){
-                dbconn.resultQuery("select * from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 101", function(result3){
-                    var pagenumlist = [];
-                    for(var i = 0; i < result3.rows.length; i+=10){
-                        pagenumlist.push(result3.rows[i][0]);
-                    }
-                    listing(result2, pagenumlist);
+            } else {
+                dbconn.resultQuery("select * from (select s.* from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 10", function(result2){
+                    dbconn.resultQuery("select * from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 101", function(result3){
+                        var pagenumlist = [];
+                        for(var i = 0; i < result3.rows.length; i+=10){
+                            pagenumlist.push(result3.rows[i][0]);
+                        }
+                        listing(result2, pagenumlist);
+                    });
                 });
-            });
-        }
-        
-        function listing(result2, pagenumlist){
-            fs.readFile("mypage.html", "utf-8", function(error, data) {
-                res.send(ejs.render(include.import_default() + data, {
-                    logo: include.logo(),
-                    main_header: include.main_header(req.session.user_id),
-                    my: result,
-                    list: result2,
-                    page: pagenumlist
-                }));
-            });
-        }
-    });
+            }
+
+            function listing(result2, pagenumlist){
+                fs.readFile("mypage.html", "utf-8", function(error, data) {
+                    res.send(ejs.render(include.import_default() + data, {
+                        logo: include.logo(),
+                        main_header: include.main_header(req.session.user_id),
+                        my: result,
+                        list: result2,
+                        page: pagenumlist
+                    }));
+                });
+            }
+        });
+    } else {
+        res.redirect("/");
+    }
 });
 
 router.get("/subscriber/pagelist", function(req, res){
@@ -197,12 +201,16 @@ router.get("/channel", function(req, res) {
 });
 
 router.get("/donate", function(req, res) {
-    fs.readFile("donate.html", "utf-8", function(error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(req.session.user_id),
-        }));
-    });
+    if(req.session.user_id){
+        fs.readFile("donate.html", "utf-8", function(error, data) {
+            res.send(ejs.render(include.import_default() + data, {
+                logo: include.logo(),
+                main_header: include.main_header(req.session.user_id),
+            }));
+        });
+    } else {
+        res.redirect("/");
+    }
 });
 
 module.exports = router;
