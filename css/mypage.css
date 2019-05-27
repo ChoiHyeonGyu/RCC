@@ -19,6 +19,14 @@
     height: 350px;
 }
 
+#empty_last {
+    height: 200px;
+}
+
+#empty_last_chnl {
+    height: 50px;
+}
+
 #account_info #account_address {
     font-weight: bold;
     font-size: 20px;

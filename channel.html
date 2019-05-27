@@ -1,13 +1,15 @@
 <html>
     <head>
         <link rel="stylesheet" href="css/mypage.css">
+        <script src="js/htmljs/channel.js"></script>
     </head>
     <body class="sort-center">
         <div id="header2"><%- main_header %></div>
         <div id="header" class="container"><%- logo %></div>
         <div id="channel_info">
-            <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num">Subscriber <%= my.rows[0][8] %></span>
-            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][9] %></span>
+            <input type="hidden" value="<%= my.rows[0][0] %>">
+            <span id="channel_name" class="channel_num"><%= my.rows[0][1] %></span><span class="channel_num">Subscriber <%= my.rows[0][2] %></span>
+            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][3] %></span>
             <button class="btn btn-light">Subscribe</button><button class="btn btn-light">Donate</button><input type="text"><button class="btn btn-light">Search</button><br><br>
             <span id="font-30">Post List</span>
             <table class="table table-striped container">
@@ -22,7 +24,7 @@
                         <th scope="col">MODIFY DATE</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="boardlist">
                     <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr class="selrow">
                         <th scope="row"><%= list.rows[i][0] %></th>
@@ -44,14 +46,15 @@
             <div class="btn-group mr-2" role="group" id="pagelist">
                 <% for(var i = 0; i < page.length; i++){ %>
                     <% if(i == 0){ %>
-                <button type="button" class="btn btn-light active sb" nextsid="<%= page[i] %>">1</button>
+                <button type="button" class="btn btn-light active pb" nextpid="<%= page[i] %>">1</button>
                     <% } else if(i == 10) { %>
-                <button type="button" class="btn btn-light nsb" nextsid="<%= page[i] %>">&gt;</button>
+                <button type="button" class="btn btn-light nb" nextpid="<%= page[i] %>">&gt;</button>
                     <% } else { %>
-                <button type="button" class="btn btn-light sb" nextsid="<%= page[i] %>"><%= i + 1 %></button>
+                <button type="button" class="btn btn-light pb" nextpid="<%= page[i] %>"><%= i + 1 %></button>
                     <% } %>
                 <% } %>
             </div>
         </div>
+        <div id="empty_last_chnl"></div>
     </body>
 </html>

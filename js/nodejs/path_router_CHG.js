@@ -31,7 +31,6 @@ router.get("/my", function(req, res) {
                             for(var i = 0; i < result3.rows.length; i+=6){
                                 pagenumlist.push(result3.rows[i][0]);
                             }
-                            console.log(result2);
                             listing(result2, pagenumlist);
                         });
                     } else {
@@ -192,8 +191,9 @@ router.post("/user/modify", function(req, res){
 });
 
 router.get("/channel", function(req, res) {
-    dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.query.subscriberID+"'), "+ 
-    "(select count(*) post from post where userid = '"+req.query.subscriberID+"') where id = '"+req.query.subscriberID+"'", function(result) {
+    dbconn.resultQuery("select * from (select id, nickname from users where id = '"+req.query.subscriberID+"'), "+
+    "(select count(*) subscriber from subscribe where channeluser = '"+req.query.subscriberID+"'), "+ 
+    "(select count(*) post from post where userid = '"+req.query.subscriberID+"')", function(result) {
         dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
         "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
         "post p on u.id = p.userid where u.id = '"+req.query.subscriberID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid "+
@@ -225,6 +225,28 @@ router.get("/channel", function(req, res) {
                 }));
             });
         }
+    });
+});
+
+router.get("/channel/post/pagelist", function(req, res){
+    dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
+    "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
+    "post p on u.id = p.userid where u.id = '"+req.query.id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
+    "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid <= "+req.query.pid+" order by p.pid desc) p where rownum <= 60", function(result2){
+        result2 = dataSorting(result2);
+        dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.id+"' and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", function(result3){
+            var pagenumlist = [];
+            for(var i = 0; i < result3.rows.length; i+=6){
+                pagenumlist.push(result3.rows[i][0]);
+            }
+            dbconn.resultQuery("select max(pid) from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.id+"' and p.pid > "+req.query.pid+") where rownum <= 60", function(result4){
+                if(result4.rows[0] == null){
+                    res.send({rows: result2.rows, page: pagenumlist});
+                } else {
+                    res.send({rows: result2.rows, page: pagenumlist, prevpid: result4.rows[0][0]});
+                }
+            });
+        });
     });
 });
 
