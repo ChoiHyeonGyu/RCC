@@ -67,7 +67,7 @@ router.get("/my", function(req, res) {
             fs.readFile("mypage.html", "utf-8", function(error, data) {
                 res.send(ejs.render(include.import_default() + data, {
                     logo: include.logo(),
-                    main_header: include.main_header(),
+                    main_header: include.main_header(req.session.user_id),
                     my: result,
                     list: result2,
                     page: pagenumlist
@@ -191,7 +191,7 @@ router.get("/channel", function(req, res) {
     fs.readFile("channel.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
         }));
     });
 });
@@ -200,7 +200,7 @@ router.get("/donate", function(req, res) {
     fs.readFile("donate.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
-            main_header: include.main_header(),
+            main_header: include.main_header(req.session.user_id),
         }));
     });
 });
