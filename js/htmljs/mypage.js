@@ -49,7 +49,7 @@ $(function(){
     function rowsSubProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][1]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][1]+"</td> </tr>");
         }
     }
 
@@ -69,6 +69,10 @@ $(function(){
             }
         }
     }
+
+    $(document).on('click', '.selsub', function(){
+        location.href = "/channel?subscriberID=" + $(this).text();
+    });
 
     $(document).on('click', '.pb', function(){
         $.ajax({
@@ -119,10 +123,10 @@ $(function(){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
             if(rows[i][6] != null){
-                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][6]+"</td> <td>"+rows[i][4]+
+                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][6]+"</td> <td>"+rows[i][4]+
                 "</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
             } else {
-                $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td class='headline'>"+rows[i][7]+"</td> <td>"+rows[i][4]+"</td> <td>"+
+                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='headline'>"+rows[i][7]+"</td> <td>"+rows[i][4]+"</td> <td>"+
                 rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
             }
         }
@@ -209,7 +213,7 @@ $(function(){
     function rowsCmntProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][3]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][2]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][3]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][2]+"</td> </tr>");
         }
     }
 
