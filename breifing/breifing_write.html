@@ -11,6 +11,10 @@
             $("#selectBox").change(function(){
                 //ajax실행하여 세부 리스트를 가져옴
                 var resultSet;
+                if(this.value==0) {
+                    $("#detailBox").find('option').remove().end().append("<option value='0'>all</option>");
+                    return;
+                }
                 $.ajax({
                     url: '/ajaxDetailResult',                //주소
                     dataType: 'json',                  //데이터 형식
@@ -31,8 +35,9 @@
         });
     </script>
 </head>
-
 <body>
+
+    <% if(postResult==null){ %>
     <div id="header" class="container"><%- logo %></div>
     <div class="container briefingWrite">
         <form action="/breifing_write" name="writeForm" method="POST" class='formBox'>
@@ -50,8 +55,6 @@
                 </select>
                 <select class='selectBox' name='detail' id="detailBox">
                     <option value='0'>all</option>
-                    <%
-                    %>
                 </select>
             </div>
             <div id='writeFormBox'>
@@ -84,6 +87,78 @@
     </form>
     </div>
     <div id="footer"><%- footer %></div>
+
+    <% 
+        } 
+    %>
+    <% 
+        if(postResult!=null){ 
+    %>
+        <div id="header" class="container"><%- logo %></div>
+        <div class="container briefingWrite">
+            <form action="/breifing_write" name="writeForm" method="POST" class='formBox'>
+                <input type='hidden' value='<%= headlineResult.rows.length %>' name="headCount" id='count'>
+                <div class='dropboxDiv'>
+                    <select class='selectBox' name='category' id="selectBox">
+                        <option value='0'>all</option>
+                        <%
+                            var option = "";
+                            for(var i=0;i<categoryList.rows.length;i++){
+                                option+="<option value="+categoryList.rows[i][0]+">"+categoryList.rows[i][1]+"</option>"
+                            }
+                        %>
+                        <%- option %>
+                    </select>
+                    <select class='selectBox' name='detail' id="detailBox">
+                        <option value='0'>all</option>
+                    </select>
+                </div>
+                <div id='writeFormBox'>
+                    <% 
+                        for(var i=0;i<headlineResult.rows.length;i++){ 
+                    %>
+                    <div class='formDiv' name="formDiv<%= i+1 %>" id='formDiv<%= i+1 %>'>
+                        <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input name='headline<%= i+1 %>' type='text' placeholder="title" value="<%= headlineResult.rows[i][2] %>">
+                        </div>
+                        <div class='divBox cw65'><span class='titleWord'>URL</span> <input name='url<%= i+1 %>' type='text' placeholder="url" value="<%= headlineResult.rows[i][3] %>"></div>
+                    </div>
+                    <%
+                        } 
+                    %>
+                </div>
+
+            <div class='optionContainer'>
+                <div class='dib w100'>
+                    <input type='button' class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick='addPage();' value="+">
+                    <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick='removePage();' value='-'>
+                </div>
+                <br>
+                <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary' placeholder="summary"
+                        class="w80"><%= summaryResult.rows[0][2] %></textarea></div>
+                <div class='dib w100'>
+                    <%  
+                        var hashValue = "";
+                        for(var i=0; i<hashResult.rows.length;i++){
+                            hashValue+="#"+hashResult.rows[i][2]+" ";
+                        }
+                    %>
+                    <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag' type='text'
+                            placeholder="hashtag" value="<%= hashValue %>"></div>
+                    <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick="postSubmit();" value='Write'>
+                    <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick="history.back();" value='Cancel'>
+                </div>
+            </div>
+            
+        </form>
+        </div>
+        <div id="footer"><%- footer %></div>
+    <% 
+        } 
+    %>
 </body>
 
 </html>
