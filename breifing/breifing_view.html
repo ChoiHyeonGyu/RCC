@@ -1,24 +1,21 @@
 <html>
-
 <head>
     <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
     <script>
         onload = function () {
             $("#mainNavBtn02").addClass("active");
-            $("#Cate03").addClass("active");
             for (var i = 1; i <= document.getElementsByTagName('a').length; i++) {
                 var id = "#Cate" + i;
                 $(id).click(function () { location.href = '/breifing_detail'; });
             }
         }
+
+        function deleteClick(){
+            var result = confirm("정말로 삭제하시겠습니까?");
+            if(result) location.href='/delete?postNo=<%= postResult.rows[0][0] %>';
+        }
     </script>
 </head>
-<!--
-                            postResult:postResult,
-                            summaryResult:summaryResult,
-                            headlineResult:headlineResult,
-                            hashtagResult:hashtagResult
--->
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
@@ -29,14 +26,14 @@
         <div class="showFrame mainContents w85">
             <div class="showInfo show">
                 <span class="infospan"><%= postResult.rows[0][1] %></span>
-                <span class="infospan">321  321</span>
+                <span class="infospan"><%= categoryResult.rows[0][0] %><br><%= categoryResult.rows[0][1] %></span>
                 <span class="infospan">작성일 : <%= postResult.rows[0][3] %></span>
                 <span class="infospan">수정일 : <%= postResult.rows[0][5] %></span>
                 <% 
                     var writer="";
                     if(user == postResult.rows[0][1]){
-                        writer+="<button class='btn btn-light fr' value='Delete'>Delete</button>";
-                        writer+="<button class='btn btn-light fr' value='Modify'>Modify</button>";
+                        writer+="<button class='btn btn-light fr' value='Delete' onclick='deleteClick();''>Delete</button>";
+                        writer+="<button class='btn btn-light fr' value='Modify' onclick=location.href='/breifing_write?postNo="+postResult.rows[0][0]+"'>Modify</button>";
                     }
                 %>
                 <%- writer %>
