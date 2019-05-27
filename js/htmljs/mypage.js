@@ -153,11 +153,11 @@ $(function(){
         location.href = "/commentary_view?postNo=" + $(this).prev().text();
     });
 
-    $(document).on('mouseover', 'tr', function(){
+    $(document).on('mouseover', '.selrow', function(){
         $(this).addClass('table-info');
     });
 
-    $(document).on('mouseout', 'tr', function(){
+    $(document).on('mouseout', '.selrow', function(){
         $(this).removeClass('table-info');
     });
 
