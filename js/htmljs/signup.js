@@ -1,6 +1,34 @@
 
 var a=false;
 
+var count=0;
+
+
+
+$(document).on("click","#phone_click",function(){
+    $('#result').html('');
+    $('#result').html('본인 확인 중');
+    $("#result").css("color","red");
+    $.ajax({
+        url:'/auth',
+        dataType:'json',
+        type:'POST',
+        data:{'cellphone':$("#cellphone").val()},
+        success:function(result){
+            if(result['result']==true){
+                $('#result').html('본인 인증 성공');
+                $("#result").css("color","green");
+                count=1;
+            }else if(result['result']==false){
+                $('#result').html('본인 인증 실패');
+                $("#result").css("color","red");
+            }
+        }
+    });
+});
+
+
+
 function checkval(){
     var id=document.getElementById('id');
     var pw=document.getElementById('pw');
@@ -57,7 +85,10 @@ function checkval(){
         alert("전화번호를 입력해주세요.");
         return false;
     }
-
+    if(count==0){
+        alert("휴대폰 인증을 해주세요!");
+        return false;
+    }
     if(cellphone.value!="" && cellphone.value!=null){
         for(var i=0;i<cellphone.value.length;i++){
             if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){
