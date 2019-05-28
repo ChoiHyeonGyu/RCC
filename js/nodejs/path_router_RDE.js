@@ -164,10 +164,6 @@ router.post("/pw_find", function(req, res){
         }
     });
 });
-
-
-
-
 router.get("/logout",function(req,res){
     if(req.session.user_id){
         console.log("로그아웃 처리");
@@ -183,6 +179,49 @@ router.get("/logout",function(req,res){
     }
 });
 
+router.post("/auth",function(req,res){
+    var cellphone=req.body.cellphone;
+    var var_num=String(parseInt(Math.random()*99999-10000+1)+10000);
+    console.log('post방식으로 호출.');
+    console.log(var_num);
+    console.log(cellphone);
+    dbconn.resultQuery("select cellphone from users where cellphone='"+cellphone+"'", function(result,err){
+        console.log(result);
+        if(result.rows.length == 0){//false
+            console.log(1)
+            require('http').request({
+                'method': 'POST',
+                'json': true,
+                'uri': 'https://api-sens.ncloud.com/v1/sms/services/ncp:sms:kr:256070257583:rcc_news/messages',
+                'headers': {
+                  'Content-Type': 'application/json',
+                  'X-NCP-auth-key': 'DmFruV7jlLV1lfu2CFiJ',
+                  'X-NCP-service-secret': 'd0ebf13505aa463298c3b401ec529730'
+                },
+                'body': {
+                  'type': 'sms',
+                  'from': '01023750862',
+                  'to': [cellphone],
+                  'content': '인증번호'+var_num+'입니다.',
+                  'contentType':"COMM",
+                  'countryCode':"82",
+                }
+              });
+              return res.json({ result : true });        
+              
+        } else {
+            console.log(result.rows[0][0]);
+            var num=result.rows[0][0];
+            console.log(2)
+            res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+            res.write("<script>alert('회원가입 된 번호입니다.');</script>");
+            res.end('<script>history.back()</script>');
+        }
+    });
 
+    
+    
+    
+});
 
 module.exports = router;

@@ -53,40 +53,41 @@
 }
 
 #donate_input div {
-    margin-bottom: 20px;
+    margin-bottom: 1%;
 }
 
-#sender {
-    margin-top: 2%;
-    margin-right: 5%;
+.who {
+    margin-top: 3%;
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 150px) {
     #mycoin, #sending_money {
-        margin-left: -240px;
+        margin-left: -43%;
     }
 }
 
-@media screen and (min-width: 992px) and (max-width: 1199.9px) {
+@media screen and (min-width: 576px) {
     #mycoin, #sending_money {
-        margin-left: -230.5px;
+        margin-left: -50%;
     }
 }
 
-@media screen and (min-width: 768px) and (max-width: 991.9px) {
+@media screen and (min-width: 768px) {
     #mycoin, #sending_money {
-        margin-left: -220.5px;
+        margin-left: -14.2%;
     }
 }
 
-@media screen and (min-width: 576px) and (max-width: 767.9px) {
+@media screen and (min-width: 992px) {
     #mycoin, #sending_money {
-        margin-left: -210.5px;
+        margin-left: 0%;
     }
 }
 
-@media screen and (max-width: 575.9px) {
-    #mycoin, #sending_money {
-        margin-left: -212px;
-    }
+#donate_input button {
+    margin-bottom: 10%;
+}
+
+#send_btn {
+    margin-right: 1%;
 }
