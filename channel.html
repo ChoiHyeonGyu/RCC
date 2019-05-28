@@ -6,12 +6,26 @@
     <body class="sort-center">
         <div id="header2"><%- main_header %></div>
         <div id="header" class="container"><%- logo %></div>
-        <div id="channel_info">
+        <div id="channel_info" class="container">
             <input type="hidden" value="<%= my.rows[0][0] %>">
-            <span id="channel_name" class="channel_num"><%= my.rows[0][1] %></span><span class="channel_num">Subscriber <%= my.rows[0][2] %></span>
-            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][3] %></span>
-            <button class="btn btn-light">Subscribe</button><button class="btn btn-light">Donate</button><input type="text"><button class="btn btn-light">Search</button><br><br>
-            <span id="font-30">Post List</span>
+            <div class="row">
+                <div class="col-9">
+                    <span id="channel_name" class="channel_num"><%= my.rows[0][1] %></span><span class="channel_num">Subscriber <%= my.rows[0][2] %></span>
+                    <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][3] %></span>
+                </div>
+                <div class="col-3">
+                    <button id="channel_sub_btn" class="btn btn-light">Subscribe</button><button id="channel_do_btn" class="btn btn-light">Donate</button>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-6">
+                    <span id="font-30">Post List</span>
+                </div>
+                <div class="col">
+                    <input id="serach_input" type="text" placeholder="Search">
+                </div>
+            </div>
             <table class="table table-striped container">
                 <thead>
                     <tr>

@@ -31,11 +31,25 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
 4. 양도
 본 약관 및 본 약관상의 허여된 여하한 권리 및 라이센스는, 귀하가 양도하거나 이전할 수는 없으나, YouTube는 제한없이 양도할 수 있습니다.
         </textarea>
-        <div id="donate_input">
-            <div><input type="text" id="sender" placeholder="Sender"><input type="text" id="receiver" placeholder="Receiver"></div>
-            <div><input type="text" id="mycoin" placeholder="Mycoin"></div>
-            <div><input type="text" id="sending_money" placeholder="Sending Money"></div>
-            <button class="btn btn-light">Send</button><button class="btn btn-light">Cancel</button>
+        <div id="donate_input" class="container">
+            <div class="row">
+                <div class="col who">
+                    Sender : ADMIN<br><br>
+                    Account Address : 0x5a0b54d5dc17e0aadc383d2db43b0a0d3e029c4c
+                </div>
+                <div class="col who">
+                    Receiver : ADMIN<br><br>
+                    Account Address : 0x5a0b54d5dc17e0aadc383d2db43b0a0d3e029c4c
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    MyCoin : 3,000,000<br><br>
+                    <input type="text" id="sending_money" placeholder="Sending Ether">
+                </div>
+                <div class="col"></div>
+            </div>
+            <button id="send_btn" class="btn btn-light">Send</button><button class="btn btn-light">Cancel</button>
         </div>
     </body>
 </html>
