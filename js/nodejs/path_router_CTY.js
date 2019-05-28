@@ -208,7 +208,16 @@ function getCategoryNameByPostNo(postNo, callback) {
         callback(result);
     })
 }
-
+function subscribeCheck(writer, viewer, callback) {
+    if (viewer == null) {
+        callback(false);
+        return;
+    }
+    dbconn.resultQuery("select * from subscribe where channeluser='" + writer + "' and subscriber='" + viewer + "'", function (result) {
+        if (result.rows.length != 0) callback(true);
+        else callback(false);
+    });
+}
 router.get("/breifing_view", function (req, res) {
     var postNo = req.param('postNo');
     getPost(postNo, function (postResult) {
@@ -217,26 +226,30 @@ router.get("/breifing_view", function (req, res) {
                 getHashTagByPostNo(postNo, function (hashtagResult) {
                     getCategoryNameByPostNo(postNo, function (categoryResult) {
                         //req.session
-                        for (var i = 0; i < postResult.rows.length; i++) {
-                            postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YYYY-MM-DD HH:mm:ss");
-                            postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YYYY-MM-DD HH:mm:ss");
-                        }
-                        var userId = req.session.user_id;
-                        fs.readFile("breifing/breifing_view.html", "utf-8", function (error, data) {
-                            res.send(ejs.render(include.import_default() + data, {
-                                logo: include.logo(),
-                                main_header: include.main_header(req.session.user_id),
-                                navigator: include.navigator(),
-                                navigator_side: include.navigator_side(),
-                                footer: include.footer(),
-                                contentsSideNav: BFcateNavPage,
-                                postResult: postResult,
-                                summaryResult: summaryResult,
-                                headlineResult: headlineResult,
-                                hashtagResult: hashtagResult,
-                                categoryResult: categoryResult,
-                                user: userId
-                            }));
+                        subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
+                            for (var i = 0; i < postResult.rows.length; i++) {
+                                postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YYYY-MM-DD HH:mm:ss");
+                                postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YYYY-MM-DD HH:mm:ss");
+                            }
+                            var userId = req.session.user_id;
+                            fs.readFile("breifing/breifing_view.html", "utf-8", function (error, data) {
+                                res.send(ejs.render(include.import_default() + data, {
+                                    logo: include.logo(),
+                                    main_header: include.main_header(req.session.user_id),
+                                    navigator: include.navigator(),
+                                    navigator_side: include.navigator_side(),
+                                    footer: include.footer(),
+                                    contentsSideNav: BFcateNavPage,
+                                    postResult: postResult,
+                                    summaryResult: summaryResult,
+                                    headlineResult: headlineResult,
+                                    hashtagResult: hashtagResult,
+                                    categoryResult: categoryResult,
+                                    user: userId,
+                                    subscribeResult: subscribeResult,
+                                    search:req.param('search')
+                                }));
+                            });
                         });
                     })
                 });
@@ -330,14 +343,14 @@ function deleteHeadLine(postId, callback) {
         callback(result);
     });
 }
-function deleteHashTag(postId, callback){
-    dbconn.booleanQuery("delete from hashtag where pid="+postId,function(result){
+function deleteHashTag(postId, callback) {
+    dbconn.booleanQuery("delete from hashtag where pid=" + postId, function (result) {
         callback(result);
     });
 }
 
-function updateSummary(postId,summary,callback){
-    dbconn.booleanQuery("update briefingsummary set bsummary='"+summary+"' where pid="+postId,function(result){
+function updateSummary(postId, summary, callback) {
+    dbconn.booleanQuery("update briefingsummary set bsummary='" + summary + "' where pid=" + postId, function (result) {
         callback(result);
     });
 }
@@ -355,14 +368,14 @@ router.post("/breifing_write", function (req, res) {
                         if (headLine.length == 0 || url.length == 0) continue;
                         createBreifingDetail(postId, headLine, url);
                     }
-                    deleteHashTag(postId,function(dhtresult){
+                    deleteHashTag(postId, function (dhtresult) {
                         var hashTag = req.body['hashTag'].split("#");
                         for (var i = 1; i < hashTag.length; i++) {
                             var hash = hashTag[i].trim();
                             if (hash.length == 0) continue;
                             createHashTag(postId, hash);
                         }
-                        updateSummary(postId,req.body['summary'],function(result){
+                        updateSummary(postId, req.body['summary'], function (result) {
                             res.write("<script>alert('Modified');</script>");
                             res.end('<script>location.href="/"</script>')
                         });
@@ -537,12 +550,102 @@ router.get("/commentary_detail", function (req, res) {
     });
 });
 
+function searchHeadline(search, callback) {
+    dbconn.resultQuery("select pid from briefingdetail where headline like '%" + search + "%' or burl like '%" + search + "%'", function (result) {
+        callback(result);
+    });
+}
+function searchSummary(search, callback) {
+    dbconn.resultQuery("select pid from briefingsummary where bsummary like '%" + search + "%'", function (result) {
+        callback(result);
+    });
+}
+function searchHashtag(search, callback) {
+    dbconn.resultQuery("select pid from hashtag where keyword like '%" + search + "%'", function (result) {
+        callback(result);
+    });
+}
+function searchChannel(search, callback) {
+    dbconn.resultQuery("select * from users where id like '%" + search + "%'", function (result) {
+        callback(result);
+    });
+}
+function searchCommentary(search, callback) {
+    dbconn.resultQuery("select pid from commentary where title like '%" + search + "%' or content like '%" + search + "%'", function (result) {
+        callback(result);
+    });
+}
+
+function searching(req,res,search, type, callback) {
+    if (type == 1) {
+        //breifing
+        var page_size = 6;
+        var currPage = req.param('pageNo');
+        var startPost = (currPage - 1) * page_size + 1;
+        var endPost = currPage * page_size;
+        paging("select pid from post where pid in (select pid from briefingdetail where headline like '%"+search+"%' or burl like '%"+search+"%')",
+         "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where pid in (select pid from briefingdetail where headline like '%"+search+"%' or burl like '%"+search+"%') order by pid desc, mdate desc)) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
+            var pageListString;
+            if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
+            else {
+                pageListString = "and (post.pid=" + pageList.rows[0][0];
+                for (var i = 1; i < pageList.rows.length; i++) {
+                    pageListString += " or post.pid=" + pageList.rows[i][0];
+                }
+                pageListString += ")";
+            }
+            query("select pid, bid, headline,mdate " +
+                "from( select post.pid, briefingdetail.bid, briefingdetail.headline,post.mdate," +
+                "row_number() over(partition by post.pid order by briefingdetail.bid) " +
+                "rn from post,briefingdetail where post.pid = briefingdetail.pid " + pageListString + ") where rn <=3 order by pid desc, mdate desc",
+                function (result) {
+                    fs.readFile("search_result.html", "utf-8", function (error, data) {
+                        res.send(ejs.render(include.import_default() + data, {
+                            logo: include.logo(),
+                            main_header: include.main_header(req.session.user_id),
+                            navigator: include.navigator(),
+                            navigator_side: include.navigator_side(),
+                            footer: include.footer(),
+                            contentsSideNav: BFcateNavPage,
+                            result: result,
+                            pagingResult: pageResult,
+                            search:search,
+                            type:type
+                        }));
+                    });
+                });
+        });
+    }
+    else if (type == 2) {
+        //commentary
+        searchCommentary(search, function (result) {
+            callback(result);
+        });
+    }
+    else if (type == 3) {
+        //channel
+        searchChannel(search, function (result) {
+            callback(result);
+        });
+    }
+    else if (type == 0) {
+        //hashtag
+        searchHashtag(search, function (result) {
+            callback(result);
+        });
+    }
+    else {
+        //에러
+        callback(false);
+        return;
+    }
+}
+
 router.get("/search_result", function (req, res) {
-    fs.readFile("search_result.html", "utf-8", function (error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(req.session.user_id),
-        }));
+    var search = req.param('search');
+    var type = req.param('type');
+    searching(req,res, search, type, function (result) {
+
     });
 });
 
@@ -577,6 +680,30 @@ router.post("/ajaxDetailResult", function (req, res) {
     }
     res.send({ result: true, msg: detailResult });
 })
+function subscribe(status, writer, user, callback) {
+    if (status == 'true') {
+        dbconn.booleanQuery("insert into subscribe values (subscribe_sequence.nextval,'" + user + "','" + writer + "')", function (result) {
+            callback(result);
+        });
+    }
+    else {
+        dbconn.booleanQuery("delete from subscribe where subscriber='" + user + "' and channeluser='" + writer + "'", function (result) {
+            callback(result);
+        });
+    }
+}
+router.post("/subscribe", function (req, res) {
+    var status = req.body.status;
+    var writer = req.body.writer;
+    if (req.session.user_id != null) {
+        subscribe(status, writer, req.session.user_id, function (result) {
+            if (!result) res.send({ result: 'error' });
+            else res.send({ result: true });
+        });
+    }
+    //에러메세지 출력
+    else res.send({ result: false });
+});
 
 router.get("/delete", function (req, res) {
     dbconn.booleanQuery("delete from post where pid=" + req.param('postNo'), function (result) {

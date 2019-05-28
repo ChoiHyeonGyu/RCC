@@ -14,6 +14,7 @@ function sideBarClick(){
 
 function search(){
     if(event.keyCode == "13"){
-        alert("검색어 : "+document.getElementsByClassName("navSearch")[0].value);
+        alert("검색어 : "+document.getElementsByClassName("navSearch")[0].value+" "+$('#selectBox option:selected').val());
+        location.href='/search_result?pageNo=1&search='+document.getElementsByClassName("navSearch")[0].value+'&type='+$('#selectBox option:selected').val();
     }
 }
