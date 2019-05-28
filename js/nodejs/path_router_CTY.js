@@ -19,11 +19,11 @@ var categoryDetailList;
 
 
 router.get("*", function (req, res, next) {
-    if (!cateNav) init(function () { next() });
+    if (!cateNav) init(res,function () { next() });
     else next();
 });
 
-function init(callback) {
+function init(res,callback) {
     initCategoryNav(callback);
 };
 
@@ -355,6 +355,7 @@ function updateSummary(postId, summary, callback) {
     });
 }
 router.post("/breifing_write", function (req, res) {
+    var preURL = req.body['preURL'];
     if (req.param('modify') != null) {
         var postId = req.param('modify');
         modifyPost(postId, function (postResult) {
@@ -377,14 +378,14 @@ router.post("/breifing_write", function (req, res) {
                         }
                         updateSummary(postId, req.body['summary'], function (result) {
                             res.write("<script>alert('Modified');</script>");
-                            res.end('<script>location.href="/"</script>')
+                            res.end('<script>location.href="'+preURL+'"</script>')
                         });
                     });
                 });
             }
             else {
                 res.write("<script>alert('ERROR');</script>");
-                res.end('<script>history.back()</script>')
+                res.end('<script>location.href="'+preURL+'"</script>')
             }
         });
         return;
@@ -392,7 +393,7 @@ router.post("/breifing_write", function (req, res) {
     createPost(req.session.user_id, req.body.category, req.body.detail, 1, function (postId) {
         if (postId == false) {
             res.write("<script>alert('Write Failed');</script>");
-            res.end('<script>history.back()</script>')
+            res.end('<script>location.href="'+preURL+'"</script>')
         }
         else {
             var head = "headline";
@@ -417,7 +418,7 @@ router.post("/breifing_write", function (req, res) {
     //3. 글의 세부정보를 보낸다.
     //4. 작성완료
     //err. 
-    res.writeHead(302, { "Location": "/breifing?pageNo=1" });
+    res.writeHead(302, { "Location": preURL });
     res.write("<script>alert('Write Success');</script>");
     res.end();
 });
@@ -706,14 +707,16 @@ router.post("/subscribe", function (req, res) {
 });
 
 router.get("/delete", function (req, res) {
-    dbconn.booleanQuery("delete from post where pid=" + req.param('postNo'), function (result) {
+    var preURL = req.param('preURL').replace("<**>","&");
+    var postNo = req.param('postNo');
+    dbconn.booleanQuery("delete from post where pid=" + postNo, function (result) {
         if (result) {
-            res.write('<script>alert("Delete!");</script>')
-            res.end('<script>location.href="/"</script>')
+            res.write('<script>alert("삭제되었습니다!");</script>')
+            res.end('<script>location.href="'+preURL+'"</script>')
         }
         else {
-            res.write('<script>alert("Failed!");</script>')
-            res.end('<script>history.back()</script>')
+            res.write('<script>alert("삭제에 실패하였습니다!");</script>')
+            res.end('<script>history.back();</script>')
         }
     });
 });

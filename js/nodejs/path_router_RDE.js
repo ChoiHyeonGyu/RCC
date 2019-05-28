@@ -53,20 +53,18 @@ router.get("/pw_find", function(req, res) {
 router.post("/login", function(req, res){
     var id = req.body.id1;
     var pw = req.body.pw1;
-    
+    var preURL = req.body.preURL;
     dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+pw+"'", function(result){
-        console.log(result);
         if(result.rows.length == 0){//false
-            res.write("<script>alert('fail!.');</script>");
+            res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
             res.end('<script>history.back()</script>')
         } else {
-            res.write("<script>alert('login!');</script>");
             req.session.user_id = id;
             req.session.nickname = result.rows[0][2];
             req.session.save(function(err){
                 if(err) console.log(err);
             });
-            res.end('<script>location.href="/";</script>')
+            res.end('<script>location.href="'+preURL+'"</script>')
         }
     });
 });
@@ -165,17 +163,18 @@ router.post("/pw_find", function(req, res){
     });
 });
 router.get("/logout",function(req,res){
+    var preURL = req.param('preURL');
     if(req.session.user_id){
         console.log("로그아웃 처리");
         req.session.destroy(function(err){
             if(err){
                 return;
             }
-            res.redirect("/");
+            res.redirect(preURL);
         });
     }else{
         console.log("로그인 안되 있음.");
-        res.redirect("/");
+        res.redirect(preURL);
     }
 });
 
