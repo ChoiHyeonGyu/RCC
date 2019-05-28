@@ -7,10 +7,16 @@
     <body class="sort-center">
         <div id="header2"><%- main_header %></div>
         <div id="header" class="container"><%- logo %></div>
-        <div id="channel_info">
-            <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num">Subscriber <%= my.rows[0][8] %></span>
-            <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][9] %></span>
-            <span class="channel_num">Reply <%= my.rows[0][10] %></span><br><br>
+        <div id="channel_info" class="container">
+            <div class="row">
+                <div class="col-9">
+                    <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num">Subscriber <%= my.rows[0][8] %></span>
+                    <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][9] %></span><span class="channel_num">Reply <%= my.rows[0][10] %></span>
+                </div>
+                <div class="col-3">
+                    <input id="my_search" type="text" placeholder="Search">
+                </div>
+            </div><br>
             <ul class="nav nav-pills nav-fill container pad-0">
                 <li class="nav-item">
                     <a class="nav-link btn-light <% if(list.metaData[0].name == 'SID'){ %>active<% } %>" href="/my">Subscriber List</a>

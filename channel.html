@@ -14,7 +14,7 @@
                     <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][3] %></span>
                 </div>
                 <div class="col-3">
-                    <button id="channel_sub_btn" class="btn btn-light">Subscribe</button><button id="channel_do_btn" class="btn btn-light">Donate</button>
+                    <button id="channel_sub_btn" class="btn <% if(my.rows[0][4]){ %>btn-success<% }else{ %>btn-light<% } %>">Subscribe</button><button id="channel_do_btn" class="btn btn-light">Donate</button>
                 </div>
             </div><br>
             <div class="row">

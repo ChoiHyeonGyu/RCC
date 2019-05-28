@@ -15,6 +15,14 @@
     margin-right: 3px;
 }
 
+#channel_info #my_search {
+    margin-top: 14px;
+}
+
+#channel_info #search_input {
+    margin-top: 10px;
+}
+
 #empty {
     height: 350px;
 }

@@ -101,7 +101,7 @@ router.get("/subscriber/pagelist", function(req, res){
 router.get("/post/pagelist", function(req, res){
     dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
     "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-    "post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
+    "post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where "+
     "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid <= "+req.query.pid+" order by p.pid desc) p where rownum <= 60", function(result2){
         result2 = dataSorting(result2);
         dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"' and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", function(result3){
@@ -170,6 +170,132 @@ function dataSorting(result2){
     return result2;
 }
 
+router.get("/post/search", function(req, res){
+    if(req.query.txt){
+        if(req.query.pid){
+            dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 1200", function(result2){
+                result2 = dataSorting(result2);
+                dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
+                    res.send({rows: result2.rows, page: srchSorting(result3)});
+                });
+            });
+        } else if(req.query.cmntid) {
+            dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 1200", function(result2){
+                result2 = dataSorting(result2);
+                dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
+                    res.send({rows: result2.rows, page: srchSorting(result3)});
+                });
+            });
+        } else {
+            dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 1200", function(result2){
+                result2 = dataSorting(result2);
+                dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
+                    res.send({rows: result2.rows, page: srchSorting(result3)});
+                });
+            });
+        }
+    }
+});
+
+router.get("/post/search/pagelist", function(req, res){
+    if(req.query.txt){
+        if(req.query.pid){
+            dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 1200", 
+                function(result2){
+                    result2 = dataSorting(result2);
+                dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", 
+                function(result3){
+                    dbconn.resultQuery("select max(pid) from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                    "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                    "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                    "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid > "+req.query.pid+") where rownum <= 60", 
+                    function(result4){
+                        if(result4.rows[0] == null){
+                            res.send({rows: result2.rows, page: pagenumlist});
+                        } else {
+                            res.send({rows: result2.rows, page: srchSorting(result3), prevpid: result4.rows[0][0]});
+                        }
+                    });
+                });
+            });
+        } else if(req.query.cmntid) {
+            dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 1200", 
+                function(result2){
+                    result2 = dataSorting(result2);
+                dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", 
+                function(result3){
+                    dbconn.resultQuery("select max(pid) from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                    "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                    "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                    "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid > "+req.query.pid+") where rownum <= 60", 
+                    function(result4){
+                        if(result4.rows[0] == null){
+                            res.send({rows: result2.rows, page: pagenumlist});
+                        } else {
+                            res.send({rows: result2.rows, page: srchSorting(result3), prevpid: result4.rows[0][0]});
+                        }
+                    });
+                });
+            });
+        } else {
+            dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 1200", 
+                function(result2){
+                    result2 = dataSorting(result2);
+                dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", 
+                function(result3){
+                    dbconn.resultQuery("select max(pid) from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                    "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on "+
+                    "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                    "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid > "+req.query.pid+") where rownum <= 60", 
+                    function(result4){
+                        if(result4.rows[0] == null){
+                            res.send({rows: result2.rows, page: pagenumlist});
+                        } else {
+                            res.send({rows: result2.rows, page: srchSorting(result3), prevpid: result4.rows[0][0]});
+                        }
+                    });
+                });
+            });
+        }
+    }
+});
+
 router.post("/user/modify", function(req, res){
     var id = req.session.user_id;
     var pw = req.body.pw1;
@@ -190,16 +316,15 @@ router.post("/user/modify", function(req, res){
 });
 
 router.get("/channel", function(req, res){
-    dbconn.resultQuery("select * from (select id, nickname from users where id = '"+req.query.subscriberID+"'), "+
-    "(select count(*) subscriber from subscribe where channeluser = '"+req.query.subscriberID+"'), "+ 
-    "(select count(*) post from post where userid = '"+req.query.subscriberID+"')", function(result) {
+    dbconn.resultQuery("select * from (select id, nickname from users where id = '"+req.query.SEID+"'), (select count(*) subscriber from subscribe where channeluser = '"+req.query.SEID+"'), "+ 
+    "(select count(*) post from post where userid = '"+req.query.SEID+"'), (select sid from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.SEID+"')", function(result) {
         dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
         "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-        "post p on u.id = p.userid where u.id = '"+req.query.subscriberID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid "+
+        "post p on u.id = p.userid where u.id = '"+req.query.SEID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid "+
         "or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid order by p.pid desc) p where rownum <= 60", function(result2){
             if(result2.rows[0][0] != null){
                 result2 = dataSorting(result2);
-                dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.subscriberID+"' order by p.pid desc) where rownum <= 61", function(result3){
+                dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.SEID+"' order by p.pid desc) where rownum <= 61", function(result3){
                     var pagenumlist = [];
                     for(var i = 0; i < result3.rows.length; i+=6){
                         pagenumlist.push(result3.rows[i][0]);
@@ -229,7 +354,7 @@ router.get("/channel", function(req, res){
 router.get("/channel/post/pagelist", function(req, res){
     dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
     "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-    "post p on u.id = p.userid where u.id = '"+req.query.id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
+    "post p on u.id = p.userid where u.id = '"+req.query.id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where "+
     "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid <= "+req.query.pid+" order by p.pid desc) p where rownum <= 60", function(result2){
         result2 = dataSorting(result2);
         dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.id+"' and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", function(result3){
@@ -270,25 +395,16 @@ router.get("/subscribe/cancel", function(req, res){
 
 router.get("/channel/post/search", function(req, res){
     if(req.query.txt){
-        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
-        "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-        "post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
-        "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or "+
-        "p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or p.categoryname like '%"+req.query.txt+"%' or "+
-        "p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or b.headline like '%"+req.query.txt+"%' "+
-        "order by p.pid desc) p where rownum <= 60", function(result2){
+        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+            "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
+            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+            "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 1200", function(result2){
             result2 = dataSorting(result2);
-            dbconn.resultQuery("select * from (select p.pid from briefingdetail b full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from "+
-            "(select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
-            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where "+
-            "p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or "+
-            "p.categoryname like '%"+req.query.txt+"%' or p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or "+
-            "b.headline like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
-                var pagenumlist = [];
-                for(var i = 0; i < result3.rows.length; i+=6){
-                    pagenumlist.push(result3.rows[i][0]);
-                }
-                res.send({rows: result2.rows, page: pagenumlist});
+            dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+            "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
+            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+            "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
+                res.send({rows: result2.rows, page: srchSorting(result3)});
             });
         });
     }
@@ -296,42 +412,49 @@ router.get("/channel/post/search", function(req, res){
 
 router.get("/channel/search/pagelist", function(req, res){
     if(req.query.txt){
-        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
-        "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-        "post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
-        "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or "+
-        "p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or p.categoryname like '%"+req.query.txt+"%' or "+
-        "p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or b.headline like '%"+req.query.txt+"%' and p.pid <= "+req.query.pid+""+
-        "order by p.pid desc) p where rownum <= 60", function(result2){
-            result2 = dataSorting(result2);
-            dbconn.resultQuery("select * from (select p.pid from briefingdetail b full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from "+
-            "(select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
-            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where "+
-            "p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or "+
-            "p.categoryname like '%"+req.query.txt+"%' or p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or "+
-            "b.headline like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
-                var pagenumlist = [];
-                for(var i = 0; i < result3.rows.length; i+=6){
-                    pagenumlist.push(result3.rows[i][0]);
-                }
-                res.send({rows: result2.rows, page: pagenumlist});
-            });
-            dbconn.resultQuery("select max(pid) from (select p.pid from briefingdetail b full join (select p.*, c.title from commentary c full join "+
-            "(select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where "+
-            "u.id = '"+req.query.channelID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
-            "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or "+
-            "p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or p.categoryname like '%"+req.query.txt+"%' or "+
-            "p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or b.headline like '%"+req.query.txt+"%'"+
-            " and p.pid > "+req.query.pid+") where rownum <= 60", function(result3){
-                if(result3.rows[0] == null){
-                    res.send({rows: result2.rows, page: pagenumlist});
-                } else {
-                    res.send({rows: result2.rows, page: pagenumlist, prevpid: result3.rows[0][0]});
-                }
+        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+            "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
+            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+            "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 1200", 
+            function(result2){
+                result2 = dataSorting(result2);
+            dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+            "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
+            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+            "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", 
+            function(result3){
+                dbconn.resultQuery("select max(pid) from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b full join "+
+                "(select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
+                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
+                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid > "+req.query.pid+") where rownum <= 60", 
+                function(result4){
+                    if(result4.rows[0] == null){
+                        res.send({rows: result2.rows, page: pagenumlist});
+                    } else {
+                        res.send({rows: result2.rows, page: srchSorting(result3), prevpid: result4.rows[0][0]});
+                    }
+                });
             });
         });
     }
 });
+
+function srchSorting(result3){
+    var pid = 0;
+    var pagenumlist = [];
+    for(var i = 0; i < result3.rows.length; i++){
+        if(pid == result3.rows[i][0]){
+            result3.rows.splice(i, 1);
+            i--;
+        } else {
+            pid = result3.rows[i][0];
+        }
+    }
+    for(var i = 0; i < result3.rows.length; i+=6){
+        pagenumlist.push(result3.rows[i][0]);
+    }
+    return pagenumlist;
+}
 
 router.get("/donate", function(req, res){
     if(req.session.user_id){

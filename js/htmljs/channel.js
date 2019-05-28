@@ -1,6 +1,10 @@
 $(function(){
     var lastnum = 0;
-    var chksub = 1;
+    if($('#channel_sub_btn').hasClass('btn-success')){
+        var chksub = 0;
+    } else {
+        var chksub = 1;
+    }
 
     $(document).on('click', '.pb', function(){
         $.ajax({
