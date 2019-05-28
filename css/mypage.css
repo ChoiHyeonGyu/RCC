@@ -11,55 +11,8 @@
     margin-right: 20px;
 }
 
-@media screen and (min-width: 1200px) {
-    #channel_info #channel_sub_btn {
-        position: absolute;
-        margin-left: 138px;
-    }
-    
-    #channel_info #channel_do_btn {
-        position: absolute;
-        margin-left: 235px;
-    }
-    
-    #channel_info #serach_input {
-        position: absolute;
-        margin-left: 310px;
-    }
-}
-
-@media screen and (min-width: 991px) and (max-width: 1199.9px) {
-    #channel_info #channel_sub_btn {
-        position: absolute;
-        margin-left: 49px;
-    }
-    
-    #channel_info #channel_do_btn {
-        position: absolute;
-        margin-left: 146px;
-    }
-    
-    #channel_info #serach_input {
-        position: absolute;
-        margin-left: 220px;
-    }
-}
-
-@media screen and (min-width: 482px) and (max-width: 990.9px) {
-    #channel_info #channel_sub_btn {
-        position: absolute;
-        margin-left: -17px;
-    }
-    
-    #channel_info #channel_do_btn {
-        position: absolute;
-        margin-left: 80px;
-    }
-    
-    #channel_info #serach_input {
-        position: absolute;
-        margin-left: 155px;
-    }
+#channel_info #channel_sub_btn {
+    margin-right: 3px;
 }
 
 #empty {
