@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 var ejs = require('ejs');
+var request = require('request');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
@@ -188,7 +189,7 @@ router.post("/auth",function(req,res){
         console.log(result);
         if(result.rows.length == 0){//false
             console.log(1)
-            require('http').request({
+            request({
                 'method': 'POST',
                 'json': true,
                 'uri': 'https://api-sens.ncloud.com/v1/sms/services/ncp:sms:kr:256070257583:rcc_news/messages',
