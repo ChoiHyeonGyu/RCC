@@ -164,9 +164,8 @@ function dataSorting(result2){
         result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
         result2.rows[i][3] = moment(result2.rows[i][3]).format("YYYY-MM-DD HH:mm:ss");
     }
-    var i = 6;
-    while(i != result2.rows.length){
-        result2.rows.splice(i, 1);
+    while(result2.rows.length > 6){
+        result2.rows.splice(6, 1);
     }
     return result2;
 }
@@ -205,7 +204,6 @@ router.get("/channel", function(req, res){
                     for(var i = 0; i < result3.rows.length; i+=6){
                         pagenumlist.push(result3.rows[i][0]);
                     }
-                    console.log(result2);
                     listing(result2, pagenumlist);
                 });
             } else {
@@ -248,6 +246,91 @@ router.get("/channel/post/pagelist", function(req, res){
             });
         });
     });
+});
+
+router.get("/subscribe", function(req, res){
+    dbconn.booleanQuery("insert into subscribe values(subscribe_sequence.nextval, '"+req.session.user_id+"', '"+req.query.channelID+"')", function(result){
+        if(result){
+            res.send('1');
+        } else {
+            res.send('0');
+        }
+    });
+});
+
+router.get("/subscribe/cancel", function(req, res){
+    dbconn.booleanQuery("delete from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.channelID+"'", function(result){
+        if(result){
+            res.send('1');
+        } else {
+            res.send('0');
+        }
+    });
+});
+
+router.get("/channel/post/search", function(req, res){
+    if(req.query.txt){
+        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
+        "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
+        "post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
+        "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or "+
+        "p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or p.categoryname like '%"+req.query.txt+"%' or "+
+        "p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or b.headline like '%"+req.query.txt+"%' "+
+        "order by p.pid desc) p where rownum <= 60", function(result2){
+            result2 = dataSorting(result2);
+            dbconn.resultQuery("select * from (select p.pid from briefingdetail b full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from "+
+            "(select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
+            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where "+
+            "p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or "+
+            "p.categoryname like '%"+req.query.txt+"%' or p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or "+
+            "b.headline like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
+                var pagenumlist = [];
+                for(var i = 0; i < result3.rows.length; i+=6){
+                    pagenumlist.push(result3.rows[i][0]);
+                }
+                res.send({rows: result2.rows, page: pagenumlist});
+            });
+        });
+    }
+});
+
+router.get("/channel/search/pagelist", function(req, res){
+    if(req.query.txt){
+        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
+        "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
+        "post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
+        "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or "+
+        "p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or p.categoryname like '%"+req.query.txt+"%' or "+
+        "p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or b.headline like '%"+req.query.txt+"%' and p.pid <= "+req.query.pid+""+
+        "order by p.pid desc) p where rownum <= 60", function(result2){
+            result2 = dataSorting(result2);
+            dbconn.resultQuery("select * from (select p.pid from briefingdetail b full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from "+
+            "(select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
+            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where "+
+            "p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or "+
+            "p.categoryname like '%"+req.query.txt+"%' or p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or "+
+            "b.headline like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
+                var pagenumlist = [];
+                for(var i = 0; i < result3.rows.length; i+=6){
+                    pagenumlist.push(result3.rows[i][0]);
+                }
+                res.send({rows: result2.rows, page: pagenumlist});
+            });
+            dbconn.resultQuery("select max(pid) from (select p.pid from briefingdetail b full join (select p.*, c.title from commentary c full join "+
+            "(select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where "+
+            "u.id = '"+req.query.channelID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid where "+
+            "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid like '%"+req.query.txt+"%' or p.pdate like '%"+req.query.txt+"%' or "+
+            "p.viewcount like '%"+req.query.txt+"%' or p.mdate like '%"+req.query.txt+"%' or p.categoryname like '%"+req.query.txt+"%' or "+
+            "p.detailname like '%"+req.query.txt+"%' or p.title like '%"+req.query.txt+"%' or b.headline like '%"+req.query.txt+"%'"+
+            " and p.pid > "+req.query.pid+") where rownum <= 60", function(result3){
+                if(result3.rows[0] == null){
+                    res.send({rows: result2.rows, page: pagenumlist});
+                } else {
+                    res.send({rows: result2.rows, page: pagenumlist, prevpid: result3.rows[0][0]});
+                }
+            });
+        });
+    }
 });
 
 router.get("/donate", function(req, res){
