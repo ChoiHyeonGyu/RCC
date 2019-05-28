@@ -53,20 +53,18 @@ router.get("/pw_find", function(req, res) {
 router.post("/login", function(req, res){
     var id = req.body.id1;
     var pw = req.body.pw1;
-    
+    var preURL = req.body.preURL;
     dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+pw+"'", function(result){
-        console.log(result);
         if(result.rows.length == 0){//false
-            res.write("<script>alert('fail!.');</script>");
+            res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
             res.end('<script>history.back()</script>')
         } else {
-            res.write("<script>alert('login!');</script>");
             req.session.user_id = id;
             req.session.nickname = result.rows[0][2];
             req.session.save(function(err){
                 if(err) console.log(err);
             });
-            res.end('<script>location.href="/";</script>')
+            res.end('<script>location.href="'+preURL+'"</script>')
         }
     });
 });
@@ -164,25 +162,65 @@ router.post("/pw_find", function(req, res){
         }
     });
 });
-
-
-
-
 router.get("/logout",function(req,res){
+    var preURL = req.param('preURL');
     if(req.session.user_id){
         console.log("로그아웃 처리");
         req.session.destroy(function(err){
             if(err){
                 return;
             }
-            res.redirect("/");
+            res.redirect(preURL);
         });
     }else{
         console.log("로그인 안되 있음.");
-        res.redirect("/");
+        res.redirect(preURL);
     }
 });
 
+router.post("/auth",function(req,res){
+    var cellphone=req.body.cellphone;
+    var var_num=String(parseInt(Math.random()*99999-10000+1)+10000);
+    console.log('post방식으로 호출.');
+    console.log(var_num);
+    console.log(cellphone);
+    dbconn.resultQuery("select cellphone from users where cellphone='"+cellphone+"'", function(result,err){
+        console.log(result);
+        if(result.rows.length == 0){//false
+            console.log(1)
+            require('http').request({
+                'method': 'POST',
+                'json': true,
+                'uri': 'https://api-sens.ncloud.com/v1/sms/services/ncp:sms:kr:256070257583:rcc_news/messages',
+                'headers': {
+                  'Content-Type': 'application/json',
+                  'X-NCP-auth-key': 'DmFruV7jlLV1lfu2CFiJ',
+                  'X-NCP-service-secret': 'd0ebf13505aa463298c3b401ec529730'
+                },
+                'body': {
+                  'type': 'sms',
+                  'from': '01023750862',
+                  'to': [cellphone],
+                  'content': '인증번호'+var_num+'입니다.',
+                  'contentType':"COMM",
+                  'countryCode':"82",
+                }
+              });
+              return res.json({ result : true });        
+              
+        } else {
+            console.log(result.rows[0][0]);
+            var num=result.rows[0][0];
+            console.log(2)
+            res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+            res.write("<script>alert('회원가입 된 번호입니다.');</script>");
+            res.end('<script>history.back()</script>');
+        }
+    });
 
+    
+    
+    
+});
 
 module.exports = router;

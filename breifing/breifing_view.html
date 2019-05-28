@@ -2,17 +2,41 @@
 <head>
     <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
     <script>
+        var subStatus = <%= subscribeResult %>;
         onload = function () {
-            $("#mainNavBtn02").addClass("active");
-            for (var i = 1; i <= document.getElementsByTagName('a').length; i++) {
-                var id = "#Cate" + i;
-                $(id).click(function () { location.href = '/breifing_detail'; });
-            }
+            <% if(search==null){ %>$("#mainNavBtn02").addClass("active");<% } %>
         }
 
         function deleteClick(){
             var result = confirm("정말로 삭제하시겠습니까?");
-            if(result) location.href='/delete?postNo=<%= postResult.rows[0][0] %>';
+            var changeURL = (document.referrer).replace("&","<**>");
+            if(result) location.href='/delete?postNo=<%= postResult.rows[0][0] %>&preURL='+changeURL;
+        }
+
+        function subscribeClick(){
+            $.ajax({
+                    url: '/subscribe',                //주소
+                    dataType: 'json',                  //데이터 형식
+                    type: 'POST',                      //전송 타입
+                    data: {'status':!subStatus,'writer':'<%= postResult.rows[0][1] %>'},      //데이터를 json 형식, 객체형식으로 전송
+                    success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
+                        if ( result['result'] == true ) {
+                            if(subStatus) {
+                                $('#subBtn').removeClass('active');
+                            }
+                            else {
+                                $('#subBtn').addClass('active');
+                            }
+                            subStatus==true ? subStatus=false : subStatus=true;
+                        }
+                        else if(result['result'] == 'error'){
+                            alert("ERROR");
+                        }
+                        else{//실패
+                            alert("로그인을 먼저 해주세요");
+                        }
+                    } //function끝
+                }); // ------      ajax 끝-----------------
         }
     </script>
 </head>
@@ -21,8 +45,8 @@
     <div id="header" class="container"><%- logo %></div>
     <div id="header3" class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
-    <div class="briefingView container contentsBox">
-        <div id="contentsSideNav"><%- contentsSideNav %></div>
+    <div class="briefingView container contentsBox <% if(search!=null){ %>tac<% } %>">
+        <% if(search==null){ %><div id="contentsSideNav"><%- contentsSideNav %></div><% } %>
         <div class="showFrame mainContents w85">
             <div class="showInfo show">
                 <span class="infospan"><%= postResult.rows[0][1] %></span>
@@ -33,7 +57,7 @@
                     var writer="";
                     if(user == postResult.rows[0][1]){
                         writer+="<button class='btn btn-light fr' value='Delete' onclick='deleteClick();''>Delete</button>";
-                        writer+="<button class='btn btn-light fr' value='Modify' onclick=location.href='/breifing_write?postNo="+postResult.rows[0][0]+"'>Modify</button>";
+                        writer+="<button class='btn btn-light fr' value='Modify' onclick=location.href='/breifing_write?preURL=document.referrer&postNo="+postResult.rows[0][0]+"'>Modify</button>";
                     }
                 %>
                 <%- writer %>
@@ -68,9 +92,9 @@
                     <%- hash %>
                 </div>
             </div>
-            <button class="btn btn-light" value="Subscribe">Subscribe</button>
+            <% if(user!=postResult.rows[0][1]){ %><button class="btn btn-light <% if(subscribeResult){%>active<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button><% } %>
             <button class="btn btn-light" value="Donate">Donate</button>
-            <button class="btn btn-light" onclick="history.back();">Back</button>
+            <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
         </div>
     </div>
     <div id="footer"><%- footer %></div>

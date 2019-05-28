@@ -3,6 +3,7 @@
         <meta charset="utf-8">
         <script src="js/htmljs/signup.js"></script>
         <link rel="stylesheet" type='text/css' href="/css/signup.css?ver=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <style>
             input.button{
                 padding: 0px;
@@ -26,6 +27,8 @@
                     <input type="text" value="" placeholder="닉네임" id="nickname"  name="nickname1"/>
                     <input type="text" value="" placeholder="abc@abcd.abc" id="email" name="email1"/>
                     <input type="tel" value="" placeholder="01011112222" id="cellphone" name="cellphone1"/>
+                    <input type="button" value="휴대폰 인증" class="button" id="phone_click">
+                    <div id="result" style="color:white;">1</div>
                     <input type="submit" value="회원가입" class="button"/>
                     <input type="button" value="취소" class="button" onclick="history.back()"/>
                 </form>

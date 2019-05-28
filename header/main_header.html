@@ -1,3 +1,8 @@
+<script>
+    function logoutButton(){
+        location.href='/logout?preURL='+location.pathname+location.search;
+    }
+</script>
 <div class="mainHeader">
     <ul class="nav justify-content-end">
         <%
@@ -12,7 +17,7 @@
         %>
         <span class="mainNavUserSpan">[ <%= user %>님 ]</span>
         <li class="nav-item">
-            <a class="btn btn-light" href="/logout">logout</a>
+            <a class="btn btn-light" onclick="logoutButton();" id="logoutBtn">logout</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-light" href="/my">mypage</a>

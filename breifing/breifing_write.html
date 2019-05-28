@@ -4,6 +4,9 @@
     <script src="js/htmljs/breifingWrite.js"></script>
     <link rel="stylesheet" type="text/css" href="css/writeContents.css">
     <script>
+        onload = function(){
+            $("#hiddenURL").val(document.referrer);
+        }
         function postSubmit(){
             document.forms[0].submit();
         }
@@ -41,6 +44,7 @@
     <div id="header" class="container"><%- logo %></div>
     <div class="container briefingWrite">
         <form action="/breifing_write" name="writeForm" method="POST" class='formBox'>
+            <input type='hidden' value='' name='preURL' id='hiddenURL'>
             <input type='hidden' value='1' name="headCount" id='count'>
             <div class='dropboxDiv'>
                 <select class='selectBox' name='category' id="selectBox">
@@ -150,7 +154,7 @@
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
                         onclick="postSubmit();" value='Write'>
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                        onclick="history.back();" value='Cancel'>
+                        onclick="location.href=document.referrer;" value='Cancel'>
                 </div>
             </div>
             
