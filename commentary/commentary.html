@@ -1,21 +1,9 @@
 <html>
-
 <head>
-    <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
+    <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
     <script>
         onload = function () {
             $("#mainNavBtn03").addClass("active");
-            $("#Cate02").addClass("active");
-            for (var i = 1; i <= document.getElementsByTagName('a').length; i++) {
-                var id = "#Cate" + i;
-                $(id).click(function () { location.href = '/commentary_detail'; });
-            }
-            var ths = document.getElementsByTagName("th");
-            for (var i = 0; i < ths.length; i++) {
-                ths[i].addEventListener("click", function () {
-                    location.href = "/commentary_view";
-                });
-            }
         }
     </script>
 </head>
@@ -28,75 +16,45 @@
     <div class="briefingContents container contentsBox">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
         <div class="hotBriefing mainContents">
-            <h2>Hot Briefings</h2>
+            <h2>논평</h2>
             <table class="table mainTable commTable">
                 <tbody>
+                    <%
+                        var string="";
+                        for(var i=0;i<result.rows.length;i++){
+                    %>
                     <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>0.00$</td>
+                        <th scope="row"><%= result.rows[i][5] %></th>
+                        <td class='w10'><%= result.rows[i][2] %></td>
+                        <td class='w10'><%= result.rows[i][7] %>$</td>
                     </tr>
-                    <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>2.31$</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>3.33$</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>3.33$</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>3.33$</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>3.33$</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>3.33$</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">'2심서 징역16년' 이재록 측 "미투 분위기로 유죄…상고</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>3.33$</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">한지성 '음주운전' 소견…변호사 남편의 '모르쇠' 이유</th>
-                        <td class='w10'>RyuDing</td>
-                        <td class='w10'>3.33$</td>
-                    </tr>
+                    <%
+                        }
+                    %>
                 </tbody>
             </table>
-        </div>
-        <div class="hotEditor rightNav sideContents">
-            <h2>Editors</h2>
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th scope="row">TaeYong</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">RyuDing</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">HyeunGyu</th>
-                    </tr>
-                    <tr>
-                        <th scope="row">HyeunGyu</th>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="">
+                    <%
+                        var paging="";
+                        if(pagingResult.preBtn == '1'){
+                            paging="<button class='btn btn-light' onclick=location.href='"+"/commentary?pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"
+                        }
+                    %><%- paging %><%
+                        paging="";
+                        for(var i=pagingResult.startPage; i<=pagingResult.endPage;i++){
+                            if(i==pagingResult.curPage) paging+="<button class='btn btn-light active' onclick=location.href='"+"/commentary?pageNo="+i+"'>"+i+"</button>"
+                            else paging+="<button class='btn btn-light' onclick=location.href='"+"/commentary?pageNo="+i+"'>"+i+"</button>"
+                        }
+                    %><%- paging %><%
+                        paging="";
+                        if(pagingResult.nextBtn == '1'){
+                        paging="<button class='btn btn-light' onclick=location.href='"+"/commentary?pageNo="+(parseInt(pagingResult.endPage)+1)+"'>&gt;</button>"
+                        }
+                    %><%- paging %>
+                    <div>
+                        <button class='btn btn-light fr' onclick='location.href="/commentary_write"'>글쓰기</button>
+                    </div>
+            </div>
         </div>
     </div>
     <div id="footer"><%- footer %></div>
