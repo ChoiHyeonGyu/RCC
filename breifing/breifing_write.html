@@ -84,7 +84,7 @@
                 <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
                     onclick="postSubmit();" value='Write'>
                 <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                    onclick="history.back();" value='Cancel'>
+                    onclick="location.href=document.referrer;" value='Cancel'>
             </div>
         </div>
         
@@ -101,6 +101,7 @@
         <div id="header" class="container"><%- logo %></div>
         <div class="container briefingWrite">
             <form action="/breifing_write" name="writeForm" method="POST" class='formBox'>
+                <input type='hidden' value='' name='preURL' id='hiddenURL'>
                 <input type='hidden' value='<%= postResult.rows[0][0] %>' name='modify'>
                 <input type='hidden' value='<%= headlineResult.rows.length %>' name="headCount" id='count'>
                 <div class='dropboxDiv'>
