@@ -1,5 +1,7 @@
 $(function(){
     var lastnum = 0;
+    var srchpost = null;
+    var srchcmnt = null;
 
     $(document).on('click', '.sb', function(){
         $.ajax({
@@ -236,14 +238,24 @@ $(function(){
 
     $(document).on('keydown', '#my_search', function(){
         if(event.keyCode == 13){
+            srchpost = $(location).attr('search').match('s=2')[0];
+            srchcmnt = $(location).attr('search').match('s=3')[0];
+
             $.ajax({
                 url: '/post/search',
                 data: {
                     txt: $(this).val(),
-                    pid: 1
+                    pid: srchpost,
+                    cmntid: srchcmnt
                 },
                 success: function(result){
-                    rowsProcessing(result.rows);
+                    if(srchpost){
+                        rowsProcessing(result.rows);
+                    } else if(srchcmnt) {
+                        rowsCmntProcessing(result.rows);
+                    } else {
+                        rowsSubProcessing(result.rows);
+                    }
                     lastnum = 0;
                     searchPaging(result);
                 },
