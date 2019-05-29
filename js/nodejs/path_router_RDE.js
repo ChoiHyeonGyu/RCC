@@ -206,16 +206,15 @@ router.post("/auth",function(req,res){
                   'contentType':"COMM",
                   'countryCode':"82",
                 }
+                
               });
-              return res.json({ result : true });        
+              return res.json({ result : 1 });
               
         } else {
             console.log(result.rows[0][0]);
             var num=result.rows[0][0];
             console.log(2)
-            res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-            res.write("<script>alert('회원가입 된 번호입니다.');</script>");
-            res.end('<script>history.back()</script>');
+            return res.json({ result : 3 }); 
         }
     });
 

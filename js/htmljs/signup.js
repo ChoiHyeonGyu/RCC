@@ -1,7 +1,8 @@
 
 var a=false;
 
-var count=0;
+var count1=0;
+var count2=0;
 
 
 
@@ -15,12 +16,33 @@ $(document).on("click","#phone_click",function(){
         type:'POST',
         data:{'cellphone':$("#cellphone").val()},
         success:function(result){
-            if(result['result']==true){
+            if(result['result']==1){
                 $('#result').html('본인 인증 성공');
                 $("#result").css("color","green");
                 count=1;
-            }else if(result['result']==false){
+            }else if(result['result']==2){
                 $('#result').html('본인 인증 실패');
+                $("#result").css("color","red");
+            }else if(result['result']==3){
+                $('#result').html('이미 있는 번호 입니다');
+                $("#result").css("color","red");
+            }
+        }
+    });
+});
+$(document).on("click","#id_check",function(){
+    $('#id_msg').html('');
+    $.ajax({
+        url:'/idcheck',
+        dataType:'json',
+        type:'POST',
+        data:{'id':$("#id").val()},
+        success:function(result){
+            if(result['result']==true){
+                $('#result').html('사용가능한 아이디 입니다.');
+                $("#result").css("color","green");
+            }else if(result['result']==false){
+                $('#result').html('이미 있는 아이디 입니다');
                 $("#result").css("color","red");
             }
         }
@@ -46,7 +68,7 @@ function checkval(){
         alert("비밀번호를 입력해주세요.");
         return false;
     }
-    if (pw.length<8){
+    if (pw.value.length<8){
         alert("비밀번호를 8자 이상 입력해주세요.");
         return false;
     }
@@ -109,26 +131,33 @@ function pw2(){
     var pwcheck=document.forms[0].pwcheck1;
     var div=document.getElementById("pwcheckmsg");
     
-
-    if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
-        if(pw.value != pwcheck.value){
-            div.style.color="red";
-            div.innerHTML="비밀번호 불일치!";
-        }else if(pw.value == pwcheck.value){
-            div.style.color="green";
-            div.innerHTML="비밀번호 일치!";
-        }
-    else{
-            div.innerHTML=" ";
-        }
+    
+    if(pw.value.length<8 && pw.value.length>=1){
+        div.style.color="purple";
+        div.innerHTML="8자이상 입력해 주세요";
     }
-
-    
-    
-    if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
+    else{
         div.innerHTML="1";
         div.style.color='white';
+        if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
+            if(pw.value != pwcheck.value){
+                div.style.color="red";
+                div.innerHTML="비밀번호 불일치!";
+            }else if(pw.value == pwcheck.value){
+                div.style.color="green";
+                div.innerHTML="비밀번호 일치!";
+            }
+            
+            if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
+                div.innerHTML="1";
+                div.style.color='white';
+            }
     }
+        
+    }
+    
+
+    
 }
 
 
