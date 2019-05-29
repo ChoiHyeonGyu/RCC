@@ -23,10 +23,10 @@
                         var string="";
                         for(var i=0;i<result.rows.length;i++){
                     %>
-                    <tr>
+                    <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?postNo=<%= result.rows[i][0] %>'">
                         <th scope="row"><%= result.rows[i][5] %></th>
                         <td class='w10'><%= result.rows[i][2] %></td>
-                        <td class='w10'><%= result.rows[i][7] %>$</td>
+                        <td class='w10'><%= result.rows[i][6] %>$</td>
                     </tr>
                     <%
                         }
