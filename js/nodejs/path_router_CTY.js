@@ -52,6 +52,7 @@ function initCategoryNav(callback) {
 
                 categoryNav = "";
                 for (var i = 1; i <= result.rows.length; i++) {
+                    if (result.rows[i - 1][0] == 0) continue;
                     categoryNav += '<div class="contentsSideNavDetail"><a class="nav-link btn-light hover-pointer categoryHead" href="/commentary_detail?cateId=' + result.rows[i - 1][0] + '&pageNo=1" id="categoryId' + result.rows[i - 1][0] + '">' + result.rows[i - 1][1] + '</a>' +
                         '<div class="detailDiv" id=detail' + i + '>';
                     //현재는 for문을 무식하게 돔
@@ -258,7 +259,7 @@ router.get("/breifing_view", function (req, res) {
     });
 });
 
-router.get("/breifing_write", function (req, res) {
+router.get("/breifing_write", function (req, res) {//
     if (req.session.user_id == null) {
         res.write("<script>alert('Login First!');</script>");
         res.end('<script>history.back()</script>');
@@ -523,7 +524,8 @@ router.get("/commentary", function (req, res) {
     var currPage = req.param('pageNo');
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
-    paging("select pid from post where briefing=0", "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pid desc, pdate desc)) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
+    paging("select pid from post where briefing=0", 
+    "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pid desc, pdate desc)) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
         var pageListString;
         if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
         else {
@@ -533,7 +535,7 @@ router.get("/commentary", function (req, res) {
             }
             pageListString += ")";
         }
-        query("select p.*,c.*,u.id from commentary c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
+        query("select p.*,c.*,u.id from (select cid,pid,title,cost from commentary) c,(select pid,pdate,userid from post where briefing=0"+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
             function (result) {
                 fs.readFile("commentary/commentary.html", "utf-8", function (error, data) {
                     res.send(ejs.render(include.import_default() + data, {
@@ -542,7 +544,7 @@ router.get("/commentary", function (req, res) {
                         navigator: include.navigator(),
                         navigator_side: include.navigator_side(),
                         footer: include.footer(),
-                        contentsSideNav: BFcateNavPage,
+                        contentsSideNav: CMcateNavPage,
                         result: result,
                         pagingResult: pageResult
                     }));
@@ -552,29 +554,123 @@ router.get("/commentary", function (req, res) {
 });
 
 router.get("/commentary_view", function (req, res) {
-    fs.readFile("commentary/commentary_view.html", "utf-8", function (error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(req.session.user_id),
-            navigator: include.navigator(),
-            navigator_side: include.navigator_side(),
-            footer: include.footer(),
-            contentsSideNav: CMcateNavPage
-        }));
+    var postNo = req.param('postNo');
+    getPost(postNo, function (postResult) {
+        getCommentaryById(postNo,function(commentResult){
+                getHashTagByPostNo(postNo, function (hashtagResult) {
+                    getCategoryNameByPostNo(postNo, function (categoryResult) {
+                        //req.session
+                        subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
+                            for (var i = 0; i < postResult.rows.length; i++) {
+                                postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YYYY-MM-DD HH:mm:ss");
+                                postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YYYY-MM-DD HH:mm:ss");
+                            }
+                            var userId = req.session.user_id;
+                            fs.readFile("commentary/commentary_view.html", "utf-8", function (error, data) {
+                                res.send(ejs.render(include.import_default() + data, {
+                                    logo: include.logo(),
+                                    main_header: include.main_header(req.session.user_id),
+                                    navigator: include.navigator(),
+                                    navigator_side: include.navigator_side(),
+                                    footer: include.footer(),
+                                    contentsSideNav: CMcateNavPage,
+                                    postResult: postResult,
+                                    hashtagResult: hashtagResult,
+                                    commentResult:commentResult,
+                                    categoryResult: categoryResult,
+                                    user: userId,
+                                    subscribeResult: subscribeResult,
+                                    search:req.param('search')
+                                }));
+                            });
+                        });
+                    });
+            });
+        });
     });
 });
 
 router.get("/commentary_detail", function (req, res) {
-    fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo(),
-            main_header: include.main_header(req.session.user_id),
-            navigator: include.navigator(),
-            navigator_side: include.navigator_side(),
-            footer: include.footer(),
-            contentsSideNav: CMcateNavPage
-        }));
-    });
+    var page_size = 10;
+    var page_list_size = 10;
+    var currPage = req.param('pageNo');
+    var startPost = (currPage - 1) * page_size + 1;
+    var endPost = currPage * page_size;
+    var cateId = req.param('cateId');
+    var detailId = req.param('detailId');
+    if (detailId == undefined) {
+        detailId = null;
+        paging(("select pid from post where briefing=0 and cate=" + cateId),
+            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " order by pid desc, pdate desc)) where row2>=" + startPost + " and row2<=" + endPost,
+            page_size, page_list_size, currPage, function (pageResult, pageList) {
+                var pageListString;
+                if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
+                else {
+                    pageListString = "and (post.pid=" + pageList.rows[0][0];
+                    for (var i = 1; i < pageList.rows.length; i++) {
+                        pageListString += " or post.pid=" + pageList.rows[i][0];
+                    }
+                    pageListString += ")";
+                }
+                query("select p.*,c.*,u.id from (select cid,pid,title,cost from commentary) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
+                    function (result) {
+                        //hashResult가 필요하다
+                        hashTag(pageList, function (hashResult) {
+                            fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
+                                res.send(ejs.render(include.import_default() + data, {
+                                    logo: include.logo(),
+                                    main_header: include.main_header(req.session.user_id),
+                                    navigator: include.navigator(),
+                                    navigator_side: include.navigator_side(),
+                                    footer: include.footer(),
+                                    contentsSideNav: CMcateNavPage,
+                                    result: result,
+                                    pagingResult: pageResult,
+                                    hashResult, hashResult,
+                                    cateId: cateId,
+                                    detailId: detailId
+                                }));
+                            });
+                        });
+                    });
+            });
+    }
+    else {
+        paging(("select pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + detailId),
+            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + detailId + " order by pid desc, pdate desc)) where row2>=" + startPost + " and row2<=" + endPost,
+            page_size, page_list_size, currPage, function (pageResult, pageList) {
+                var pageListString;
+                if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
+                else {
+                    pageListString = "and (post.pid=" + pageList.rows[0][0];
+                    for (var i = 1; i < pageList.rows.length; i++) {
+                        pageListString += " or post.pid=" + pageList.rows[i][0];
+                    }
+                    pageListString += ")";
+                }
+                query("select p.*,c.*,u.id from (select cid,pid,title,cost from commentary) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
+                    function (result) {
+                        //hashResult가 필요하다
+                        hashTag(pageList, function (hashResult) {
+                            fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
+                                res.send(ejs.render(include.import_default() + data, {
+                                    logo: include.logo(),
+                                    main_header: include.main_header(req.session.user_id),
+                                    navigator: include.navigator(),
+                                    navigator_side: include.navigator_side(),
+                                    footer: include.footer(),
+                                    contentsSideNav: CMcateNavPage,
+                                    result: result,
+                                    pagingResult: pageResult,
+                                    hashResult, hashResult,
+                                    cateId: cateId,
+                                    detailId: detailId
+                                }));
+                            });
+                        });
+                    });
+            });
+    }
 });
 
 function searchHeadline(search, callback) {
@@ -675,19 +771,123 @@ router.get("/search_result", function (req, res) {
 
     });
 });
-
-router.get("/breifing_write", function (req, res) {
-    fs.readFile("breifing/breifing_write.html", "utf-8", function (error, data) {
-        res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo()
-        }));
+function getCommentaryById(postNo,callback){
+    dbconn.resultQuery("select * from commentary where pid="+postNo,function(result){
+        callback(result);
     });
+}
+
+function createCommentary(postId, title, contents, callback){
+    //작은따옴표 변환 할 것
+    dbconn.booleanQuery("insert into commentary values (commentary_sequence.nextval,"+postId+",'"+title+"','"+contents+"',0)",function(result){
+        callback(result);
+    });
+}
+
+router.post("/commentary_write", function (req, res) {
+    var preURL = req.body['preURL'];
+    if (req.param('modify') != null) {
+        var postId = req.param('modify');
+        modifyPost(postId, function (postResult) {
+            if (postResult) {
+                deleteHeadLine(postId, function (dhlresult) {
+                    var head = "headline";
+                    var headUrl = 'url';
+                    for (var i = 1; i <= req.body.headCount; i++) {
+                        var headLine = req.body[(head + i).toString()];
+                        var url = req.body[(headUrl + i).toString()];
+                        if (headLine.length == 0 || url.length == 0) continue;
+                        createBreifingDetail(postId, headLine, url);
+                    }
+                    deleteHashTag(postId, function (dhtresult) {
+                        var hashTag = req.body['hashTag'].split("#");
+                        for (var i = 1; i < hashTag.length; i++) {
+                            var hash = hashTag[i].trim();
+                            if (hash.length == 0) continue;
+                            createHashTag(postId, hash);
+                        }
+                        updateSummary(postId, req.body['summary'], function (result) {
+                            res.write("<script>alert('Modified');</script>");
+                            res.end('<script>location.href="'+preURL+'"</script>')
+                        });
+                    });
+                });
+            }
+            else {
+                res.write("<script>alert('ERROR');</script>");
+                res.end('<script>location.href="'+preURL+'"</script>')
+            }
+        });
+        return;
+    }
+    createPost(req.session.user_id, req.body.category, req.body.detail, 0, function (postId) {
+        if (postId == false) {
+            res.write("<script>alert('Write Failed');</script>");
+            res.end('<script>location.href="'+preURL+'"</script>')
+        }
+        else {
+            var title = req.body['commtitle'];
+            var contents = req.body['commta'];
+            createCommentary(postId,title,contents,function(result){
+
+            });
+            var hashTag = req.body['hashTag'].split("#");
+            for (var i = 1; i < hashTag.length; i++) {
+                var hash = hashTag[i].trim();
+                if (hash.length == 0) continue;
+                createHashTag(postId, hash);
+            }
+        }
+    });
+    res.writeHead(302, { "Location": preURL });
+    res.write("<script>alert('Write Success');</script>");
+    res.end();
 });
 
 router.get("/commentary_write", function (req, res) {
+    if (req.session.user_id == null) {
+        res.write("<script>alert('Login First!');</script>");
+        res.end('<script>history.back()</script>');
+        return;
+    }
+    if (req.param('postNo') != null) {
+        getCommentaryById(req.param('postNo'), function (commentaryResult) {
+                getHashTagByPostNo(req.param('postNo'), function (hashResult) {
+                    getPost(req.param('postNo'), function (postResult) {
+                        fs.readFile("commentary/commentary_write.html", "utf-8", function (error, data) {
+                            res.send(ejs.render(include.import_default() + data, {
+                                logo: include.logo(),
+                                main_header: include.main_header(req.session.user_id),
+                                navigator: include.navigator(),
+                                navigator_side: include.navigator_side(),
+                                footer: include.footer(),
+                                contentsSideNav: CMcateNavPage,
+                                categoryList: categoryList,
+                                categoryDetailList: categoryDetailList,
+                                commentaryResult:commentaryResult,
+                                hashResult, hashResult,
+                                postResult: postResult
+                            }));
+                        });
+                    });
+                });
+        });
+        return;
+    }
+    var postResult = null;
+    var commentaryResult = null;
     fs.readFile("commentary/commentary_write.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
-            logo: include.logo()
+            logo: include.logo(),
+            main_header: include.main_header(req.session.user_id),
+            navigator: include.navigator(),
+            navigator_side: include.navigator_side(),
+            footer: include.footer(),
+            contentsSideNav: CMcateNavPage,
+            categoryList: categoryList,
+            categoryDetailList: categoryDetailList,
+            commentaryResult:commentaryResult,
+            postResult: postResult
         }));
     });
 });
