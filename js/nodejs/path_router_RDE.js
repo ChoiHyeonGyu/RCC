@@ -3,6 +3,7 @@ var router = express.Router();
 var fs = require('fs');
 var ejs = require('ejs');
 var request = require('request');
+var crypto = require('crypto');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
