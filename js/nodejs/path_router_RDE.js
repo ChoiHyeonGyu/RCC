@@ -72,13 +72,14 @@ router.post("/login", function(req, res){
 });
 
 router.post("/signup", function(req, res){
-    var id=req.body.id1;
-    var pw=req.body.pw1;
-    var pwcheck=req.body.pwcheck1;
-    var name=req.body.name1;
-    var nickname=req.body.nickname1;
-    var email=req.body.email1;
-    var cellphone=req.body.cellphone1;
+    var id = req.body.id1;
+    var pw = req.body.pw1;
+    var name = req.body.name1;
+    var nickname = req.body.nickname1;
+    var email = req.body.email1;
+    var cellphone = req.body.cellphone1;
+
+    
     
     dbconn.booleanQuery("insert into USERS values('"+id+"','"+pw+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
         console.log(result);
