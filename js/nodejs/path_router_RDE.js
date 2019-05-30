@@ -52,6 +52,9 @@ router.get("/pw_find", function(req, res) {
 
 
 
+
+
+
 router.post("/login", function(req, res){
     var id = req.body.id1;
     var pw = req.body.pw1;
@@ -62,6 +65,7 @@ router.post("/login", function(req, res){
             res.end('<script>history.back()</script>')
         } else {
             req.session.user_id = id;
+            console.log(req.session.user_id);
             req.session.nickname = result.rows[0][2];
             req.session.save(function(err){
                 if(err) console.log(err);
@@ -71,6 +75,21 @@ router.post("/login", function(req, res){
     });
 });
 
+router.get("/logout",function(req,res){
+    var preURL = req.param('preURL');
+    if(req.session.user_id){
+        console.log("로그아웃 처리");
+        req.session.destroy(function(err){
+            if(err){
+                return;
+            }
+            res.redirect(preURL);
+        });
+    }else{
+        console.log("로그인 안되 있음.");
+        res.redirect(preURL);
+    }
+});
 router.post("/signup", function(req, res){
     var id=req.body.id1;
     var pw=req.body.pw1;
@@ -86,8 +105,8 @@ router.post("/signup", function(req, res){
             res.write("<script>alert('fail!');</script>")
             res.end('<script>history.back();</script>')
         }else{
-            res.write("<script>alert('signup!');</script>")
-            res.end('<script>history.go(-2);</script>')
+            /*res.write("<script>alert('signup!');</script>")
+            res.end('<script>history.go(-2);</script>')*/
         }
     });
 
@@ -126,8 +145,8 @@ router.post("/id_find", function(req, res){
 
             }
             var str1="id:"+id23;
-            // console.log(str1);
-            // console.log(id23);
+            console.log(str1);
+            console.log(id23);
             res.write("<script>alert('"+str1+"');</script>");
             res.end('<script>history.go(-2);</script>');
         }
@@ -164,21 +183,9 @@ router.post("/pw_find", function(req, res){
         }
     });
 });
-router.get("/logout",function(req,res){
-    var preURL = req.param('preURL');
-    if(req.session.user_id){
-        console.log("로그아웃 처리");
-        req.session.destroy(function(err){
-            if(err){
-                return;
-            }
-            res.redirect(preURL);
-        });
-    }else{
-        console.log("로그인 안되 있음.");
-        res.redirect(preURL);
-    }
-});
+
+
+
 
 router.post("/auth",function(req,res){
     var cellphone = req.body.cellphone;
@@ -214,15 +221,10 @@ router.post("/auth",function(req,res){
                 }
                 
               });
-              req.session.destroy(function(err){
-                if(err) console.log(err);
-              });
-              return res.json({ result : 1 });
+              return res.json({ result : true });
         } else {
-            console.log(result.rows[0][0]);
-            var num=result.rows[0][0];
             console.log(2)
-            return res.json({ result : 3 }); 
+            return res.json({ result : false }); 
         }
     });
 
@@ -231,6 +233,47 @@ router.post("/auth",function(req,res){
     
 });
 
+var count=1;
+
+router.post("/authnum",function(req,res){
+    var authnum=req.body.auth_num;
+    console.log(req.session.vn);
+    console.log(authnum);
+    if(authnum==req.session.vn){
+          console.log("111111")
+          req.session.destroy(function(err){
+            if(err){
+                return;
+            }
+        });
+        return res.json({ result : 1 });
+    }else if(req.session.vn!=undefined && authnum!=req.session.vn){
+        if(count<=3){
+            count+=1;
+            console.log("2222222");
+            return res.json({ result : 2 });
+        }else{
+            count=1;
+            console.log("333333");
+            req.session.destroy(function(err){
+            if(err){
+                return;
+            }
+        });
+        return res.json({ result : 3 });
+        }
+    }else{
+        count=1;
+        console.log("333333");
+        req.session.destroy(function(err){
+            if(err){
+                return;
+            }
+        });
+        return res.json({ result : 3 });
+    }
+        
+});
 
 
 router.post("/idcheck",function(req,res){
@@ -246,11 +289,7 @@ router.post("/idcheck",function(req,res){
             console.log(2);
             return res.json({ id_msg : false }); 
         }
-    });
-
-    
-    
-    
+    });    
 });
 
 module.exports = router;
