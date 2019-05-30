@@ -2,48 +2,83 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="../css/writeContents.css">
+    <script>
+            onload = function(){
+                $("#hiddenURL").val(document.referrer);
+            }
+            function postSubmit(){
+                document.forms[0].submit();
+            }
+            $(function(){
+                $("#selectBox").change(function(){
+                    //ajax실행하여 세부 리스트를 가져옴
+                    var resultSet;
+                    if(this.value==0) {
+                        $("#detailBox").find('option').remove().end().append("<option value='0'>all</option>");
+                        return;
+                    }
+                    $.ajax({
+                        url: '/ajaxDetailResult',                //주소
+                        dataType: 'json',                  //데이터 형식
+                        type: 'POST',                      //전송 타입
+                        data: {'msg':this.value},      //데이터를 json 형식, 객체형식으로 전송
+                        success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
+                            if ( result['result'] == true ) {
+                                resultSet = result['msg'];
+                            }
+                            var option="<option value=0>all</option>";
+                            for(var i=0; i<resultSet.rows.length; i++){
+                                option+="<option value="+resultSet.rows[i][0]+">"+resultSet.rows[i][2]+"</option>"
+                            }
+                            $("#detailBox").find('option').remove().end().append(option);
+                        } //function끝
+                    }); // ------      ajax 끝-----------------
+                });
+            });
+        </script>
 </head>
 
 <body>
     <div id="header" class="container"><%- logo %></div>
     <div class="container briefingWrite">
-        <form class='formBox' id='writeFormBox'>
-            <div class='dropboxDiv'>
-                <select class='selectBox' name='category'>
-                    <option value='all'>all</option>
-                    <option value='politics'>politics</option>
-                    <option value='Sports'>Sports</option>
-                    <option value='IT'>IT</option>
-                </select>
-                <select class='selectBox' name='detail'>
-                    <option value='all'>all</option>
-                    <option value='politics'>5G</option>
-                    <option value='Sports'>BlockChain</option>
-                    <option value='IT'>AI</option>
-                </select>
-            </div>
+        <form class='formBox' id='writeFormBox'  action="/commentary_write" name="writeForm" method="POST">
+                <input type='hidden' value='' name='preURL' id='hiddenURL'>
+                <div class='dropboxDiv'>
+                    <select class='selectBox' name='category' id="selectBox">
+                        <option value='0'>all</option>
+                        <%
+                            var option = "";
+                            for(var i=0;i<categoryList.rows.length;i++){
+                                option+="<option value="+categoryList.rows[i][0]+">"+categoryList.rows[i][1]+"</option>"
+                            }
+                        %>
+                        <%- option %>
+                    </select>
+                    <select class='selectBox' name='detail' id="detailBox">
+                        <option value='0'>all</option>
+                    </select>
+                </div>
             <div>
-                <div class='divBox cw65'><span class='titleWord'>Title</span> <input type='text' placeholder="title">
+                <div class='divBox cw65'><span class='titleWord'>Title</span> <input type='text' name='commtitle' placeholder="title" value='<% if(commentaryResult!=null){ %><%= commentaryResult.rows[0][2] %><% } %>'>
                 </div>
                 <div class='divBox cw65'><span class='titleWord'>Contents</span> <textarea
-                        placeholder="contents"></textarea></div>
+                        placeholder="contents" name='commta'><% if(commentaryResult!=null){ %><%= commentaryResult.rows[0][3] %><% } %></textarea></div>
             </div>
             <div class="fileDiv">
                 <input type="file">
             </div>
-        </form>
-        <div class='optionContainer'>
-            <div class='dib w100'>
-                <div class='divBox cw100 w65 dib r0'><input class='inputText' id='hashtag' type='text'
-                        placeholder="hashtag"></div>
-                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                    onclick="">Write</button>
-                <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                    onclick="history.back();">Cancel</button>
+            <div class='optionContainer'>
+                    <div class='dib w100'>
+                        <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag' type='text'
+                                placeholder="hashtag"></div>
+                        <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                            onclick="postSubmit();">Write</button>
+                        <button class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                            onclick="history.back();">Cancel</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
-    <div id="footer"><%- footer %></div>
 </body>
 
 </html>
