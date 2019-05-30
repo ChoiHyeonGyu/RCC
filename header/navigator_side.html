@@ -1,4 +1,26 @@
 <script src="js/htmljs/navigator.js"></script>
+<script>
+    $(function(){
+            $(document).ready(function(){
+                //ajax실행하여 세부 리스트를 가져옴
+                $.ajax({
+                    url: '/getNavSubscribe',                //주소
+                    dataType: 'json',                  //데이터 형식
+                    type: 'POST',                      //전송 타입
+                    data: {'msg':''},      //데이터를 json 형식, 객체형식으로 전송
+                    success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
+                        console.log(result);
+                        if ( result['result'] == true ) {
+                            $("#subLink").empty();
+                            for(var i=0;i<result['list'].rows.length;i++){
+                                $('#subLink').append("<a class='btn btn-light' href='/channel?SEID="+result['list'].rows[i][2]+"'>"+result['list'].rows[i][2]+"</a>");
+                            }
+                        }
+                    } //function끝
+                }); // ------      ajax 끝-----------------
+            });
+        });
+</script>
 <link rel="stylesheet" type="text/css" href="css/sideNav.css">
 <style>
     ::-webkit-scrollbar {
@@ -11,17 +33,7 @@
     </div>
     <div class="navSide">
         <div class="SubscribeList">
-            <nav class="nav flex-column">
-                <a class="btn btn-light" href="#">Active</a>
-                <a class="btn btn-light" href="#">Link</a>
-                <a class="btn btn-light" href="#">Link</a>
-            </nav>
-        </div>
-        <div class="MyKeyWord">
-            <nav class="nav flex-column">
-                <a class="btn btn-light active" href="#">Active</a>
-                <a class="btn btn-light" href="#">Link</a>
-                <a class="btn btn-light" href="#">Link</a>
+            <nav class="nav flex-column" id='subLink'>
             </nav>
         </div>
     </div>

@@ -1088,6 +1088,15 @@ router.get("/delete", function (req, res) {
     });
 });
 
+router.post("/getNavSubscribe", function (req, res) {
+    if(req.session.user_id==null) {
+        res.send({result:true,list:result});
+        return;
+    }
+    dbconn.resultQuery("select * from subscribe where subscriber='"+req.session.user_id+"'",function(result){
+        res.send({result:true,list:result});
+    });
+});
 router.post("/delete_comments", function (req, res) {
     var cmid = req.body.cmid;
     var cid = req.body.cid;

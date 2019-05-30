@@ -58,7 +58,7 @@
                         <%
                             for(var i=0;i<result.rows.length;i++){
                         %>
-                            <tr>
+                            <tr class="hover-pointer hover-underline" onclick="location.href='/channel?SEID=<%= result.rows[i][0] %>'">
                                 <td><%= result.rows[i][0] %></td>
                                 <td><%= result.rows[i][1] %></td>
                                 <td><%= result.rows[i][2] %></td>
