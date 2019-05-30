@@ -6,11 +6,13 @@ var moment = require('moment');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
+var ether = require('../web3js/ethereum');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res){
+    console.log(ether.getBalance());
     if(req.session.user_id){
         dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
         "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
@@ -294,14 +296,19 @@ router.post("/user/modify", function(req, res){
     var email = req.body.email1;
     var cellphone = req.body.cellphone1;
     
-    dbconn.booleanQuery("update users set pw='"+pw+"', name='"+name+"', nickname='"+nickname+"', coinaddress='0x111111', email='"+email+"', cellphone='"+cellphone+"' where id='"+id+"'", function(result){
-        if(result == false){
-            res.write("<script>alert('fail!');</script>");
-            res.write('<script>history.back();</script>');
-        } else {
-            res.write("<script>alert('update completed!');</script>");
-            res.write('<script>history.go(-1);</script>');
-        }
+    var salt = crypto.createHash("sha512").update(id+name+nickname+email+cellphone).digest("base64");
+    crypto.pbkdf2(pw, salt, parseInt(cellphone.substr(5, 6)), 64, "sha512", function(err, key){
+        if(err) console.log(err);
+
+        dbconn.booleanQuery("update users set pw='"+key.toString("base64")+"', name='"+name+"', nickname='"+nickname+"', coinaddress='0x111111', email='"+email+"', cellphone='"+cellphone+"' where id='"+id+"'", function(result){
+            if(result == false){
+                res.write("<script>alert('fail!');</script>");
+                res.write('<script>history.back();</script>');
+            } else {
+                res.write("<script>alert('update completed!');</script>");
+                res.write('<script>history.go(-1);</script>');
+            }
+        });
     });
 });
 
