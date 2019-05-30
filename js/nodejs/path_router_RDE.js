@@ -56,18 +56,27 @@ router.post("/login", function(req, res){
     var id = req.body.id1;
     var pw = req.body.pw1;
     var preURL = req.body.preURL;
-    dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+pw+"'", function(result){
-        if(result.rows.length == 0){//false
-            res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
-            res.end('<script>history.back()</script>')
-        } else {
-            req.session.user_id = id;
-            req.session.nickname = result.rows[0][2];
-            req.session.save(function(err){
-                if(err) console.log(err);
+
+    dbconn.resultQuery("select name, nickname, email, cellphone from users where id='"+id+"'", function(result){
+        var row = result.rows[0];
+        var salt = crypto.createHash("sha512").update(id+row[0]+row[1]+row[2]+row[3]).digest("base64");
+        crypto.pbkdf2(pw, salt, parseInt(row[3].substr(5, 6)), 64, "sha512", function(err, key){
+            if(err) console.log(err);
+
+            dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+key.toString("base64")+"'", function(result){
+                if(result.rows.length == 0){//false
+                    res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
+                    res.end('<script>history.back()</script>')
+                } else {
+                    req.session.user_id = id;
+                    req.session.nickname = result.rows[0][2];
+                    req.session.save(function(err){
+                        if(err) console.log(err);
+                    });
+                    res.end('<script>location.href="'+preURL+'"</script>')
+                }
             });
-            res.end('<script>location.href="'+preURL+'"</script>')
-        }
+        });
     });
 });
 
@@ -79,20 +88,21 @@ router.post("/signup", function(req, res){
     var email = req.body.email1;
     var cellphone = req.body.cellphone1;
 
-    var salt = crypto.createHash("sha512").update(id+pw+name+nickname+email+cellphone).digest("base64");
-    console.log(salt);
-    
-    dbconn.booleanQuery("insert into USERS values('"+id+"','"+pw+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
-        console.log(result);
-        if (result==false){//false
-            res.write("<script>alert('fail!');</script>")
-            res.end('<script>history.back();</script>')
-        }else{
-            res.write("<script>alert('signup!');</script>")
-            res.end('<script>history.go(-2);</script>')
-        }
-    });
+    var salt = crypto.createHash("sha512").update(id+name+nickname+email+cellphone).digest("base64");
+    crypto.pbkdf2(pw, salt, parseInt(cellphone.substr(5, 6)), 64, "sha512", function(err, key){
+        if(err) console.log(err);
 
+        dbconn.booleanQuery("insert into USERS values('"+id+"','"+key.toString("base64")+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
+            console.log(result);
+            if(result == false){//false
+                res.write("<script>alert('fail!');</script>")
+                res.end('<script>history.back();</script>')
+            } else {
+                res.write("<script>alert('signup!');</script>")
+                res.end('<script>history.go(-2);</script>')
+            }
+        });
+    });
 // 1. login처리를 함.디비
 // 2. 이전 페이지로
 });
