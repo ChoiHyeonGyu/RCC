@@ -3,6 +3,7 @@ var router = express.Router();
 var fs = require('fs');
 var ejs = require('ejs');
 var moment = require('moment');
+var crypto = require('crypto');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
@@ -313,8 +314,8 @@ router.post("/user/modify", function(req, res){
 });
 
 router.get("/channel", function(req, res){
-    dbconn.resultQuery("select * from (select id, nickname from users where id = '"+req.query.SEID+"'), (select count(*) subscriber from subscribe where channeluser = '"+req.query.SEID+"'), "+ 
-    "(select count(*) post from post where userid = '"+req.query.SEID+"'), (select sid from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.SEID+"')", function(result) {
+    dbconn.resultQuery("select * from (select * from (select id, nickname from users where id = '"+req.query.SEID+"'), (select count(*) subscriber from subscribe where channeluser = '"+req.query.SEID+"'), "+ 
+    "(select count(*) post from post where userid = '"+req.query.SEID+"')) u left join (select channeluser from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.SEID+"') s on u.id = s.channeluser", function(result) {
         dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
         "full join (select p.*, c.title from commentary c full join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
         "post p on u.id = p.userid where u.id = '"+req.query.SEID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid "+

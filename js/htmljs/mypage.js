@@ -416,6 +416,10 @@ function checkval(){
         alert("비밀번호를 입력해주세요.");
         return false;
     }
+    if(pw.value.length < 8){
+        alert("비밀번호를 8자 이상 입력해주세요.");
+        return false;
+    }
     if(pwcheck.value == "" || pwcheck.value == null){
         alert("비밀번호를 확인해주세요.");
         return false;
@@ -462,22 +466,26 @@ function pw2(){
     var pwcheck = document.forms[0].pwcheck1;
     var div = document.getElementById("pwcheckmsg");
 
-    if((pwcheck.value != "" && pwcheck.value != null) && (pw.value != "" && pw.value != null)){
-        if(pw.value != pwcheck.value){
-            div.style.color = "red";
-            div.innerHTML = "비밀번호 불일치!";
-        }else if(pw.value == pwcheck.value){
-            div.style.color = "green";
-            div.innerHTML = "비밀번호 일치!";
-        }
-    else{
-            div.innerHTML = " ";
-        }
-    }
-
-    if((pwcheck.value == "" || pwcheck.value == null) && (pw.value == "" || pw.value == null)){
+    if(pw.value.length < 8 && pw.value.length >= 1){
+        div.style.color = "purple";
+        div.innerHTML = "8자이상 입력해 주세요";
+    } else {
         div.innerHTML = "1";
         div.style.color = 'white';
+        if((pwcheck.value != "" && pwcheck.value != null) && (pw.value != "" && pw.value != null)){
+            if(pw.value != pwcheck.value){
+                div.style.color = "red";
+                div.innerHTML = "비밀번호 불일치!";
+            } else if (pw.value == pwcheck.value){
+                div.style.color = "green";
+                div.innerHTML = "비밀번호 일치!";
+            }
+            
+            if((pwcheck.value == "" || pwcheck.value == null) && (pw.value == "" || pw.value == null)){
+                div.innerHTML = "1";
+                div.style.color = 'white';
+            }
+        }
     }
 }
 
@@ -487,19 +495,23 @@ function pwcheck2(){
     var pwcheck = document.forms[0].pwcheck1;
     var div = document.getElementById("pwcheckmsg");
 
-    if((pwcheck.value != "" && pwcheck.value != null) && (pw.value != "" && pw.value != null)){
-        if(pw.value != pwcheck.value){
-            div.style.color = "red";
-            div.innerHTML = "비밀번호 불일치!";
+    if(pwcheck.value.length < 8 && pwcheck.value.length >= 1){
+        div.style.color = "purple";
+        div.innerHTML = "8자이상 입력해 주세요";
+    } else {
+        if((pwcheck.value != "" && pwcheck.value != null) && (pw.value != "" && pw.value != null)){
+            if(pw.value != pwcheck.value){
+                div.style.color = "red";
+                div.innerHTML = "비밀번호 불일치!";
+            } else if (pw.value == pwcheck.value){
+                div.style.color = "green";
+                div.innerHTML = "비밀번호 일치!";
+            } else {
+                div.innerHTML = " ";
+            }
+        } else if ((pwcheck.value == "" || pwcheck.value == null) && (pw.value == "" || pw.value == null)){
+            div.innerHTML = "1";
+            div.style.color = 'white';
         }
-        else if(pw.value == pwcheck.value){
-            div.style.color = "green";
-            div.innerHTML = "비밀번호 일치!";
-        }else{
-            div.innerHTML = " ";
-        }
-    }else if((pwcheck.value == "" || pwcheck.value == null) && (pw.value == "" || pw.value == null)){
-        div.innerHTML = "1";
-        div.style.color = 'white';
     }
 }
