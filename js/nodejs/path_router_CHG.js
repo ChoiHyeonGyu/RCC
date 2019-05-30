@@ -13,7 +13,6 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res){
-    console.log(ether.getBalance());
     if(req.session.user_id){
         dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
         "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
@@ -42,11 +41,12 @@ router.get("/my", function(req, res){
                     }
                 });
             } else if(req.query.s == '3') {
-                dbconn.resultQuery("select * from (select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 10", function(result2){
+                dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.cid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 10", 
+                function(result2){
                     dbconn.resultQuery("select * from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 101", function(result3){
                         var pagenumlist = [];
                         for(var i = 0; i < result2.rows.length; i++){
-                            result2.rows[i][2] = moment(result2.rows[i][2]).format("YYYY-MM-DD HH:mm:ss");
+                            result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
                         }
                         for(var i = 0; i < result3.rows.length; i+=10){
                             pagenumlist.push(result3.rows[i][0]);
@@ -124,12 +124,12 @@ router.get("/post/pagelist", function(req, res){
 });
 
 router.get("/reply/pagelist", function(req, res){
-    dbconn.resultQuery("select * from (select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid <= "+req.query.cmntid+" order by c.cmntid desc) "+
+    dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.cid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid <= "+req.query.cmntid+" order by c.cmntid desc) "+
     "where rownum <= 10", function(result2){
         dbconn.resultQuery("select * from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid <= "+req.query.cmntid+" order by c.cmntid desc) where rownum <= 101", function(result3){
             var pagenumlist = [];
             for(var i = 0; i < result2.rows.length; i++){
-                result2.rows[i][2] = moment(result2.rows[i][2]).format("YYYY-MM-DD HH:mm:ss");
+                result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
             }
             for(var i = 0; i < result3.rows.length; i+=10){
                 pagenumlist.push(result3.rows[i][0]);
@@ -189,13 +189,13 @@ router.get("/post/search", function(req, res){
                 });
             });
         } else if(req.query.cmntid) {
-            dbconn.resultQuery("select * from (select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' "+
+            dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.cid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' "+
             "and (c1.title like '%"+req.query.txt+"%' or c.comments like '%"+req.query.txt+"%') order by c.cmntid desc) where rownum <= 10", function(result2){
                 dbconn.resultQuery("select * from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and (c1.title like '%"+req.query.txt+"%' or c.comments like '%"+req.query.txt+"%') "+
                 "order by c.cmntid desc) where rownum <= 101", function(result3){
                     var pagenumlist = [];
                     for(var i = 0; i < result2.rows.length; i++){
-                        result2.rows[i][2] = moment(result2.rows[i][2]).format("YYYY-MM-DD HH:mm:ss");
+                        result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
                     }
                     for(var i = 0; i < result3.rows.length; i+=10){
                         pagenumlist.push(result3.rows[i][0]);
@@ -245,13 +245,13 @@ router.get("/post/search/pagelist", function(req, res){
                 });
             });
         } else if(req.query.cmntid) {
-            dbconn.resultQuery("select * from (select c.cmntid, c.comments, c.cdate, c1.title from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' "+
+            dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.cid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' "+
             "and (c1.title like '%"+req.query.txt+"%' or c.comments like '%"+req.query.txt+"%') and c.cmntid <= "+req.query.cmntid+" order by c.cmntid desc) where rownum <= 10", function(result2){
                 dbconn.resultQuery("select * from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and (c1.title like '%"+req.query.txt+"%' or c.comments like '%"+req.query.txt+"%') "+
                 "and c.cmntid <= "+req.query.cmntid+" order by c.cmntid desc) where rownum <= 101", function(result3){
                     var pagenumlist = [];
                     for(var i = 0; i < result2.rows.length; i++){
-                        result2.rows[i][2] = moment(result2.rows[i][2]).format("YYYY-MM-DD HH:mm:ss");
+                        result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
                     }
                     for(var i = 0; i < result3.rows.length; i+=10){
                         pagenumlist.push(result3.rows[i][0]);

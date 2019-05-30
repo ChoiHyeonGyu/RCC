@@ -51,7 +51,7 @@ $(function(){
     function rowsSubProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td>"+rows[i][1]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='selsub'>"+rows[i][1]+"</td> </tr>");
         }
     }
 
@@ -215,7 +215,7 @@ $(function(){
     function rowsCmntProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][3]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][2]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][3]+"</th> <td class='title'>"+rows[i][2]+"</td> <td>"+rows[i][0]+"</td> <td>"+rows[i][1]+"</td> </tr>");
         }
     }
 

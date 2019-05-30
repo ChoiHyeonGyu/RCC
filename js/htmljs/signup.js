@@ -157,10 +157,10 @@ function checkval(){
         alert("전화번호를 입력해주세요.");
         return false;
     }
-    if(count2==0){
+    /*if(count2==0){
         alert("휴대폰 인증을 해주세요!");
         return false;
-    }
+    }*/
     if(cellphone.value!="" && cellphone.value!=null){
         for(var i=0;i<cellphone.value.length;i++){
             if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){

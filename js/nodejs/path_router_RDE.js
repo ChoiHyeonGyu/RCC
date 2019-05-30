@@ -60,33 +60,32 @@ router.post("/login", function(req, res){
     var pw = req.body.pw1;
     var preURL = req.body.preURL;
 
-    /*dbconn.resultQuery("select name, nickname, email, cellphone from users where id='"+id+"'", function(result){
-        var row = result.rows[0];
-        var salt = crypto.createHash("sha512").update(id+row[0]+row[1]+row[2]+row[3]).digest("base64");
-        crypto.pbkdf2(pw, salt, parseInt(row[3].substr(5, 6)), 64, "sha512", function(err, key){
-            if(err) console.log(err);
+    dbconn.resultQuery("select name, nickname, email, cellphone from users where id='"+id+"'", function(result){
+        if(result.rows.length == 0){
+            res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
+            res.end('<script>history.back()</script>')
+        } else {
+            var row = result.rows[0];
+            var salt = crypto.createHash("sha512").update(id+row[0]+row[1]+row[2]+row[3]).digest("base64");
+            crypto.pbkdf2(pw, salt, parseInt(row[3].substr(5, 6)), 64, "sha512", function(err, key){
+                if(err) console.log(err);
 
-            dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+key.toString("base64")+"'", function(result){
-                if(result.rows.length == 0){//false
-                    res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
-                    res.end('<script>history.back()</script>')
-                } else {
-                    req.session.user_id = id;
-                    req.session.nickname = result.rows[0][2];
-                    req.session.save(function(err){
-                        if(err) console.log(err);
-                    });
-                    res.end('<script>location.href="'+preURL+'"</script>')
-                }
+                dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+key.toString("base64")+"'", function(result){
+                    if(result.rows.length == 0){
+                        res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
+                        res.end('<script>history.back()</script>')
+                    } else {
+                        req.session.user_id = id;
+                        req.session.nickname = result.rows[0][2];
+                        req.session.save(function(err){
+                            if(err) console.log(err);
+                        });
+                        res.end('<script>location.href="'+preURL+'"</script>')
+                    }
+                });
             });
-        });
-    });*/
-
-    req.session.user_id = id;
-    req.session.save(function(err){
-        if(err) console.log(err);
+        }
     });
-    res.end('<script>location.href="'+preURL+'"</script>');
 });
 
 router.get("/logout",function(req,res){
