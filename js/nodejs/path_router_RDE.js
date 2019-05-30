@@ -79,7 +79,8 @@ router.post("/signup", function(req, res){
     var email = req.body.email1;
     var cellphone = req.body.cellphone1;
 
-    
+    var salt = crypto.createHash("sha512").update(id+pw+name+nickname+email+cellphone).digest("base64");
+    console.log(salt);
     
     dbconn.booleanQuery("insert into USERS values('"+id+"','"+pw+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
         console.log(result);

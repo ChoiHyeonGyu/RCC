@@ -34,7 +34,7 @@ app.use(path_router_CHG);
 var path_router_CTY = require('./js/nodejs/path_router_CTY.js');
 app.use(path_router_CTY);
 
-var path_router_RDE = require('./js/nodejs/path_router_RDE.1.js');
+var path_router_RDE = require('./js/nodejs/path_router_RDE.js');
 app.use(path_router_RDE);
 
 app.listen(3000, 'localhost', function() {
