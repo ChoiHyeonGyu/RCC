@@ -59,18 +59,6 @@ router.post("/login", function(req, res){
     var id = req.body.id1;
     var pw = req.body.pw1;
     var preURL = req.body.preURL;
-<<<<<<< HEAD
-    dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+pw+"'", function(result){
-        if(result.rows.length == 0){//false
-            res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
-            res.end('<script>history.back()</script>')
-        } else {
-            req.session.user_id = id;
-            console.log(req.session.user_id);
-            req.session.nickname = result.rows[0][2];
-            req.session.save(function(err){
-                if(err) console.log(err);
-=======
 
     /*dbconn.resultQuery("select name, nickname, email, cellphone from users where id='"+id+"'", function(result){
         var row = result.rows[0];
@@ -90,7 +78,6 @@ router.post("/login", function(req, res){
                     });
                     res.end('<script>location.href="'+preURL+'"</script>')
                 }
->>>>>>> 869c4cace0d597345c202c15ea18add515ce4844
             });
         });
     });*/
