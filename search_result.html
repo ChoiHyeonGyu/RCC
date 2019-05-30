@@ -13,9 +13,10 @@
     <div id="header4"><%- navigator_side %></div>
     <div class="briefingContents container contentsBox tac">
         <div class="hotBriefing mainContents">
-            <h2>[ <%= search %> ]검색 결과</h2>
+            <h2>[ <%= search %> ]검색 결과 - <%= pagingResult.pageCount %>개</h2>
             <table class="table mainTable">
                 <tbody>
+                    <% if(type==1){ %>
                     <%  
                         search = search.split(" ").join("%20");
                         var pid=-1;
@@ -36,6 +37,65 @@
                         string+="</th></tr>";
                     %>
                     <%- string %>
+                    <% } %>
+                    <% if(type==2){ %>
+                        <%
+                            var string="";
+                            for(var i=0;i<result.rows.length;i++){
+                        %>
+                            <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
+                            <th scope="row"><%= result.rows[i][5] %> <% if(result.rows[i][7]!=null){ %><%= "["+result.rows[i][7]+"]" %><% } %></th>
+                            <td class='w10'><%= result.rows[i][2] %></td>
+                            <td class='w10'><%= result.rows[i][6] %>$</td>
+                            </tr>
+                        <%
+                            }
+                        %>
+
+                    <% } %>
+                    <% if(type==3){ %>
+                        <tr><th>채널유저</th><th>게시글 수</th><th>구독자 수</th></tr>
+                        <%
+                            for(var i=0;i<result.rows.length;i++){
+                        %>
+                            <tr>
+                                <td><%= result.rows[i][0] %></td>
+                                <td><%= result.rows[i][1] %></td>
+                                <td><%= result.rows[i][2] %></td>
+                            </tr>
+                        <% } %>
+                    <% } %>
+
+                    <% if(type==0){ %>
+                        <% for(var i=0; i<result.rows.length;i++){ %>
+                            <% if(result.rows[i][3]==1){ %>
+                                <% 
+                                    result.rows[i][2] = result.rows[i][2].replace("&lt;br&gt;","");
+                                    result.rows[i][2] = result.rows[i][2].split("&lt;").join("<");
+                                    result.rows[i][2] = result.rows[i][2].split("&gt;").join(">");
+                                %>
+                                <tr class="hover-pointer hover-underline" onclick="location.href='/breifing_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
+                                    <td class='' rowspan="2">브리핑</td>
+                                    <th scope='rows' colspan="3"><%- result.rows[i][2] %></th>
+                                </tr>
+                                <tr>
+                                    <td class='commentaryHash'><%= result.rows[i][1] %></td>
+                                </tr>
+                            <% } %>
+                            <% if(result.rows[i][3]==0){ %>
+                                <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
+                                    
+                                    <td class='w10' rowspan="2">논평</td>    
+                                    <th scope='rows'><%= result.rows[i][2] %> <%if(result.rows[i][6]!=null){%>[<%= result.rows[i][6] %>]<%}%></th>
+                                    <td class='w10' rowspan="2"><%= result.rows[i][4] %></td>
+                                    <td class='w10' rowspan="2"><%= result.rows[i][5] %>$</td>
+                                </tr>
+                                <tr>
+                                    <td class='commentaryHash'><%= result.rows[i][1] %></td>
+                                </tr>    
+                            <% } %>
+                        <% } %>
+                    <% } %>
                 </tbody>
             </table>
             

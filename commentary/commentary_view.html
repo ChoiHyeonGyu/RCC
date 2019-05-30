@@ -3,18 +3,46 @@
 <head>
     <link rel="stylesheet" type="text/css" href="../css/brif_comm.css">
     <script>
+        var writer = '<%= postResult.rows[0][1] %>';
         onload = function () {
             $("#mainNavBtn03").addClass("active");
-            $("#Cate02").addClass("active");
-            for (var i = 1; i <= document.getElementsByTagName('a').length; i++) {
-                var id = "#Cate" + i;
-                $(id).click(function () { location.href = '/commentary_detail'; });
-            }
         }
         function deleteClick(){
             var result = confirm("정말로 삭제하시겠습니까?");
             var changeURL = (document.referrer).replace("&","<**>");
             if(result) location.href='/delete?postNo=<%= postResult.rows[0][0] %>&preURL='+changeURL;
+        }
+        function deleteCommentsClick(cmid){
+            var result = confirm("정말로 삭제하시겠습니까?");
+            if(result) deleteComments(cmid);
+        }
+        function deleteComments(cmid){
+            //에이잭스로 삭제 후 리로드
+            $.ajax({
+                    url: '/delete_comments',                //주소
+                    dataType: 'json',                  //데이터 형식
+                    type: 'POST',                      //전송 타입
+                    data: {'cmid':cmid,'cid':'<%= commentResult.rows[0][0] %>' },      //데이터를 json 형식, 객체형식으로 전송
+                    success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
+                        if ( result['result'] == true ) {
+                            //코멘츠를 받아와서 리로드
+                            //commentslist
+                            var deleteBtn = "";
+                            user='<%= user %>';
+                            $("#commentsTable").empty();
+                            for(var i=0;i<result['commentslist'].rows.length;i++){
+                                deleteBtn="";
+                                if(user==result['commentslist'].rows[i][4])deleteBtn+='<button class="btn btn-light fr mg-10n0" onclick=deleteCommentsClick('+result['commentslist'].rows[i][0]+');>x</button>';
+                                if('admin' == result["commentslist"].rows[i][4])result["commentslist"].rows[i][4]="<span style='color:#ef7c7c;font-weight:bold;'>"+result["commentslist"].rows[i][4]+"</span>";
+                                else if(writer == result["commentslist"].rows[i][4])result["commentslist"].rows[i][4]="<span style='font-weight:bold;'>"+result["commentslist"].rows[i][4]+"</span>";
+                                $("#commentsTable").append('<tr><td class="commentInfo">'+result["commentslist"].rows[i][4]+' '+result["commentslist"].rows[i][3]+'</td></tr><tr><td class="commentContents" scope="row" colspan="2">'+result["commentslist"].rows[i][2]+deleteBtn+'</td></tr>');
+                            }
+                        }
+                        else{
+                            alert("ERROR");
+                        }
+                    } //function끝
+                }); // ------      ajax 끝-----------------
         }
         function subscribeClick(){
             $.ajax({
@@ -41,6 +69,39 @@
                     } //function끝
                 }); // ------      ajax 끝-----------------
         }
+        function createComments(){
+            //댓글 저장 후 댓글 창 리로드
+            var comments = $('#commentText').val();
+            $('#commentText').val("");
+            $.ajax({
+                    url: '/comments',                //주소
+                    dataType: 'json',                  //데이터 형식
+                    type: 'POST',                      //전송 타입
+                    data: {'msg':comments,'cid':"<%= commentResult.rows[0][0] %>"},      //데이터를 json 형식, 객체형식으로 전송
+                    success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
+                        if ( result['result'] == true ) {
+                            //코멘츠를 받아와서 리로드
+                            //commentslist
+                            var deleteBtn = "";
+                            user='<%= user %>';
+                            $("#commentsTable").empty();
+                            for(var i=0;i<result['commentslist'].rows.length;i++){
+                                deleteBtn="";
+                                if(user==result['commentslist'].rows[i][4])deleteBtn+='<button class="btn btn-light fr mg-10n0" onclick=deleteCommentsClick('+result['commentslist'].rows[i][0]+');>x</button>';
+                                if('admin' == result["commentslist"].rows[i][4])result["commentslist"].rows[i][4]="<span style='color:#ef7c7c;font-weight:bold;'>"+result["commentslist"].rows[i][4]+"</span>";
+                                else if(writer == result["commentslist"].rows[i][4])result["commentslist"].rows[i][4]="<span style='font-weight:bold;'>"+result["commentslist"].rows[i][4]+"</span>";
+                                $("#commentsTable").append('<tr><td class="commentInfo">'+result["commentslist"].rows[i][4]+' '+result["commentslist"].rows[i][3]+'</td></tr><tr><td class="commentContents" scope="row" colspan="2">'+result["commentslist"].rows[i][2]+deleteBtn+'</td></tr>');
+                            }
+                        }
+                        else if(result['result'] == 'error'){
+                            alert("ERROR");
+                        }
+                        else{//실패
+                            alert("로그인을 먼저 해주세요");
+                        }
+                    } //function끝
+                }); // ------      ajax 끝-----------------
+        }
     </script>
 </head>
 
@@ -49,8 +110,8 @@
     <div id="header" class="container"><%- logo %></div>
     <div id="header3" class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
-    <div class="commentaryView container contentsBox">
-        <div id="contentsSideNav"><%- contentsSideNav %></div>
+    <div class="commentaryView container contentsBox tac">
+        <% if(search==null){ %><div id="contentsSideNav"><%- contentsSideNav %></div><% } %>
         <div class="showFrame mainContents w85">
             <div class="showInfo show">
                 <span class="infospan"><%= postResult.rows[0][1] %></span>
@@ -84,45 +145,31 @@
             </div>
             <% if(user!=postResult.rows[0][1]){ %><button class="btn btn-light <% if(subscribeResult){%>active<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button><% } %>
             <button class="btn btn-light" value="Donate">Donate</button>
-            <button class="btn btn-light" onclick="history.back();">Back</button>
+            <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
             <div class="commentDiv">
                 <div class="commentWrite tar">
-                    <form class="dib commentForm">
-                        <input type="text" placeholder="Comment">
+                    <form class="dib commentForm" action="/comments" method="POST">
+                        <input type="text" placeholder="Comment" id="commentText" name="comment">
                     </form>
-                    <button class="btn btn-light">Comment</button>
+                    <button class="btn btn-light" onclick="createComments();">Comment</button>
                 </div>
                 <div class="commentList">
                     <table class="table mainTable commTable">
-                        <tbody>
+                        <tbody id="commentsTable">
+                            <% var deleteBtn=""; %>
+                            <% for(var i=0;i<commentsResult.rows.length;i++){ %>
+                                <% deleteBtn=""; if(user==commentsResult.rows[i][4]){ deleteBtn+='<button class="btn btn-light fr mg-10n0" onclick=deleteCommentsClick('+commentsResult.rows[i][0]+');>x</button>' } %>
+                                <%
+                                    if(commentsResult.rows[i][4]=='admin')commentsResult.rows[i][4]="<span style='color:#ef7c7c;font-weight:bold;'>"+commentsResult.rows[i][4]+"</span>";
+                                    else if(commentsResult.rows[i][4]==postResult.rows[0][1])commentsResult.rows[i][4]="<span style='font-weight:bold;'>"+commentsResult.rows[i][4]+"</span>";
+                                %>
                             <tr>
-                                <td class='commentInfo'>RyuDing 19.05.21</td>
+                                <td class='commentInfo'><%- commentsResult.rows[i][4] %> <%= commentsResult.rows[i][3] %></td>
                             </tr>
                             <tr>
-                                <td class="commentContents" scope="row" colspan="2">아니 기각이 말이 되나...;</td>
+                                <td class="commentContents" scope="row" colspan="2"><%= commentsResult.rows[i][2] %><%- deleteBtn %></td>
                             </tr>
-
-                            <tr>
-                                <td class='commentInfo'>RyuDing 19.05.21</td>
-                            </tr>
-                            <tr>
-                                <td class="commentContents" scope="row" colspan="2">이 정도면 판사가 돈 먹은 거 아닌가요?</td>
-                            </tr>
-
-                            <tr>
-                                <td class='commentInfo'>RyuDing 19.05.21</td>
-                            </tr>
-                            <tr>
-                                <td class="commentContents" scope="row" colspan="2">뒷돈먹었다는 말도 많던데..</td>
-                            </tr>
-
-                            <tr>
-                                <td class='commentInfo'>RyuDing 19.05.21</td>
-                            </tr>
-                            <tr>
-                                <td class="commentContents" scope="row" colspan="2">제가 알기론...보통 증거 한번 써서 재판 끝나고 나면은 또
-                                    못쓸텐데..아닌가?</td>
-                            </tr>
+                            <% } %>
                         </tbody>
                     </table>
                 </div>
