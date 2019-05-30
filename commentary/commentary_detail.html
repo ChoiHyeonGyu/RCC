@@ -29,14 +29,14 @@
     <div id="header" class="container"><%- logo %></div>
     <div id="header3" class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
-    <div class="briefingContents container contentsBox">
+    <div class="briefingContents container contentsBox tac">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
         <div class="hotBriefing mainContents w85">
             <h2>논평</h2>
             <table class="table hashTable">
                     <% for(var i=0;i<result.rows.length;i++){ %>
                     <tr  class="hover-pointer hover-underline" onclick="location.href='/commentary_view?postNo=<%= result.rows[i][0] %>'">
-                        <th scope="row"><%= result.rows[i][5] %></th>
+                        <th scope="row"><%= result.rows[i][5] %> <% if(result.rows[i][7]!=null){ %><%= "["+result.rows[i][7]+"]" %><% } %></th>
                         <td class='w10' rowspan="2"><%= result.rows[i][2] %></td>
                         <td class='w10' rowspan="2"><%= result.rows[i][6] %>$</td>
                     </tr>

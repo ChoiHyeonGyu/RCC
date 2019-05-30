@@ -3,7 +3,7 @@ var a=false;
 
 var count1=0; // 아이디 중복체크
 var count2=0; // 휴대폰 본인인증에 쓰일 부분
-
+var result1="";
 
 $(document).on("click","#id_check",function(){
     if($('#id').val().length<4){
@@ -31,30 +31,67 @@ $(document).on("click","#id_check",function(){
     
 });
 
-/*$(document).on("click","#phone_click",function(){
-    $('#result').html('');
-    $('#result').html('본인 확인 중');
-    $("#result").css("color","red");
+
+$(document).on("click","#phone_click",function(){ // 처음 폰번호 클릭할때
     $.ajax({
         url:'/auth',
         dataType:'json',
         type:'POST',
         data:{'cellphone':$("#cellphone").val()},
         success:function(result){
-            if(result['result']==1){
-                $('#result').html('본인 인증 성공');
-                $("#result").css("color","green");
-                count=1;
-            }else if(result['result']==2){
-                $('#result').html('본인 인증 실패');
-                $("#result").css("color","red");
-            }else if(result['result']==3){
+            if(result['result']==true){
+                $('#result').html('인증번호를 입력해 주세요.');
+                $("#result").css("color","blue");
+                $("#auth_num").css("display","block");
+                $("#auth_btn").css("display","block");
+                $("#auth_box").css("display","block");
+            }else if(result['result']==false){
                 $('#result').html('이미 있는 번호 입니다');
                 $("#result").css("color","red");
+                $("#auth_num").css("display","none");
+                $("#auth_btn").css("display","none");
+                $("#auth_box").css("display","none");
             }
         }
     });
-});*/ //휴대폰 번호 본인인증 부분.
+});  //휴대폰 번호 본인인증 부분.
+
+
+$(document).on("click","#auth_btn",function(){
+    $.ajax({
+        url:'/authnum',
+        dataType:'json',
+        type:'POST',
+        data:{'auth_num':$("#auth_num").val()},
+        success:function(result){
+            if(result['result']==1){
+                $("#auth_num").css("display","none");
+                $("#auth_btn").css("display","none");
+                $("#auth_box").css("display","none");
+                $('#result').html('인증되었습니다.');
+                $("#result").css("color","green");
+                $("#phone_click").css("display","none");
+                count2=1;
+            }else if(result['result']==2){
+                $('#result').html('인증번호를 틀렸습니다.');
+                $("#result").css("color","red");
+                count2=0;
+            }
+            else if(result['result']==3){
+                $("#auth_num").css("display","none");
+                $("#auth_btn").css("display","none");
+                $("#auth_box").css("display","none");
+                $('#result').html('인증번호를 틀렸습니다.');
+                $("#result").css("color","red");
+                count2=0;
+            }
+        }
+    });
+});  //휴대폰 번호 본인인증 부분.
+
+
+
+
 
 function checkval(){
     var id=document.getElementById('id');
@@ -70,6 +107,10 @@ function checkval(){
         return false;
     }else if(count1==0){
         alert("아이디 중복확인 해주세요");
+        return false;
+    }
+    if(count1==0){
+        alert("아이디 중복 확인을 해주세요!");
         return false;
     }
 
@@ -116,10 +157,10 @@ function checkval(){
         alert("전화번호를 입력해주세요.");
         return false;
     }
-    /*if(count2==0){
+    if(count2==0){
         alert("휴대폰 인증을 해주세요!");
         return false;
-    }*/
+    }
     if(cellphone.value!="" && cellphone.value!=null){
         for(var i=0;i<cellphone.value.length;i++){
             if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){
@@ -176,22 +217,29 @@ function pwcheck2(){
     var pw=document.forms[0].pw1;
     var pwcheck=document.forms[0].pwcheck1;
     var div=document.getElementById("pwcheckmsg");
-    if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
-        if(pw.value != pwcheck.value){
-            div.style.color="red";
-            div.innerHTML="비밀번호 불일치!";
-        }
-        else if(pw.value == pwcheck.value){
-            div.style.color="green";
-            div.innerHTML="비밀번호 일치!";
-        }else{
-            div.innerHTML=" ";
-        }
-    }else if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
-        div.innerHTML="1";
-        div.style.color='white';
-    }
 
+    if(pwcheck.value.length<8 && pwcheck.value.length>=1){
+        div.style.color="purple";
+        div.innerHTML="8자이상 입력해 주세요";
+    }else{
+        if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
+            if(pw.value != pwcheck.value){
+                div.style.color="red";
+                div.innerHTML="비밀번호 불일치!";
+            }
+            else if(pw.value == pwcheck.value){
+                div.style.color="green";
+                div.innerHTML="비밀번호 일치!";
+            }else{
+                div.innerHTML=" ";
+            }
+        }else if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
+            div.innerHTML="1";
+            div.style.color='white';
+        }
+    
+    }
+    
 
 }
 
