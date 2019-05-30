@@ -1,12 +1,37 @@
 
 var a=false;
 
-var count1=0;
-var count2=0;
+var count1=0; // 아이디 중복체크
+var count2=0; // 휴대폰 본인인증에 쓰일 부분
 
 
+$(document).on("click","#id_check",function(){
+    if($('#id').val().length<4){
+        $('#id_msg').html('4개 이상 입력해주세요.');
+        $("#id_msg").css("color","blue");
+    }else{
+        $.ajax({
+            url:'/idcheck',
+            dataType:'json',
+            type:'POST',
+            data:{'id':$("#id").val()},
+            success:function(id_msg){
+                if(id_msg['id_msg']==true){
+                    $('#id_msg').html('사용가능한 아이디 입니다.');
+                    $("#id_msg").css("color","green");
+                    count1=1;
+                }else if(id_msg['id_msg']==false){
+                    $('#id_msg').html('이미 있는 아이디 입니다');
+                    $("#id_msg").css("color","red");
+                    count1=0;
+                }
+            }
+        });
+    }
+    
+});
 
-$(document).on("click","#phone_click",function(){
+/*$(document).on("click","#phone_click",function(){
     $('#result').html('');
     $('#result').html('본인 확인 중');
     $("#result").css("color","red");
@@ -29,27 +54,7 @@ $(document).on("click","#phone_click",function(){
             }
         }
     });
-});
-$(document).on("click","#id_check",function(){
-    $('#id_msg').html('');
-    $.ajax({
-        url:'/idcheck',
-        dataType:'json',
-        type:'POST',
-        data:{'id':$("#id").val()},
-        success:function(result){
-            if(result['result']==true){
-                $('#result').html('사용가능한 아이디 입니다.');
-                $("#result").css("color","green");
-            }else if(result['result']==false){
-                $('#result').html('이미 있는 아이디 입니다');
-                $("#result").css("color","red");
-            }
-        }
-    });
-});
-
-
+});*/ //휴대폰 번호 본인인증 부분.
 
 function checkval(){
     var id=document.getElementById('id');
@@ -59,8 +64,12 @@ function checkval(){
     var nickname=document.getElementById('nickname');
     var email=document.getElementById('email');
     var cellphone=document.getElementById('cellphone');
+    
     if(id.value=="" || id.value==null){
-        alert("아이디를 입력해주세요.");
+        alert("아이디를 입력해주세요");
+        return false;
+    }else if(count1==0){
+        alert("아이디 중복확인 해주세요");
         return false;
     }
 
@@ -107,10 +116,10 @@ function checkval(){
         alert("전화번호를 입력해주세요.");
         return false;
     }
-    if(count==0){
+    /*if(count2==0){
         alert("휴대폰 인증을 해주세요!");
         return false;
-    }
+    }*/
     if(cellphone.value!="" && cellphone.value!=null){
         for(var i=0;i<cellphone.value.length;i++){
             if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){

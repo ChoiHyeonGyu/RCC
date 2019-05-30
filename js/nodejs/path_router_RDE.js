@@ -232,4 +232,26 @@ router.post("/auth",function(req,res){
     
 });
 
+
+
+router.post("/idcheck",function(req,res){
+    var id=req.body.id;
+    console.log('post방식으로 호출.');
+    dbconn.resultQuery("select id from users where id='"+id+"'", function(result){
+        console.log(result);
+        if(result.rows.length == 0){
+            console.log(1)
+            return res.json({ id_msg : true });  
+        } else {
+            console.log(result.rows[0][0]);
+            console.log(2);
+            return res.json({ id_msg : false }); 
+        }
+    });
+
+    
+    
+    
+});
+
 module.exports = router;
