@@ -13,7 +13,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 24000 * 60 * 60
+      maxAge: 24 * 60 * 60 * 1000
     },
     store: new MySQLStore({
       host: '192.168.0.8',
@@ -34,7 +34,7 @@ app.use(path_router_CHG);
 var path_router_CTY = require('./js/nodejs/path_router_CTY.js');
 app.use(path_router_CTY);
 
-var path_router_RDE = require('./js/nodejs/path_router_RDE.js');
+var path_router_RDE = require('./js/nodejs/path_router_RDE.1.js');
 app.use(path_router_RDE);
 
 app.listen(3000, 'localhost', function() {

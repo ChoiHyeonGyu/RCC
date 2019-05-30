@@ -181,8 +181,13 @@ router.get("/logout",function(req,res){
 });
 
 router.post("/auth",function(req,res){
-    var cellphone=req.body.cellphone;
-    var var_num=String(parseInt(Math.random()*99999-10000+1)+10000);
+    var cellphone = req.body.cellphone;
+    var var_num = String(parseInt(Math.random()*99999-10000+1)+10000);
+    req.session.cookie.maxAge = 3 * 60 * 1000;
+    req.session.vn = var_num;
+    req.session.save(function(err){
+        if(err) console.log(err);
+    });
     console.log('post방식으로 호출.');
     console.log(var_num);
     console.log(cellphone);
@@ -209,8 +214,10 @@ router.post("/auth",function(req,res){
                 }
                 
               });
+              req.session.destroy(function(err){
+                if(err) console.log(err);
+              });
               return res.json({ result : 1 });
-              
         } else {
             console.log(result.rows[0][0]);
             var num=result.rows[0][0];
