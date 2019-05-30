@@ -238,8 +238,8 @@ $(function(){
 
     $(document).on('keydown', '#my_search', function(){
         if(event.keyCode == 13){
-            srchpost = $(location).attr('search').match('s=2')[0];
-            srchcmnt = $(location).attr('search').match('s=3')[0];
+            srchpost = $(location).attr('search').match('s=2');
+            srchcmnt = $(location).attr('search').match('s=3');
 
             $.ajax({
                 url: '/post/search',
@@ -249,15 +249,17 @@ $(function(){
                     cmntid: srchcmnt
                 },
                 success: function(result){
+                    lastnum = 0;
                     if(srchpost){
                         rowsProcessing(result.rows);
+                        searchPaging(result);
                     } else if(srchcmnt) {
                         rowsCmntProcessing(result.rows);
+                        searchCmntPaging(result);
                     } else {
                         rowsSubProcessing(result.rows);
+                        searchSubPaging(result);
                     }
-                    lastnum = 0;
-                    searchPaging(result);
                 },
                 error: function(error){
                     console.log(error);
@@ -271,10 +273,18 @@ $(function(){
             url: '/post/search/pagelist',
             data: {
                 txt: $('#my_search').val(),
-                pid: $(this).attr('nextpid')
+                sid: $(this).attr('nextsid'),
+                pid: $(this).attr('nextpid'),
+                cmntid: $(this).attr('nextcmntid')
             },
             success: function(result){
-                rowsProcessing(result.rows);
+                if(srchpost){
+                    rowsProcessing(result.rows);
+                } else if(srchcmnt) {
+                    rowsCmntProcessing(result.rows);
+                } else {
+                    rowsSubProcessing(result.rows);
+                }
             },
             error: function(error){
                 console.log(error);
@@ -289,12 +299,22 @@ $(function(){
             url: '/post/search/pagelist',
             data: {
                 txt: $('#my_search').val(),
-                pid: $(this).attr('nextpid')
+                sid: $(this).attr('nextsid'),
+                pid: $(this).attr('nextpid'),
+                cmntid: $(this).attr('nextcmntid')
             },
             success: function(result){
-                rowsProcessing(result.rows);
                 lastnum += 10;
-                searchPaging(result);
+                if(srchpost){
+                    rowsProcessing(result.rows);
+                    searchPaging(result);
+                } else if(srchcmnt) {
+                    rowsCmntProcessing(result.rows);
+                    searchCmntPaging(result);
+                } else {
+                    rowsSubProcessing(result.rows);
+                    searchSubPaging(result);
+                }
             },
             error: function(error){
                 console.log(error);
@@ -307,18 +327,45 @@ $(function(){
             url: '/post/search/pagelist',
             data: {
                 txt: $('#my_search').val(),
-                pid: $(this).attr('nextpid')
+                sid: $(this).attr('nextsid'),
+                pid: $(this).attr('nextpid'),
+                cmntid: $(this).attr('nextcmntid')
             },
             success: function(result){
-                rowsProcessing(result.rows);
                 lastnum -= 10;
-                searchPaging(result);
+                if(srchpost){
+                    rowsProcessing(result.rows);
+                    searchPaging(result);
+                } else if(srchcmnt) {
+                    rowsCmntProcessing(result.rows);
+                    searchCmntPaging(result);
+                } else {
+                    rowsSubProcessing(result.rows);
+                    searchSubPaging(result);
+                }
             },
             error: function(error){
                 console.log(error);
             }
         });
     });
+
+    function searchSubPaging(result){
+        var page = result.page;
+        $('#pagelist button').remove();
+        for(var i = 0; i < page.length; i++){
+            if(i == 0){
+                if(result.prevsid){
+                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextsid='"+result.prevsid+"'>&lt;</button>");
+                }
+                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextsid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+            } else if(i == 10) {
+                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextsid='"+page[i]+"'>&gt;</button>");
+            } else {
+                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextsid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+            }
+        }
+    }
 
     function searchPaging(result){
         var page = result.page;
@@ -333,6 +380,23 @@ $(function(){
                 $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextpid='"+page[i]+"'>&gt;</button>");
             } else {
                 $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+            }
+        }
+    }
+
+    function searchCmntPaging(result){
+        var page = result.page;
+        $('#pagelist button').remove();
+        for(var i = 0; i < page.length; i++){
+            if(i == 0){
+                if(result.prevcmntid){
+                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextcmntid='"+result.prevcmntid+"'>&lt;</button>");
+                }
+                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextcmntid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+            } else if(i == 10) {
+                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextcmntid='"+page[i]+"'>&gt;</button>");
+            } else {
+                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextcmntid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
             }
         }
     }
