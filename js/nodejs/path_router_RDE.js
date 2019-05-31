@@ -69,7 +69,6 @@ router.post("/login", function(req, res){
             var salt = crypto.createHash("sha512").update(id+row[0]+row[1]+row[2]+row[3]).digest("base64");
             crypto.pbkdf2(pw, salt, parseInt(row[3].substr(5, 6)), 64, "sha512", function(err, key){
                 if(err) console.log(err);
-
                 dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+key.toString("base64")+"'", function(result){
                     if(result.rows.length == 0){
                         res.write("<script>alert('로그인에 실패하였습니다!.');</script>");

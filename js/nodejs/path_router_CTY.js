@@ -14,8 +14,8 @@ var cateNav = false;
 var categoryNav = "";
 var BFcateNavPage = "";
 var CMcateNavPage = "";
-var categoryList;
-var categoryDetailList;
+var categoryList={'rows':[]};
+var categoryDetailList={'rows':[]};
 
 
 router.get("*", function (req, res, next) {
@@ -30,13 +30,19 @@ function init(res, callback) {
 function initCategoryNav(callback) {
     if (!cateNav) {
         dbconn.resultQuery("select * from category", function (result) {
-            categoryList = result;
             cateDetailList(function (detailresult) {
-                categoryDetailList = detailresult;
+                for (var i = 0; i < result.rows.length; i++) {
+                    if (result.rows[i][0] == 0) continue;
+                    categoryList.rows.push([result.rows[i][0],result.rows[i][1]]);
+                }
+                for (var j = 0; j < detailresult.rows.length; j++) {
+                    if (detailresult.rows[j][0] == 0) continue;
+                    categoryDetailList.rows.push([detailresult.rows[j][0],detailresult.rows[j][1],detailresult.rows[j][2]]);
+                }
                 for (var i = 1; i <= result.rows.length; i++) {
                     if (result.rows[i - 1][0] == 0) continue;
                     categoryNav += '<div class="contentsSideNavDetail"><a class="nav-link btn-light hover-pointer categoryHead" href="/breifing_detail?cateId=' + result.rows[i - 1][0] + '&pageNo=1" id="categoryId' + result.rows[i - 1][0] + '">' + result.rows[i - 1][1] + '</a>' +
-                        '<div class="detailDiv" id=detail' + i + '>';
+                        '<div class="detailDiv" id=detail' + result.rows[i - 1][0] + '>'; 
                     //현재는 for문을 무식하게 돔
                     //추후 수정해야 할 사항 : 각 i마다 catelist를 불러온다. 모두 불러오면 콜백으로 categoryNav를 채움
                     for (var j = 1; j <= detailresult.rows.length; j++) {
@@ -54,7 +60,7 @@ function initCategoryNav(callback) {
                 for (var i = 1; i <= result.rows.length; i++) {
                     if (result.rows[i - 1][0] == 0) continue;
                     categoryNav += '<div class="contentsSideNavDetail"><a class="nav-link btn-light hover-pointer categoryHead" href="/commentary_detail?cateId=' + result.rows[i - 1][0] + '&pageNo=1" id="categoryId' + result.rows[i - 1][0] + '">' + result.rows[i - 1][1] + '</a>' +
-                        '<div class="detailDiv" id=detail' + i + '>';
+                        '<div class="detailDiv" id=detail' + result.rows[i - 1][0] + '>';
                     //현재는 for문을 무식하게 돔
                     //추후 수정해야 할 사항 : 각 i마다 catelist를 불러온다. 모두 불러오면 콜백으로 categoryNav를 채움
                     for (var j = 1; j <= detailresult.rows.length; j++) {
@@ -221,6 +227,8 @@ function subscribeCheck(writer, viewer, callback) {
         else callback(false);
     });
 }
+
+
 router.get("/breifing_view", function (req, res) {
     var postNo = req.param('postNo');
     getPost(postNo, function (postResult) {
