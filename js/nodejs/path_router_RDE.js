@@ -50,6 +50,17 @@ router.get("/pw_find", function(req, res) {
 });
 
 
+router.get("/pw_change", function(req, res) {
+    fs.readFile("pw_change.html", "utf-8", function(error, data) {
+        res.send(ejs.render(include.import_default() + data, {
+            logo: include.logo(),
+            main_header: include.main_header(req.session.user_id),
+        }));
+    });
+
+});
+
+
 
 
 
@@ -62,6 +73,7 @@ router.post("/login", function(req, res){
 
     dbconn.resultQuery("select name, nickname, email, cellphone from users where id='"+id+"'", function(result){
         if(result.rows.length == 0){
+            res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
             res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
             res.end('<script>history.back()</script>')
         } else {
@@ -71,6 +83,7 @@ router.post("/login", function(req, res){
                 if(err) console.log(err);
                 dbconn.resultQuery("select id, pw, nickname from users where id='"+id+"' and pw='"+key.toString("base64")+"'", function(result){
                     if(result.rows.length == 0){
+                        res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
                         res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
                         res.end('<script>history.back()</script>')
                     } else {
@@ -117,9 +130,11 @@ router.post("/signup", function(req, res){
         dbconn.booleanQuery("insert into USERS values('"+id+"','"+key.toString("base64")+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
             console.log(result);
             if(result == false){//false
+                res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
                 res.write("<script>alert('fail!');</script>")
                 res.end('<script>history.back();</script>')
             } else {
+                res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
                 res.write("<script>alert('signup!');</script>")
                 res.end('<script>history.go(-2);</script>')
             }
@@ -140,7 +155,6 @@ router.post("/id_find", function(req, res){
     console.log(email);
     console.log(cellphone);
     dbconn.resultQuery("select ID from users where name='"+name+"' and email='"+email+"' and cellphone='"+cellphone+"'", function(result){
-         str=result.rows[0][0];
         // console.log(result); //{ metaData: [ { name: 'ID' } ], rows: [ [ 'chg' ] ] }
         // console.log(result.rows[0]); //[ 'chg' ]
         // console.log(result.rows[0][0]); //chg
@@ -151,6 +165,7 @@ router.post("/id_find", function(req, res){
             res.write("<script>alert('회원정보가 없습니다!')</script>");
             res.end('<script>history.back();</script>');
         } else {
+            str=result.rows[0][0];
             res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
             for(var i=0;i<Math.round(str.length/2);i++){
                 id23+=str.charAt(i);
@@ -178,23 +193,39 @@ router.post("/pw_find", function(req, res){
     var str=""
     dbconn.resultQuery("select id,pw,name,email,cellphone from users where id='"+id+"' and name='"+name+"' and email='"+email+"' and cellphone='"+cellphone+"'", function(result){      
         console.log(result);
-        str=result.rows[0][1];
+        name="";
         if(result.rows.length == 0){//false
             res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
             res.write("<script>alert('회원정보가 없습니다!')</script>");
             res.end('<script>history.back();</script>');
         } else {
-            res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-            for(var i=0;i<3;i++){
-                id23+=str.charAt(i);
-            }
-            for(var i=3;i<str.length;i++){
-                id23+='*';
+            str=result.rows[0][1];
+            res.end('<script>location.href="/pw_change";</script>');
+        }
+        fs.readFile("pw_change.html", "utf-8", function(error, data) {
+            res.send(ejs.render(include.import_default() + data, {
+                logo: include.logo(),
+                main_header: include.main_header(req.session.user_id),
+                id : result.rows[0][0],
+            }));
+        });
+    });
+});
 
-            }
-            var str1="비밀번호:"+id23;
-            res.write("<script>alert('"+str1+"');</script>");
-            res.end('<script>history.go(-2);</script>');
+
+router.post("/pw_change", function(req, res){
+    var pw=req.body.pw1;
+    console.log(pw);
+    var id=req.body.hidden_id1
+    console.log(id);
+    dbconn.resultQuery("update users set pw='"+pw+"' where id="+id+"'", function(result){      
+        if(result.rows.length == 0){//false
+            console.log("실패실패시래패실패실패실패시랲시래");
+        }else{
+            console.log(result);
+            res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+            res.write("<script>alert('변경되었습니다.!');</script>");
+            res.end("<script>location.href='/login'</script>")
         }
     });
 });
@@ -292,13 +323,14 @@ router.post("/authnum",function(req,res){
 
 
 router.post("/unload",function(req,res){
-    console.log("bye...bye...");
     req.session.destroy(function(err){
         if(err){
             return;
         }
     });    
 });
+
+
 router.post("/idcheck",function(req,res){
     var id=req.body.id;
     console.log('post방식으로 호출.');

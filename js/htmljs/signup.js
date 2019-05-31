@@ -77,25 +77,27 @@ $(document).on("click","#auth_btn",function(){
                 $("#result").css("color","red");
                 count2=0;
             }
-            else if(result['result']==3){
+            else if(result['result']==3 || back==1){
                 $("#auth_num").css("display","none");
                 $("#auth_btn").css("display","none");
                 $("#auth_box").css("display","none");
                 $('#result').html('인증번호를 틀렸습니다.');
                 $("#result").css("color","red");
                 count2=0;
+                back=0;
             }
         }
     });
 });  //휴대폰 번호 본인인증 부분.
-
+var back=0;
 $(window).on("beforeunload",function(){
-    console.log("bye...bye...");
     $.ajax({
         url:'/unload',
         dataType:'json',
         type:'POST',
-});
+    });
+    back=1;
+    return '나가시겠습니까?';
 }); 
 
 
