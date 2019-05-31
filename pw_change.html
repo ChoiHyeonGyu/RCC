@@ -1,0 +1,123 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type='text/css' href="/css/pw_find.css?after">
+    </head>
+    
+    <body>
+        <div id="header2"><%- main_header %></div>
+        <div id="header" class="container"><%- logo %></div>
+        <div class="pw-find container">
+            <div class="pw-find-block">
+                <form action="/pw_change" method="post" onsubmit="return checkval();">
+                    <h1>비밀번호 변경</h1>
+                    <input type="password" value="" placeholder="비밀번호(8자 이상)" id="pw" name="pw1" oninput="pw2();"/>
+                    <input type="password" value="" placeholder="비밀번호확인(8자이상)" id="pwcheck" name="pwcheck1" oninput="pwcheck2();"/>
+                    <input type="hidden" value="" id="hidden_id" name="hidden_id1">
+                    <div id="pwcheckmsg" style="color:white;">1</div>
+                    <input type="submit" value="비밀번호 변경" class="button"/>
+                </form>
+            </div>
+        </div>
+    </body>
+    <script>
+        console.log(id);
+        function checkval(){
+            var pw=document.getElementById('pw');
+            var pwcheck=document.getElementById('pwcheck');
+            document.getElementById('hidden_id').value=id;
+
+
+            if(pw.value=="" || pw.value==null){
+                alert("비밀번호를 입력해주세요.");
+                return false;
+            }
+            if (pw.value.length<8){
+                alert("비밀번호를 8자 이상 입력해주세요.");
+                return false;
+            }
+            if(pwcheck.value=="" || pwcheck.value==null){
+                alert("비밀번호를 확인해주세요.");
+                return false;
+            }
+    
+
+            if((pw.value!="" && pw.value!=null)&&(pwcheck.value!="" && pwcheck.value!=null)){
+                if(pw.value!=pwcheck.value){
+                    alert("비밀번호가 틀렸습니다. 다시 확인해 주세요.");
+                    return false;
+                }    
+            }
+        }
+        // 비밀번호 지웠을 때 빈화면 출력.
+function pw2(){
+    var pw=document.forms[0].pw1;
+    var pwcheck=document.forms[0].pwcheck1;
+    var div=document.getElementById("pwcheckmsg");
+    
+    
+    if(pw.value.length<8 && pw.value.length>=1){
+        div.style.color="purple";
+        div.innerHTML="8자이상 입력해 주세요";
+    }
+    else{
+        div.innerHTML="1";
+        div.style.color='white';
+        if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
+            if(pw.value != pwcheck.value){
+                div.style.color="red";
+                div.innerHTML="비밀번호 불일치!";
+            }else if(pw.value == pwcheck.value){
+                div.style.color="green";
+                div.innerHTML="비밀번호 일치!";
+            }
+            
+            if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
+                div.innerHTML="1";
+                div.style.color='white';
+            }
+    }
+        
+    }
+    
+
+    
+}
+
+
+
+// 키 눌렀을 때 비밀번호 확인메세지 출력.
+function pwcheck2(){
+    var pw=document.forms[0].pw1;
+    var pwcheck=document.forms[0].pwcheck1;
+    var div=document.getElementById("pwcheckmsg");
+
+    if(pwcheck.value.length<8 && pwcheck.value.length>=1){
+        div.style.color="purple";
+        div.innerHTML="8자이상 입력해 주세요";
+    }else{
+        if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
+            if(pw.value != pwcheck.value){
+                div.style.color="red";
+                div.innerHTML="비밀번호 불일치!";
+            }
+            else if(pw.value == pwcheck.value){
+                div.style.color="green";
+                div.innerHTML="비밀번호 일치!";
+            }else{
+                div.innerHTML=" ";
+            }
+        }else if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
+            div.innerHTML="1";
+            div.style.color='white';
+        }
+    
+    }
+    
+
+}
+
+
+
+    </script>
+</html>
