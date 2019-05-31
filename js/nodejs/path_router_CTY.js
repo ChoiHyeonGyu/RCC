@@ -1090,12 +1090,18 @@ router.get("/delete", function (req, res) {
 
 router.post("/getNavSubscribe", function (req, res) {
     if(req.session.user_id==null) {
-        res.send({result:true,list:result});
+        res.send({result:true});
         return;
     }
-    dbconn.resultQuery("select * from subscribe where subscriber='"+req.session.user_id+"'",function(result){
-        res.send({result:true,list:result});
+    var navSize = 5;
+    var currPage = req.body.currPage;
+    //(navSize)*(currPage-1)+1
+    //(navSize*currPage)
+    dbconn.resultQuery("select * from (select rownum row1, s.*,c.cnt from subscribe s,(select subscriber,count(*) as cnt from subscribe where subscriber='"+req.session.user_id+"' group by subscriber) c where c.subscriber=s.subscriber) where row1>="+(navSize*(currPage-1)+1)+" and row1<="+(navSize*currPage),function(result){
+        console.log(result);
+        res.send({result:true,list:result,size:navSize});
     });
+    //최대 다섯명까지 출력. 다섯명이 넘으면 다음 버튼 생성. 다음 버튼 클릭시 이전 버튼 생성
 });
 router.post("/delete_comments", function (req, res) {
     var cmid = req.body.cmid;
