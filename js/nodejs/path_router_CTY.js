@@ -102,7 +102,7 @@ function paging(str, detailstr, page_size, page_list_size, currPage, callback) {
         //1 1~6 2 7~12
         startPage = parseInt((currPage - 1) / 10) * 10 + 1;
         endPage = parseInt((currPage - 1) / 10) * 10 + page_list_size;
-        if (parseInt(totalCount / page_size) < endPage) endPage = parseInt(totalCount / page_size) + 1;
+        if (parseInt(totalCount / page_size) < endPage) endPage = parseInt(totalCount / page_size)==(totalCount / page_size) ? parseInt(totalCount / page_size) : parseInt(totalCount / page_size)+1;
         if (parseInt((currPage - 1) / 10) == 0) preBtn = 0;
         if (parseInt(totalCount / page_size) <= endPage) nextBtn = 0;
         var pageResult = {
@@ -1098,7 +1098,6 @@ router.post("/getNavSubscribe", function (req, res) {
     //(navSize)*(currPage-1)+1
     //(navSize*currPage)
     dbconn.resultQuery("select * from (select rownum row1, s.*,c.cnt from subscribe s,(select subscriber,count(*) as cnt from subscribe where subscriber='"+req.session.user_id+"' group by subscriber) c where c.subscriber=s.subscriber) where row1>="+(navSize*(currPage-1)+1)+" and row1<="+(navSize*currPage),function(result){
-        console.log(result);
         res.send({result:true,list:result,size:navSize});
     });
     //최대 다섯명까지 출력. 다섯명이 넘으면 다음 버튼 생성. 다음 버튼 클릭시 이전 버튼 생성
