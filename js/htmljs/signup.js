@@ -89,7 +89,14 @@ $(document).on("click","#auth_btn",function(){
     });
 });  //휴대폰 번호 본인인증 부분.
 
-
+$(window).on("beforeunload",function(){
+    console.log("bye...bye...");
+    $.ajax({
+        url:'/unload',
+        dataType:'json',
+        type:'POST',
+});
+}); 
 
 
 
