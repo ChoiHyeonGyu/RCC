@@ -6,7 +6,7 @@ oracledb.autoCommit = true;
 oracledb.getConnection({
     user: "rcc",
     password: "1234",
-    connectString: "localhost:1521/xe"
+    connectString: "192.168.0.8:1521/xe"
 },(err, conn)=>{
     if(err != null){
         console.log(err);
