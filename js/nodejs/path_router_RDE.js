@@ -292,6 +292,14 @@ router.post("/authnum",function(req,res){
 });
 
 
+router.post("/unload",function(req,res){
+    console.log("bye...bye...");
+    req.session.destroy(function(err){
+        if(err){
+            return;
+        }
+    });    
+});
 router.post("/idcheck",function(req,res){
     var id=req.body.id;
     console.log('post방식으로 호출.');
