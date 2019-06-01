@@ -51,7 +51,7 @@ $(function(){
     function rowsSubProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='selsub'>"+rows[i][1]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='seluser'>"+rows[i][1]+"</td> </tr>");
         }
     }
 
@@ -72,14 +72,27 @@ $(function(){
         }
     }
 
-    $(document).on('click', '.selsub', function(){
+    $(document).on('click', '.seluser', function(){
         location.href = "/channel?SEID=" + $(this).text();
     });
 
     $(document).on('click', '.pb', function(){
+        if($(location).attr('search').match('s=1')){
+            var s = 1;
+        } else if($(location).attr('search').match('s=2')) {
+            var s = 2;
+        } else if($(location).attr('search').match('s=3')) {
+            var s = 3;
+        } else if($(location).attr('search').match('s=4')) {
+            var s = 4;
+        }
+
         $.ajax({
-            url: '/post/pagelist',
-            data: { pid: $(this).attr('nextpid') },
+            url: '/my/pagelist',
+            data: {
+                s: s,
+                id: $(this).attr('nextid')
+            },
             success: function(result){
                 rowsProcessing(result.rows);
             },
@@ -93,8 +106,11 @@ $(function(){
 
     $(document).on('click', '.nb', function(){
         $.ajax({
-            url: '/post/pagelist',
-            data: { pid: $(this).attr('nextpid') },
+            url: '/my/pagelist',
+            data: {
+                s: s,
+                id: $(this).attr('nextid')
+            },
             success: function(result){
                 rowsProcessing(result.rows);
                 lastnum += 10;
@@ -108,8 +124,11 @@ $(function(){
 
     $(document).on('click', '.preb', function(){
         $.ajax({
-            url: '/post/pagelist',
-            data: { pid: $(this).attr('nextpid') },
+            url: '/my/pagelist',
+            data: {
+                s: s,
+                id: $(this).attr('nextid')
+            },
             success: function(result){
                 rowsProcessing(result.rows);
                 lastnum -= 10;
