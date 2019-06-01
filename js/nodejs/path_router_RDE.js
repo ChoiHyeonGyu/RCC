@@ -75,7 +75,7 @@ router.post("/login", function(req, res){
         if(result.rows.length == 0){
             res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
             res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
-            res.end('<script>history.back()</script>')
+            res.end('<script>history.back()</script>');
         } else {
             var row = result.rows[0];
             var salt = crypto.createHash("sha512").update(id+row[0]+row[1]+row[2]+row[3]).digest("base64");
@@ -85,14 +85,14 @@ router.post("/login", function(req, res){
                     if(result.rows.length == 0){
                         res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
                         res.write("<script>alert('로그인에 실패하였습니다!.');</script>");
-                        res.end('<script>history.back()</script>')
+                        res.end('<script>history.back()</script>');
                     } else {
                         req.session.user_id = id;
                         req.session.nickname = result.rows[0][2];
                         req.session.save(function(err){
                             if(err) console.log(err);
                         });
-                        res.end('<script>location.href="'+preURL+'"</script>')
+                        res.end('<script>location.href="'+preURL+'"</script>');
                     }
                 });
             });

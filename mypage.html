@@ -25,10 +25,10 @@
                     <a class="nav-link btn-light <% if(list.metaData[1].name == 'CHANNELUSER'){ %>active<% } %>" href="/my?s=1">Channel List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[6].name == 'HEADLINE'){ %>active<% } %>" href="/my?s=2">Briefing List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'HEADLINE'){ %>active<% } %>" href="/my?s=2">Briefing List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[6].name == 'TITLE'){ %>active<% } %>" href="/my?s=3">Commentary List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'TITLE'){ %>active<% } %>" href="/my?s=3">Commentary List</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link btn-light <% if(list.metaData[0].name == 'COMMENTS'){ %>active<% } %>" href="/my?s=4">Reply List</a>
@@ -45,14 +45,14 @@
                         <th scope="col">CHANNEL</th>
                         <% } %>
                         <% if(list.metaData[0].name == 'PID'){%>
-                            <% if(list.metaData[6].name == 'HEADLINE'){ %>
+                            <% if(list.metaData[1].name == 'HEADLINE'){ %>
                         <th scope="col">HEADLINE</th>
                             <% } else { %>
                         <th scope="col">TITLE</th>
                             <% } %>
                         <th scope="col">CATEGORY</th>
                         <th scope="col">CATEGORYDETAIL</th>
-                            <% if(list.metaData[6].name == 'HEADLINE'){ %>
+                            <% if(list.metaData[1].name == 'HEADLINE'){ %>
                         <th scope="col">VIEWS</th>
                             <% } else { %>
                         <th scope="col">COSTS</th>
@@ -80,16 +80,16 @@
                         <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr class="selrow">
                         <th scope="row"><%= list.rows[i][0] %></th>
-                            <% if(list.metaData[6].name == 'HEADLINE'){ %>
-                        <td class="headline"><%= list.rows[i][6] %></td>
+                            <% if(list.metaData[1].name == 'HEADLINE'){ %>
+                        <td class="headline"><%= list.rows[i][1] %></td>
                             <% } else { %>
-                        <td class="title"><%= list.rows[i][6] %></td>
+                        <td class="title"><%= list.rows[i][1] %></td>
                             <% } %>
+                        <td><%= list.rows[i][2] %></td>
+                        <td><%= list.rows[i][3] %></td>
                         <td><%= list.rows[i][4] %></td>
                         <td><%= list.rows[i][5] %></td>
-                        <td><%= list.rows[i][2] %></td>
-                        <td><%= list.rows[i][1] %></td>
-                        <td><%= list.rows[i][3] %></td>
+                        <td><%= list.rows[i][6] %></td>
                     </tr>
                         <% } %>
                     <% } %>
@@ -106,39 +106,15 @@
                 </tbody>
             </table>
             <div class="btn-group mr-2" role="group" id="pagelist">
-            <% if(list.metaData[0].name == 'SID'){ %>
-                <% for(var i = 0; i < page.length; i++){ %>
+                <% for(var i = 0; i < page.rows.length; i++){ %>
                     <% if(i == 0){ %>
-                <button type="button" class="btn btn-light active sb" nextsid="<%= page[i] %>">1</button>
+                <button type="button" class="btn btn-light active pb" nextid="<%= page.rows[i] %>">1</button>
                     <% } else if(i == 10) { %>
-                <button type="button" class="btn btn-light nsb" nextsid="<%= page[i] %>">&gt;</button>
+                <button type="button" class="btn btn-light nb" nextid="<%= page.rows[i] %>">&gt;</button>
                     <% } else { %>
-                <button type="button" class="btn btn-light sb" nextsid="<%= page[i] %>"><%= i + 1 %></button>
+                <button type="button" class="btn btn-light pb" nextid="<%= page.rows[i] %>"><%= i + 1 %></button>
                     <% } %>
                 <% } %>
-            <% } %>
-            <% if(list.metaData[0].name == 'PID'){ %>
-                <% for(var i = 0; i < page.length; i++){ %>
-                    <% if(i == 0){ %>
-                <button type="button" class="btn btn-light active pb" nextpid="<%= page[i] %>">1</button>
-                    <% } else if(i == 10) { %>
-                <button type="button" class="btn btn-light nb" nextpid="<%= page[i] %>">&gt;</button>
-                    <% } else { %>
-                <button type="button" class="btn btn-light pb" nextpid="<%= page[i] %>"><%= i + 1 %></button>
-                    <% } %>
-                <% } %>
-            <% } %>
-            <% if(list.metaData[0].name == 'COMMENTS'){ %>
-                <% for(var i = 0; i < page.length; i++){ %>
-                    <% if(i == 0){ %>
-                <button type="button" class="btn btn-light active cb" nextcmntid="<%= page[i] %>">1</button>
-                    <% } else if(i == 10) { %>
-                <button type="button" class="btn btn-light ncb" nextcmntid="<%= page[i] %>">&gt;</button>
-                    <% } else { %>
-                <button type="button" class="btn btn-light cb" nextcmntid="<%= page[i] %>"><%= i + 1 %></button>
-                    <% } %>
-                <% } %>
-            <% } %>
             </div>
         </div>
         <div id="empty"></div>

@@ -3,89 +3,20 @@ $(function(){
     var srchpost = null;
     var srchcmnt = null;
 
-    $(document).on('click', '.sb', function(){
-        $.ajax({
-            url: '/subscriber/pagelist',
-            data: { sid: $(this).attr('nextsid') },
-            success: function(result){
-                rowsSubProcessing(result.rows);
-            },
-            error: function(error){
-                console.log(error);
-            }
-        });
-        $('.sb').removeClass('active');
-        $(this).addClass('active');
-    });
-
-    $(document).on('click', '.nsb', function(){
-        $.ajax({
-            url: '/subscriber/pagelist',
-            data: { sid: $(this).attr('nextsid') },
-            success: function(result){
-                rowsSubProcessing(result.rows);
-                lastnum += 10;
-                pageSubProcessing(result);
-            },
-            error: function(error){
-                console.log(error);
-            }
-        });
-    });
-    
-    $(document).on('click', '.presb', function(){
-        $.ajax({
-            url: '/subscriber/pagelist',
-            data: { sid: $(this).attr('nextsid') },
-            success: function(result){
-                rowsSubProcessing(result.rows);
-                lastnum -= 10;
-                pageSubProcessing(result);
-            },
-            error: function(error){
-                console.log(error);
-            }
-        });
-    });
-
-    function rowsSubProcessing(rows){
-        $('#boardlist tr').remove();
-        for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='seluser'>"+rows[i][1]+"</td> </tr>");
+    function pageSelecting(){
+        if($(location).attr('search').match('s=1')){
+            return 1;
+        } else if($(location).attr('search').match('s=2')) {
+            return 2;
+        } else if($(location).attr('search').match('s=3')) {
+            return 3;
+        } else if($(location).attr('search').match('s=4')) {
+            return 4;
         }
     }
-
-    function pageSubProcessing(result){
-        var page = result.page;
-        $('#pagelist button').remove();
-        for(var i = 0; i < page.length; i++){
-            if(i == 0){
-                if(result.prevsid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light presb' nextsid='"+result.prevsid+"'>&lt;</button>");
-                }
-                $('#pagelist').append("<button type='button' class='btn btn-light active sb' nextsid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
-            } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nsb' nextsid='"+page[i]+"'>&gt;</button>");
-            } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light sb' nextsid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
-            }
-        }
-    }
-
-    $(document).on('click', '.seluser', function(){
-        location.href = "/channel?SEID=" + $(this).text();
-    });
 
     $(document).on('click', '.pb', function(){
-        if($(location).attr('search').match('s=1')){
-            var s = 1;
-        } else if($(location).attr('search').match('s=2')) {
-            var s = 2;
-        } else if($(location).attr('search').match('s=3')) {
-            var s = 3;
-        } else if($(location).attr('search').match('s=4')) {
-            var s = 4;
-        }
+        var s = pageSelecting();
 
         $.ajax({
             url: '/my/pagelist',
@@ -94,7 +25,7 @@ $(function(){
                 id: $(this).attr('nextid')
             },
             success: function(result){
-                rowsProcessing(result.rows);
+                rowsSelecting(s, result);
             },
             error: function(error){
                 console.log(error);
@@ -105,6 +36,8 @@ $(function(){
     });
 
     $(document).on('click', '.nb', function(){
+        var s = pageSelecting();
+
         $.ajax({
             url: '/my/pagelist',
             data: {
@@ -112,7 +45,7 @@ $(function(){
                 id: $(this).attr('nextid')
             },
             success: function(result){
-                rowsProcessing(result.rows);
+                rowsSelecting(s, result);
                 lastnum += 10;
                 pageProcessing(result);
             },
@@ -123,6 +56,8 @@ $(function(){
     });
 
     $(document).on('click', '.preb', function(){
+        var s = pageSelecting();
+
         $.ajax({
             url: '/my/pagelist',
             data: {
@@ -130,7 +65,7 @@ $(function(){
                 id: $(this).attr('nextid')
             },
             success: function(result){
-                rowsProcessing(result.rows);
+                rowsSelecting(s, result);
                 lastnum -= 10;
                 pageProcessing(result);
             },
@@ -140,35 +75,68 @@ $(function(){
         });
     });
 
-    function rowsProcessing(rows){
+    function rowsSelecting(s, result){
+        if(s == 1){
+            rowsSubProcessing(result.data.rows);
+        } else if(s == 2) {
+            rowsProcessing(result.data);
+        } else if(s == 3) {
+            rowsProcessing(result.data);
+        } else if(s == 4) {
+            rowsCmntProcessing(result.data.rows);
+        } else {
+            rowsSubProcessing(result.data.rows);
+        }
+    }
+
+    function rowsSubProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            if(rows[i][6] != null){
-                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][6]+"</td> <td>"+rows[i][4]+
-                "</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='seluser'>"+rows[i][1]+"</td> </tr>");
+        }
+    }
+
+    function rowsProcessing(data){
+        var rows = data.rows;
+        $('#boardlist tr').remove();
+        for(var i = 0; i < rows.length; i++){
+            if(data.metaData[6].name == "HEADLINE"){
+                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='headline'>"+rows[i][1]+"</td> <td>"+rows[i][2]+
+                "</td> <td>"+rows[i][3]+"</td> <td>"+rows[i][4]+"</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][6]+"</td> </tr>");
             } else {
-                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='headline'>"+rows[i][7]+"</td> <td>"+rows[i][4]+"</td> <td>"+
-                rows[i][5]+"</td> <td>"+rows[i][2]+"</td> <td>"+rows[i][1]+"</td> <td>"+rows[i][3]+"</td> </tr>");
+                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][1]+"</td> <td>"+rows[i][2]+"</td> <td>"+
+                rows[i][3]+"</td> <td>"+rows[i][4]+"</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][6]+"</td> </tr>");
             }
         }
     }
 
+    function rowsCmntProcessing(rows){
+        $('#boardlist tr').remove();
+        for(var i = 0; i < rows.length; i++){
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][3]+"</th> <td class='title'>"+rows[i][2]+"</td> <td>"+rows[i][0]+"</td> <td>"+rows[i][1]+"</td> </tr>");
+        }
+    }
+
     function pageProcessing(result){
-        var page = result.page;
+        var page = result.page.rows;
         $('#pagelist button').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
-                if(result.prevpid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light preb' nextpid='"+result.prevpid+"'>&lt;</button>");
+                if(result.previd){
+                    $('#pagelist').append("<button type='button' class='btn btn-light preb' nextid='"+result.previd+"'>&lt;</button>");
                 }
-                $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
             } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nb' nextpid='"+page[i]+"'>&gt;</button>");
+                $('#pagelist').append("<button type='button' class='btn btn-light nb' nextid='"+page[i]+"'>&gt;</button>");
             } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light pb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                $('#pagelist').append("<button type='button' class='btn btn-light pb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
             }
         }
     }
+
+    $(document).on('click', '.seluser', function(){
+        location.href = "/channel?SEID=" + $(this).text();
+    });
 
     $(document).on('click', '.headline', function(){
         location.href = "/breifing_view?postNo=" + $(this).prev().text();
@@ -186,99 +154,20 @@ $(function(){
         $(this).removeClass('table-info');
     });
 
-    $(document).on('click', '.cb', function(){
-        $.ajax({
-            url: '/reply/pagelist',
-            data: { cmntid: $(this).attr('nextcmntid') },
-            success: function(result){
-                rowsCmntProcessing(result.rows);
-            },
-            error: function(error){
-                console.log(error);
-            }
-        });
-        $('.cb').removeClass('active');
-        $(this).addClass('active');
-    });
-
-    $(document).on('click', '.ncb', function(){
-        $.ajax({
-            url: '/reply/pagelist',
-            data: { cmntid: $(this).attr('nextcmntid') },
-            success: function(result){
-                rowsCmntProcessing(result.rows);
-                lastnum += 10;
-                pageCmntProcessing(result);
-            },
-            error: function(error){
-                console.log(error);
-            }
-        });
-    });
-    
-    $(document).on('click', '.precb', function(){
-        $.ajax({
-            url: '/reply/pagelist',
-            data: { cmntid: $(this).attr('nextcmntid') },
-            success: function(result){
-                rowsCmntProcessing(result.rows);
-                lastnum -= 10;
-                pageCmntProcessing(result);
-            },
-            error: function(error){
-                console.log(error);
-            }
-        });
-    });
-
-    function rowsCmntProcessing(rows){
-        $('#boardlist tr').remove();
-        for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][3]+"</th> <td class='title'>"+rows[i][2]+"</td> <td>"+rows[i][0]+"</td> <td>"+rows[i][1]+"</td> </tr>");
-        }
-    }
-
-    function pageCmntProcessing(result){
-        var page = result.page;
-        $('#pagelist button').remove();
-        for(var i = 0; i < page.length; i++){
-            if(i == 0){
-                if(result.prevcmntid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light precb' nextcmntid='"+result.prevcmntid+"'>&lt;</button>");
-                }
-                $('#pagelist').append("<button type='button' class='btn btn-light active cb' nextcmntid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
-            } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light ncb' nextcmntid='"+page[i]+"'>&gt;</button>");
-            } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light cb' nextcmntid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
-            }
-        }
-    }
-
     $(document).on('keydown', '#my_search', function(){
         if(event.keyCode == 13){
-            srchpost = $(location).attr('search').match('s=2');
-            srchcmnt = $(location).attr('search').match('s=3');
+            var s = pageSelecting();
 
             $.ajax({
-                url: '/post/search',
+                url: '/my/search',
                 data: {
-                    txt: $(this).val(),
-                    pid: srchpost,
-                    cmntid: srchcmnt
+                    s: s,
+                    txt: $(this).val()
                 },
                 success: function(result){
+                    rowsSelecting(s, result);
                     lastnum = 0;
-                    if(srchpost){
-                        rowsProcessing(result.rows);
-                        searchPaging(result);
-                    } else if(srchcmnt) {
-                        rowsCmntProcessing(result.rows);
-                        searchCmntPaging(result);
-                    } else {
-                        rowsSubProcessing(result.rows);
-                        searchSubPaging(result);
-                    }
+                    searchPaging(result);
                 },
                 error: function(error){
                     console.log(error);
@@ -288,22 +177,17 @@ $(function(){
     });
 
     $(document).on('click', '.srchb', function(){
+        var s = pageSelecting();
+
         $.ajax({
-            url: '/post/search/pagelist',
+            url: '/my/search/pagelist',
             data: {
-                txt: $('#my_search').val(),
-                sid: $(this).attr('nextsid'),
-                pid: $(this).attr('nextpid'),
-                cmntid: $(this).attr('nextcmntid')
+                s: s,
+                id: $(this).attr('nextid'),
+                txt: $('#my_search').val()
             },
             success: function(result){
-                if(srchpost){
-                    rowsProcessing(result.rows);
-                } else if(srchcmnt) {
-                    rowsCmntProcessing(result.rows);
-                } else {
-                    rowsSubProcessing(result.rows);
-                }
+                rowsSelecting(s, result);
             },
             error: function(error){
                 console.log(error);
@@ -314,26 +198,19 @@ $(function(){
     });
 
     $(document).on('click', '.nsrchb', function(){
+        var s = pageSelecting();
+
         $.ajax({
-            url: '/post/search/pagelist',
+            url: '/my/search/pagelist',
             data: {
-                txt: $('#my_search').val(),
-                sid: $(this).attr('nextsid'),
-                pid: $(this).attr('nextpid'),
-                cmntid: $(this).attr('nextcmntid')
+                s: s,
+                id: $(this).attr('nextid'),
+                txt: $('#my_search').val()
             },
             success: function(result){
+                rowsSelecting(s, result);
                 lastnum += 10;
-                if(srchpost){
-                    rowsProcessing(result.rows);
-                    searchPaging(result);
-                } else if(srchcmnt) {
-                    rowsCmntProcessing(result.rows);
-                    searchCmntPaging(result);
-                } else {
-                    rowsSubProcessing(result.rows);
-                    searchSubPaging(result);
-                }
+                searchPaging(result);
             },
             error: function(error){
                 console.log(error);
@@ -342,26 +219,19 @@ $(function(){
     });
 
     $(document).on('click', '.presrchb', function(){
+        var s = pageSelecting();
+
         $.ajax({
-            url: '/post/search/pagelist',
+            url: '/my/search/pagelist',
             data: {
-                txt: $('#my_search').val(),
-                sid: $(this).attr('nextsid'),
-                pid: $(this).attr('nextpid'),
-                cmntid: $(this).attr('nextcmntid')
+                s: s,
+                id: $(this).attr('nextid'),
+                txt: $('#my_search').val()
             },
             success: function(result){
+                rowsSelecting(s, result);
                 lastnum -= 10;
-                if(srchpost){
-                    rowsProcessing(result.rows);
-                    searchPaging(result);
-                } else if(srchcmnt) {
-                    rowsCmntProcessing(result.rows);
-                    searchCmntPaging(result);
-                } else {
-                    rowsSubProcessing(result.rows);
-                    searchSubPaging(result);
-                }
+                searchPaging(result);
             },
             error: function(error){
                 console.log(error);
@@ -369,53 +239,19 @@ $(function(){
         });
     });
 
-    function searchSubPaging(result){
-        var page = result.page;
-        $('#pagelist button').remove();
-        for(var i = 0; i < page.length; i++){
-            if(i == 0){
-                if(result.prevsid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextsid='"+result.prevsid+"'>&lt;</button>");
-                }
-                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextsid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
-            } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextsid='"+page[i]+"'>&gt;</button>");
-            } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextsid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
-            }
-        }
-    }
-
     function searchPaging(result){
-        var page = result.page;
+        var page = result.page.rows;
         $('#pagelist button').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
-                if(result.prevpid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextpid='"+result.prevpid+"'>&lt;</button>");
+                if(result.previd){
+                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextid='"+result.previd+"'>&lt;</button>");
                 }
-                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextpid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
             } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextpid='"+page[i]+"'>&gt;</button>");
+                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextid='"+page[i]+"'>&gt;</button>");
             } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextpid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
-            }
-        }
-    }
-
-    function searchCmntPaging(result){
-        var page = result.page;
-        $('#pagelist button').remove();
-        for(var i = 0; i < page.length; i++){
-            if(i == 0){
-                if(result.prevcmntid){
-                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextcmntid='"+result.prevcmntid+"'>&lt;</button>");
-                }
-                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextcmntid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
-            } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextcmntid='"+page[i]+"'>&gt;</button>");
-            } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextcmntid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
             }
         }
     }
