@@ -14,30 +14,44 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res){
     if(req.session.user_id){
+        if(req.query.sort == '1') {
+            var sc = "";
+            var standard = "p.pid";
+        } else if(req.query.sort == '2') {
+            var sc = "desc";
+            var standard = "p.viewcount";
+        } else if(req.query.sort == '3') {
+            var sc = "desc";
+            var standard = "c.cost";
+        } else {
+            var sc = "desc";
+            var standard = "p.pid";
+        }
+
         dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), (select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') where id = '"+req.session.user_id+"'", function(result) {
             if(req.query.s == '1'){
-                dbconn.resultQuery("select * from (select s.sid, s.channeluser from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 10", function(result2){
-                    dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
+                dbconn.resultQuery("select * from (select s.sid, s.channeluser from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid "+sc+") where rownum <= 10", function(result2){
+                    dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid "+sc+") where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
                         listing(result2, result3);
                     });
                 });
             } else if(req.query.s == '2') {
-                dbconn.resultQuery("select * from (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname order by p.pid desc) p where rownum <= 60", function(result2){
+                dbconn.resultQuery("select * from (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname order by "+standard+" "+sc+") p where rownum <= 60", function(result2){
                     result2 = dataSorting(result2);
-                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from briefingdetail b join (select p.pid, p.viewcount from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid group by p.pid, p.viewcount order by "+standard+" "+sc+") where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
                         listing(result2, result3);
                     });
                 });
             } else if(req.query.s == '3') {
-                dbconn.resultQuery("select * from (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid order by p.pid desc) p where rownum <= 60", function(result2){
+                dbconn.resultQuery("select * from (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid order by "+standard+" "+sc+") p where rownum <= 60", function(result2){
                     result2 = dataSorting(result2);
-                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = c.pid group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = c.pid group by p.pid, c.cost order by "+standard+" "+sc+") where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
                         listing(result2, result3);
                     });
                 });
             } else if(req.query.s == '4') {
-                dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.pid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 10", function(result2){
-                    dbconn.resultQuery("select cmntid from (select rownum as rn, cmntid from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid desc) where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
+                dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.pid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid "+sc+") where rownum <= 10", function(result2){
+                    dbconn.resultQuery("select cmntid from (select rownum as rn, cmntid from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' order by c.cmntid "+sc+") where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
                         for(var i = 0; i < result2.rows.length; i++){
                             result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
                         }
@@ -45,8 +59,8 @@ router.get("/my", function(req, res){
                     });
                 });
             } else {
-                dbconn.resultQuery("select * from (select s.sid, s.subscriber from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 10", function(result2){
-                    dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
+                dbconn.resultQuery("select * from (select s.sid, s.subscriber from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid "+sc+") where rownum <= 10", function(result2){
+                    dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' order by s.sid "+sc+") where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
                         listing(result2, result3);
                     });
                 });
@@ -59,7 +73,8 @@ router.get("/my", function(req, res){
                         main_header: include.main_header(req.session.user_id),
                         my: result,
                         list: result2,
-                        page: result3
+                        page: result3,
+                        sort: req.query.sort
                     }));
                 });
             }
@@ -71,47 +86,77 @@ router.get("/my", function(req, res){
 
 router.get("/my/pagelist", function(req, res){
     if(req.session.user_id){
+        if(req.query.sort == '1') {
+            var sc = "";
+            var standard = "p.pid";
+            var minscope = ">=";
+            var maxscope = "<";
+            var func = "min";
+            var adddesc = "order by p.pid desc";
+        } else if(req.query.sort == '2') {
+            var sc = "desc";
+            var standard = "p.viewcount";
+            var minscope = "<=";
+            var maxscope = ">";
+            var func = "max";
+            var adddesc = "";
+        } else if(req.query.sort == '3') {
+            var sc = "desc";
+            var standard = "c.cost";
+            var minscope = "<=";
+            var maxscope = ">";
+            var func = "max";
+            var adddesc = "";
+        } else {
+            var sc = "desc";
+            var standard = "p.pid";
+            var minscope = "<=";
+            var maxscope = ">";
+            var func = "max";
+            var adddesc = "";
+        }
+
         if(req.query.s == '1'){
-            dbconn.resultQuery("select * from (select s.sid, s.channeluser from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' and s.sid <= "+req.query.id+" order by s.sid desc) where rownum <= 10", function(result2){
-                dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' and s.sid <= "+req.query.id+" order by s.sid desc) where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
-                    dbconn.resultQuery("select max(sid) from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' and s.sid > "+req.query.id+") where rownum <= 100", function(result4){
+            dbconn.resultQuery("select * from (select s.sid, s.channeluser from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' and s.sid "+minscope+" "+req.query.id+" order by s.sid "+sc+") where rownum <= 10", function(result2){
+                dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' and s.sid "+minscope+" "+req.query.id+" order by s.sid "+sc+") where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
+                    dbconn.resultQuery("select "+func+"(sid) from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' and s.sid "+maxscope+" "+req.query.id+" "+adddesc+") where rownum <= 100", function(result4){
                         paging(result2, result3, result4);
                     });
                 });
             });
         } else if(req.query.s == '2') {
-            dbconn.resultQuery("select * from (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname order by p.pid desc) p where rownum <= 60", function(result2){
+            dbconn.resultQuery("select * from (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid where p.pid "+minscope+" "+req.query.id+" group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname order by "+standard+" "+sc+") p where rownum <= 60", function(result2){
                     result2 = dataSorting(result2);
-                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
-                        dbconn.resultQuery("select max(pid) from (select p.pid from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid where p.pid > "+req.query.id+" group by p.pid) where rownum <= 60", function(result4){
+                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from briefingdetail b join (select p.pid, p.viewcount from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid where p.pid "+minscope+" "+req.query.id+" group by p.pid, p.viewcount order by "+standard+" "+sc+") where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                        dbconn.resultQuery("select "+func+"(pid) from (select p.pid from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid where p.pid "+maxscope+" "+req.query.id+" group by p.pid "+adddesc+") where rownum <= 60", function(result4){
                             paging(result2, result3, result4);
                         });
                     });
             });
         } else if(req.query.s == '3') {
-            dbconn.resultQuery("select * from (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid where p.pid <= "+req.query.id+" order by p.pid desc) p where rownum <= 60", function(result2){
+            dbconn.resultQuery("select * from (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid where p.pid "+minscope+" "+req.query.id+" order by "+standard+" "+sc+") p where rownum <= 60", function(result2){
                     result2 = dataSorting(result2);
-                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = c.pid where p.pid <= "+req.query.id+" group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
-                        dbconn.resultQuery("select max(pid) from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = c.pid where p.pid > "+req.query.id+" group by p.pid) where rownum <= 60", function(result4){
+                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = c.pid where p.pid "+minscope+" "+req.query.id+" group by p.pid, c.cost order by "+standard+" "+sc+") where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                        dbconn.resultQuery("select "+func+"(pid) from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = c.pid where p.pid "+maxscope+" "+req.query.id+" group by p.pid "+adddesc+") where rownum <= 60", function(result4){
                             paging(result2, result3, result4);
                         });
                     });
             });
         } else if(req.query.s == '4') {
-            dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.pid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid <= "+req.query.id+" order by c.cmntid desc) where rownum <= 10", function(result2){
-                dbconn.resultQuery("select cmntid from (select rownum as rn, cmntid from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid <= "+req.query.id+" order by c.cmntid desc) where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
+            dbconn.resultQuery("select * from (select c.comments, c.cdate, c1.title, c1.pid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid "+minscope+" "+req.query.id+" order by c.cmntid "+sc+") where rownum <= 10", function(result2){
+                dbconn.resultQuery("select cmntid from (select rownum as rn, cmntid from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid "+minscope+" "+req.query.id+" order by c.cmntid "+sc+") where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
                     for(var i = 0; i < result2.rows.length; i++){
                         result2.rows[i][1] = moment(result2.rows[i][1]).format("YYYY-MM-DD HH:mm:ss");
                     }
-                    dbconn.resultQuery("select max(cmntid) from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid > "+req.query.id+") where rownum <= 100", function(result4){
+                    dbconn.resultQuery("select "+func+"(cmntid) from (select c.cmntid from comments c join commentary c1 on c.cid = c1.cid where c.userid = '"+req.session.user_id+"' and c.cmntid "+maxscope+" "+req.query.id+" "+adddesc+") where rownum <= 100", function(result4){
                         paging(result2, result3, result4);
                     });
                 });
             });
         } else {
-            dbconn.resultQuery("select * from (select s.sid, s.subscriber from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid <= "+req.query.id+" order by s.sid desc) where rownum <= 10", function(result2){
-                dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid <= "+req.query.id+" order by s.sid desc) where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
-                    dbconn.resultQuery("select max(sid) from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid > "+req.query.id+") where rownum <= 100", function(result4){
+            dbconn.resultQuery("select * from (select s.sid, s.subscriber from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid "+minscope+" "+req.query.id+" order by s.sid "+sc+") where rownum <= 10", function(result2){
+                dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid "+minscope+" "+req.query.id+" order by s.sid "+sc+") where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
+                    dbconn.resultQuery("select "+func+"(sid) from (select s.sid from users u join subscribe s on u.id = s.channeluser where u.id = '"+req.session.user_id+"' and s.sid "+maxscope+" "+req.query.id+" "+adddesc+") where rownum <= 100", function(result4){
                         paging(result2, result3, result4);
                     });
                 });

@@ -15,13 +15,25 @@ $(function(){
         }
     }
 
+    function sortSelecting(){
+        if($(location).attr('search').match('sort=1')){
+            return 1;
+        } else if($(location).attr('search').match('sort=2')) {
+            return 2;
+        } else if($(location).attr('search').match('sort=3')) {
+            return 3;
+        }
+    }
+
     $(document).on('click', '.pb', function(){
         var s = pageSelecting();
+        var sort = sortSelecting();
 
         $.ajax({
             url: '/my/pagelist',
             data: {
                 s: s,
+                sort: sort,
                 id: $(this).attr('nextid')
             },
             success: function(result){
@@ -37,11 +49,13 @@ $(function(){
 
     $(document).on('click', '.nb', function(){
         var s = pageSelecting();
+        var sort = sortSelecting();
 
         $.ajax({
             url: '/my/pagelist',
             data: {
                 s: s,
+                sort: sort,
                 id: $(this).attr('nextid')
             },
             success: function(result){
@@ -57,11 +71,13 @@ $(function(){
 
     $(document).on('click', '.preb', function(){
         var s = pageSelecting();
+        var sort = sortSelecting();
 
         $.ajax({
             url: '/my/pagelist',
             data: {
                 s: s,
+                sort: sort,
                 id: $(this).attr('nextid')
             },
             success: function(result){
@@ -135,7 +151,7 @@ $(function(){
     }
 
     $(document).on('click', '.seluser', function(){
-        location.href = "/channel?SEID=" + $(this).text();
+        location.href = "/channel?chnlid=" + $(this).text();
     });
 
     $(document).on('click', '.headline', function(){
@@ -255,6 +271,26 @@ $(function(){
             }
         }
     }
+
+    $(document).on('change', '.sort', function(){
+        var ls = $(location).attr('search').substr(0, 4);
+
+        if(ls == ''){
+            var my = "/my?sort=";
+        } else {
+            var my = "/my" + ls + "&sort=";
+        }
+
+        if($(this).val() == "최신 순"){
+            location.href = my + "0";
+        } else if($(this).val() == "오래된 순") {
+            location.href = my + "1";
+        } else if($(this).val() == "조회 수") {
+            location.href = my + "2";
+        } else if($(this).val() == "후원 총액") {
+            location.href = my + "3";
+        }
+    });
 });
 
 var a = false;

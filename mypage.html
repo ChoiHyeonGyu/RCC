@@ -19,12 +19,12 @@
                 <div class="col">
                     <select class="sort">
                         <option>최신 순</option>
-                        <option>오래된 순</option>
+                        <option <% if(sort == '1'){ %>selected<% } %>>오래된 순</option>
                         <% if(list.metaData[1].name == 'HEADLINE'){ %>
-                        <option>조회 수</option>
+                        <option <% if(sort == '2'){ %>selected<% } %>>조회 수</option>
                         <% } %>
                         <% if(list.metaData[1].name == 'TITLE'){ %>
-                        <option>후원 총액</option>
+                        <option <% if(sort == '3'){ %>selected<% } %>>후원 총액</option>
                         <% } %>
                     </select>
                     <input id="my_search" type="text" placeholder="Search">
