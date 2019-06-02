@@ -14,9 +14,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/my", function(req, res){
     if(req.session.user_id){
-        dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), "+ 
-        "(select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') "+
-        "where id = '"+req.session.user_id+"'", function(result) {
+        dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), (select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') where id = '"+req.session.user_id+"'", function(result) {
             if(req.query.s == '1'){
                 dbconn.resultQuery("select * from (select s.sid, s.channeluser from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 10", function(result2){
                     dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid desc) where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
@@ -266,65 +264,70 @@ router.post("/user/modify", function(req, res){
 });
 
 router.get("/channel", function(req, res){
-    dbconn.resultQuery("select * from (select * from (select id, nickname from users where id = '"+req.query.SEID+"'), (select count(*) subscriber from subscribe where channeluser = '"+req.query.SEID+"'), "+ 
-    "(select count(*) post from post where userid = '"+req.query.SEID+"')) u left join (select channeluser from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.SEID+"') s on u.id = s.channeluser", function(result) {
-        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
-        "right join (select p.*, c.title from commentary c right join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-        "post p on u.id = p.userid where u.id = '"+req.query.SEID+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid "+
-        "or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid order by p.pid desc) p where rownum <= 60", function(result2){
-            if(result2.rows[0] != null){
+    dbconn.resultQuery("select * from (select * from (select id, nickname from users where id = '"+req.query.chnlid+"'), (select count(*) subscriber from subscribe where channeluser = '"+req.query.chnlid+"'), (select count(*) post from post where userid = '"+req.query.chnlid+"')) u left join (select channeluser from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.chnlid+"') s on u.id = s.channeluser", function(result) {
+        if(req.query.s == '1') {
+            dbconn.resultQuery("select * from (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid order by p.pid desc) p where rownum <= 60", function(result2){
                 result2 = dataSorting(result2);
-                dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.SEID+"' order by p.pid desc) where rownum <= 61", function(result3){
-                    var pagenumlist = [];
-                    for(var i = 0; i < result3.rows.length; i+=6){
-                        pagenumlist.push(result3.rows[i][0]);
-                    }
-                    listing(result2, pagenumlist);
+                dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = c.pid group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                    listing(result2, result3);
                 });
-            } else {
-                result2.rows = [];
-                listing(result2, []);
-            }
-        });
+            });
+        } else {
+            dbconn.resultQuery("select * from (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname order by p.pid desc) p where rownum <= 60", function(result2){
+                result2 = dataSorting(result2);
+                dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = b.pid group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                    listing(result2, result3);
+                });
+            });
+        }
 
-        function listing(result2, pagenumlist){
+        function listing(result2, result3){
             fs.readFile("channel.html", "utf-8", function(error, data) {
                 res.send(ejs.render(include.import_default() + data, {
                     logo: include.logo(),
                     main_header: include.main_header(req.session.user_id),
                     my: result,
                     list: result2,
-                    page: pagenumlist
+                    page: result3,
+                    userid: req.session.user_id
                 }));
             });
         }
     });
 });
 
-router.get("/channel/post/pagelist", function(req, res){
-    dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, b.headline from briefingdetail b "+
-    "right join (select p.*, c.title from commentary c right join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join "+
-    "post p on u.id = p.userid where u.id = '"+req.query.id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where "+
-    "p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid where p.pid <= "+req.query.pid+" order by p.pid desc) p where rownum <= 60", function(result2){
-        result2 = dataSorting(result2);
-        dbconn.resultQuery("select * from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.id+"' and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", function(result3){
-            var pagenumlist = [];
-            for(var i = 0; i < result3.rows.length; i+=6){
-                pagenumlist.push(result3.rows[i][0]);
-            }
-            dbconn.resultQuery("select max(pid) from (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.id+"' and p.pid > "+req.query.pid+") where rownum <= 60", function(result4){
-                if(result4.rows[0] == null){
-                    res.send({rows: result2.rows, page: pagenumlist});
-                } else {
-                    res.send({rows: result2.rows, page: pagenumlist, prevpid: result4.rows[0][0]});
-                }
+router.get("/channel/pagelist", function(req, res){
+    if(req.query.s == '1') {
+        dbconn.resultQuery("select * from (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid where p.pid <= "+req.query.id+" order by p.pid desc) p where rownum <= 60", function(result2){
+                result2 = dataSorting(result2);
+                dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = c.pid where p.pid <= "+req.query.id+" group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                    dbconn.resultQuery("select max(pid) from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = c.pid where p.pid > "+req.query.id+" group by p.pid) where rownum <= 60", function(result4){
+                        paging(result2, result3, result4);
+                    });
+                });
+        });
+    } else {
+        dbconn.resultQuery("select * from (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname order by p.pid desc) p where rownum <= 60", function(result2){
+            result2 = dataSorting(result2);
+            dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                dbconn.resultQuery("select max(pid) from (select p.pid from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = b.pid where p.pid > "+req.query.id+" group by p.pid) where rownum <= 60", function(result4){
+                    paging(result2, result3, result4);
+                });
             });
         });
-    });
+    }
+
+    function paging(result2, result3, result4){
+        if(result4.rows[0] == null){
+            res.send({data: result2, page: result3});
+        } else {
+            res.send({data: result2, page: result3, previd: result4.rows[0][0]});
+        }
+    }
 });
 
 router.get("/subscribe", function(req, res){
-    dbconn.booleanQuery("insert into subscribe values(subscribe_sequence.nextval, '"+req.session.user_id+"', '"+req.query.channelID+"')", function(result){
+    dbconn.booleanQuery("insert into subscribe values(subscribe_sequence.nextval, '"+req.session.user_id+"', '"+req.query.chnlid+"')", function(result){
         if(result){
             res.send('1');
         } else {
@@ -334,7 +337,7 @@ router.get("/subscribe", function(req, res){
 });
 
 router.get("/subscribe/cancel", function(req, res){
-    dbconn.booleanQuery("delete from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.channelID+"'", function(result){
+    dbconn.booleanQuery("delete from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.chnlid+"'", function(result){
         if(result){
             res.send('1');
         } else {
@@ -343,49 +346,55 @@ router.get("/subscribe/cancel", function(req, res){
     });
 });
 
-router.get("/channel/post/search", function(req, res){
+router.get("/channel/search", function(req, res){
     if(req.query.txt){
-        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b right join "+
-            "(select p.*, c.title from commentary c right join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
-            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
-            "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 1200", function(result2){
-            result2 = dataSorting(result2);
-            dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b right join "+
-            "(select p.*, c.title from commentary c right join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
-            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
-            "where p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61", function(result3){
-                res.send({rows: result2.rows, page: srchSorting(result3)});
+        if(req.query.s == '1') {
+            dbconn.resultQuery("select * from (select p.pid, p.title, p.categoryname, p.detailname, p.cost, p.pdate, p.mdate from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = h.pid where p.title like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) p where rownum <= 60", function(result2){
+                    result2 = dataSorting(result2);
+                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.pid, c.title from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = c.pid) p on p.pid = h.pid where p.title like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                        res.send({data: result2, page: result3});
+                    });
             });
-        });
+        } else {
+            dbconn.resultQuery("select * from (select p.pid, p.headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.*, b.bsummary from briefingsummary b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname) p on p.pid = b.pid) p on p.pid = h.pid where p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) p where rownum <= 60", function(result2){
+                result2 = dataSorting(result2);
+                dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.*, b.bsummary from briefingsummary b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2) headline from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = b.pid group by p.pid) p on p.pid = b.pid) p on p.pid = h.pid where p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                    res.send({data: result2, page: result3});
+                });
+            });
+        }
     }
 });
 
 router.get("/channel/search/pagelist", function(req, res){
     if(req.query.txt){
-        dbconn.resultQuery("select * from (select p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname, p.title, p.headline from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b right join "+
-            "(select p.*, c.title from commentary c right join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
-            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
-            "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 1200", 
-            function(result2){
-                result2 = dataSorting(result2);
-            dbconn.resultQuery("select * from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b right join "+
-            "(select p.*, c.title from commentary c right join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
-            "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
-            "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid <= "+req.query.pid+" order by p.pid desc) where rownum <= 61", 
-            function(result3){
-                dbconn.resultQuery("select max(pid) from (select p.pid from (select p.*, b.bsummary from (select p.*, b.headline from briefingdetail b right join "+
-                "(select p.*, c.title from commentary c right join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.channelID+"') p join category c on "+
-                "p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid) p on p.pid = b.pid) p full join briefingsummary b on p.pid = b.pid) p full join hashtag h on p.pid = h.pid "+
-                "where (p.title like '%"+req.query.txt+"%' or p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') and p.pid > "+req.query.pid+") where rownum <= 60", 
-                function(result4){
-                    if(result4.rows[0] == null){
-                        res.send({rows: result2.rows, page: pagenumlist});
-                    } else {
-                        res.send({rows: result2.rows, page: srchSorting(result3), prevpid: result4.rows[0][0]});
-                    }
-                });
+        if(req.query.s == '1') {
+            dbconn.resultQuery("select * from (select p.pid, p.title, p.categoryname, p.detailname, p.cost, p.pdate, p.mdate from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid where p.pid <= "+req.query.id+") p on p.pid = h.pid where p.title like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) p where rownum <= 60", function(result2){
+                    result2 = dataSorting(result2);
+                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.pid, c.title from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = c.pid where p.pid <= "+req.query.id+") p on p.pid = h.pid where p.title like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                        dbconn.resultQuery("select max(pid) from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.pid, c.title from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = c.pid where p.pid > "+req.query.id+") p on p.pid = h.pid where p.title like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') where rownum <= 60", function(result4){
+                            srchpaging(result2, result3, result4);
+                        });
+                    });
             });
-        });
+        } else {
+            dbconn.resultQuery("select * from (select p.pid, p.headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.*, b.bsummary from briefingsummary b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname) p on p.pid = b.pid) p on p.pid = h.pid where p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) p where rownum <= 60", function(result2){
+                    result2 = dataSorting(result2);
+                    dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.*, b.bsummary from briefingsummary b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2) headline from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid) p on p.pid = b.pid) p on p.pid = h.pid where p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
+                        dbconn.resultQuery("select max(pid) from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.*, b.bsummary from briefingsummary b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2) headline from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = b.pid where p.pid > "+req.query.id+" group by p.pid) p on p.pid = b.pid) p on p.pid = h.pid where p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') where rownum <= 60", function(result4){
+                            srchpaging(result2, result3, result4);
+                        });
+                    });
+            });
+        }
+
+        function srchpaging(result2, result3, result4){
+            if(result4.rows[0] == null){
+                res.send({data: result2, page: result3});
+            } else {
+                res.send({data: result2, page: result3, previd: result4.rows[0][0]});
+            }
+        }
     }
 });
 

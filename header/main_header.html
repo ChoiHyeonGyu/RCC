@@ -5,19 +5,14 @@
 </script>
 <div class="mainHeader container">
     <ul class="nav justify-content-end">
-        <%
-            if(user == null){        
-        %>
+        <% if(user == null){ %>
         <li class="nav-item">
             <a class="btn btn-light" href="/login">Login</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-light" href="/signup">Signup</a>
         </li>
-        <%
-            }
-            else{
-        %>
+        <% } else { %>
         <span class="mainNavUserSpan">[ <%= user %>님 ]</span>
         <li class="nav-item">
             <a class="btn btn-light" onclick="logoutButton();" id="logoutBtn">logout</a>
@@ -26,12 +21,8 @@
             <a class="btn btn-light" href="/my">mypage</a>
         </li>
         <li class="nav-item">
-            <a class="btn btn-light" href="/channel?SEID=<%= user %>">Channel</a>
+            <a class="btn btn-light" href="/channel?chnlid=<%= user %>">channel</a>
         </li>
-
-
-        <%
-            }
-        %>
+        <% } %>
     </ul>
 </div>

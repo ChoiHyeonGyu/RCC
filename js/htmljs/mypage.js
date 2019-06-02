@@ -100,7 +100,7 @@ $(function(){
         var rows = data.rows;
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            if(data.metaData[6].name == "HEADLINE"){
+            if(data.metaData[1].name == "HEADLINE"){
                 $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='headline'>"+rows[i][1]+"</td> <td>"+rows[i][2]+
                 "</td> <td>"+rows[i][3]+"</td> <td>"+rows[i][4]+"</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][6]+"</td> </tr>");
             } else {
