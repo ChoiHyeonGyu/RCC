@@ -6,11 +6,32 @@ $(function(){
         var chksub = 1;
     }
 
+    function pageSelecting(){
+        if($(location).attr('search').match('s=1')){
+            return 1;
+        }
+    }
+
+    function sortSelecting(){
+        if($(location).attr('search').match('sort=1')){
+            return 1;
+        } else if($(location).attr('search').match('sort=2')) {
+            return 2;
+        } else if($(location).attr('search').match('sort=3')) {
+            return 3;
+        }
+    }
+
     $(document).on('click', '.pb', function(){
+        var s = pageSelecting();
+        var sort = sortSelecting();
+
         $.ajax({
             url: '/channel/pagelist',
             data: {
                 chnlid: $('input[type=hidden]').val(),
+                s: s,
+                sort: sort,
                 id: $(this).attr('nextid')
             },
             success: function(result){
@@ -25,10 +46,15 @@ $(function(){
     });
 
     $(document).on('click', '.nb', function(){
+        var s = pageSelecting();
+        var sort = sortSelecting();
+
         $.ajax({
             url: '/channel/pagelist',
             data: {
                 chnlid: $('input[type=hidden]').val(),
+                s: s,
+                sort: sort,
                 id: $(this).attr('nextid')
             },
             success: function(result){
@@ -43,10 +69,15 @@ $(function(){
     });
 
     $(document).on('click', '.preb', function(){
+        var s = pageSelecting();
+        var sort = sortSelecting();
+
         $.ajax({
             url: '/channel/pagelist',
             data: {
                 chnlid: $('input[type=hidden]').val(),
+                s: s,
+                sort: sort,
                 id: $(this).attr('nextid')
             },
             success: function(result){
@@ -238,4 +269,30 @@ $(function(){
             }
         }
     }
+
+    $(document).on('change', '.sort', function(){
+        if($(location).attr('search').match('s=1')){
+            if($(location).attr('search').match('&sort=')){
+                var channel = $(location).attr('search').substr(0, $(location).attr('search').match('s=1').index + 3) + "&sort=";
+            } else {
+                var channel = $(location).attr('search').match('s=1').input + "&sort=";
+            }
+        } else {
+            if($(location).attr('search').match('&sort=')){
+                var channel = $(location).attr('search').substr(0, $(location).attr('search').match('&').index) + "&sort=";
+            } else {
+                var channel = $(location).attr('search').substr(0, 28) + "&sort=";
+            }
+        }
+
+        if($(this).val() == "최신 순"){
+            location.href = channel + "0";
+        } else if($(this).val() == "오래된 순") {
+            location.href = channel + "1";
+        } else if($(this).val() == "조회 수") {
+            location.href = channel + "2";
+        } else if($(this).val() == "후원 총액") {
+            location.href = channel + "3";
+        }
+    });
 });
