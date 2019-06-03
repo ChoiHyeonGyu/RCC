@@ -153,11 +153,15 @@ router.get("/", function (req, res) {
     });
 });
 
+
 router.get("/breifing", function (req, res) {
     var page_size = 6;
     var currPage = req.param('pageNo');
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
+    var sort = req.param('sort');
+    if(sort == undefined)sort=1;
+
     paging("select pid from post where briefing=1", "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 order by pid desc, mdate desc)) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
         var pageListString;
         if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
@@ -168,10 +172,10 @@ router.get("/breifing", function (req, res) {
             }
             pageListString += ")";
         }
-        query("select pid, bid, headline,mdate " +
-            "from( select post.pid, briefingdetail.bid, briefingdetail.headline,post.mdate," +
-            "row_number() over(partition by post.pid order by briefingdetail.bid) " +
-            "rn from post,briefingdetail where post.pid = briefingdetail.pid " + pageListString + ") where rn <=3 order by pid desc, mdate desc",
+        query("select post.pid,h.hl,c.cate,post.pdate from post,"+
+        "(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,mdate from( select post.pid, briefingdetail.headline,post.mdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, mdate desc) b group by b.pid) h,"+
+        "(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c"+
+        " where post.pid = h.pid and post.pid = c.pid "+pageListString+" order by post.pdate desc",
             function (result) {
                 fs.readFile("breifing/breifing.html", "utf-8", function (error, data) {
                     res.send(ejs.render(include.import_default() + data, {
@@ -228,6 +232,11 @@ function subscribeCheck(writer, viewer, callback) {
     });
 }
 
+function updateViewCount(postNo){
+    dbconn.booleanQuery("update post set viewCount = (select viewcount+1 from post where pid="+postNo+") where pid="+postNo,function(result){
+
+    });
+}
 
 router.get("/breifing_view", function (req, res) {
     var postNo = req.param('postNo');
@@ -237,6 +246,7 @@ router.get("/breifing_view", function (req, res) {
                 getHashTagByPostNo(postNo, function (hashtagResult) {
                     getCategoryNameByPostNo(postNo, function (categoryResult) {
                         //req.session
+                        updateViewCount();
                         subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
                             for (var i = 0; i < postResult.rows.length; i++) {
                                 postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YY.MM.DD HH:mm:ss");
@@ -261,6 +271,8 @@ router.get("/breifing_view", function (req, res) {
                                     search: req.param('search')
                                 }));
                             });
+                            //조회수 증가
+
                         });
                     })
                 });
@@ -462,10 +474,10 @@ router.get("/breifing_detail", function (req, res) {
                     }
                     pageListString += ")";
                 }
-                query("select pid, bid, headline,mdate " +
-                    "from( select post.pid, briefingdetail.bid, briefingdetail.headline,post.mdate, " +
-                    "row_number() over(partition by post.pid order by briefingdetail.bid) " +
-                    "rn from post,briefingdetail where post.pid = briefingdetail.pid " + pageListString + ") where rn <=3  order by pid desc, mdate desc",
+                query("select post.pid,h.hl,c.cate,post.pdate from post,"+
+                "(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,mdate from( select post.pid, briefingdetail.headline,post.mdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, mdate desc) b group by b.pid) h,"+
+                "(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c"+
+                " where post.pid = h.pid and post.pid = c.pid "+pageListString+" order by post.pdate desc",
                     function (result) {
                         //hashResult가 필요하다
                         hashTag(pageList, function (hashResult) {
@@ -501,10 +513,10 @@ router.get("/breifing_detail", function (req, res) {
                     }
                     pageListString += ")";
                 }
-                query("select pid, bid, headline,mdate " +
-                    "from( select post.pid, briefingdetail.bid, briefingdetail.headline,post.mdate, " +
-                    "row_number() over(partition by post.pid order by briefingdetail.bid) " +
-                    "rn from post,briefingdetail where post.pid = briefingdetail.pid " + pageListString + ") where rn <=3 order by pid desc, mdate desc",
+                query("select post.pid,h.hl,c.cate,post.pdate from post,"+
+                "(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,mdate from( select post.pid, briefingdetail.headline,post.mdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, mdate desc) b group by b.pid) h,"+
+                "(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c"+
+                " where post.pid = h.pid and post.pid = c.pid "+pageListString+" order by post.pdate desc",
                     function (result) {
                         //hashResult가 필요하다
                         hashTag(pageList, function (hashResult) {
@@ -545,7 +557,7 @@ router.get("/commentary", function (req, res) {
                 }
                 pageListString += ")";
             }
-            query("select p.*,c.*,u.id from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
+            query("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc",
                 function (result) {
                     fs.readFile("commentary/commentary.html", "utf-8", function (error, data) {
                         res.send(ejs.render(include.import_default() + data, {
@@ -580,6 +592,7 @@ router.get("/commentary_view", function (req, res) {
                 getCategoryNameByPostNo(postNo, function (categoryResult) {
                     getCommentBycommentNo(commentResult.rows[0][0], function (commentsResult) {//페이징
                         //req.session
+                        updateViewCount();
                         subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
                             for (var i = 0; i < postResult.rows.length; i++) {
                                 postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YY.MM.DD HH:mm:ss");
@@ -634,7 +647,7 @@ router.get("/commentary_detail", function (req, res) {
                     }
                     pageListString += ")";
                 }
-                query("select p.*,c.*,u.id from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
+                query("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc",
                     function (result) {
                         //hashResult가 필요하다
                         hashTag(pageList, function (hashResult) {
@@ -670,7 +683,7 @@ router.get("/commentary_detail", function (req, res) {
                     }
                     pageListString += ")";
                 }
-                query("select p.*,c.*,u.id from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
+                query("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc",
                     function (result) {
                         //hashResult가 필요하다
                         hashTag(pageList, function (hashResult) {
@@ -695,32 +708,6 @@ router.get("/commentary_detail", function (req, res) {
     }
 });
 
-function searchHeadline(search, callback) {
-    dbconn.resultQuery("select pid from briefingdetail where headline like '%" + search + "%' or burl like '%" + search + "%'", function (result) {
-        callback(result);
-    });
-}
-function searchSummary(search, callback) {
-    dbconn.resultQuery("select pid from briefingsummary where bsummary like '%" + search + "%'", function (result) {
-        callback(result);
-    });
-}
-function searchHashtag(search, callback) {
-    dbconn.resultQuery("select pid from hashtag where keyword like '%" + search + "%'", function (result) {
-        callback(result);
-    });
-}
-function searchChannel(search, callback) {
-    dbconn.resultQuery("select * from users where id like '%" + search + "%'", function (result) {
-        callback(result);
-    });
-}
-function searchCommentary(search, callback) {
-    dbconn.resultQuery("select pid from commentary where title like '%" + search + "%' or content like '%" + search + "%'", function (result) {
-        callback(result);
-    });
-}
-
 function searching(req, res, search, type, callback) {
     if (type == 1) {
         //breifing
@@ -739,10 +726,17 @@ function searching(req, res, search, type, callback) {
                     }
                     pageListString += ")";
                 }
-                query("select pid, bid, headline,mdate " +
-                    "from( select post.pid, briefingdetail.bid, briefingdetail.headline,post.mdate," +
-                    "row_number() over(partition by post.pid order by briefingdetail.bid) " +
-                    "rn from post,briefingdetail where post.pid = briefingdetail.pid " + pageListString + ") where rn <=3 order by pid desc, mdate desc",
+                var pageListString2;
+                if (pageList.rows.length == 0) pageListString2 = "(pid=-1)";
+                else {
+                    pageListString2 = "(pid=" + pageList.rows[0][0];
+                    for (var i = 1; i < pageList.rows.length; i++) {
+                        pageListString2 += " or pid=" + pageList.rows[i][0];
+                    }
+                    pageListString2 += ")";
+                }
+                query("select h.*,ht.hashtag from (select post.pid,h.hl,c.cate,post.pdate from post,(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,mdate from( select post.pid, briefingdetail.headline,post.mdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, mdate desc) b group by b.pid) h,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c where post.pid = h.pid and post.pid = c.pid "+pageListString+" order by post.pdate desc) h,"+
+                "(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag where "+pageListString2+" group by hashtag.PID) ht where h.pid=ht.pid",
                     function (result) {
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
@@ -770,15 +764,16 @@ function searching(req, res, search, type, callback) {
         paging("select pid from post where briefing=0 and pid in (select pid from commentary where content like '%" + search + "%' or title like '%" + search + "%')",
             "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and pid in (select pid from commentary where content like '%" + search + "%' or title  like '%" + search + "%') order by pid desc, pdate desc)) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
                 var pageListString;
-                if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
+                if (pageList.rows.length == 0) pageListString = "(pid=-1)";
                 else {
-                    pageListString = "and (post.pid=" + pageList.rows[0][0];
+                    pageListString = "(pid=" + pageList.rows[0][0];
                     for (var i = 1; i < pageList.rows.length; i++) {
-                        pageListString += " or post.pid=" + pageList.rows[i][0];
+                        pageListString += " or pid=" + pageList.rows[i][0];
                     }
                     pageListString += ")";
                 }
-                query("select p.*,c.*,u.id from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u where p.pid=c.pid and p.userid=u.id order by p.pdate desc",
+                query("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select post.pid,post.pdate,post.userid,ht.hashtag from post,(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag "+
+                "where "+pageListString+" group by hashtag.PID) ht where post.briefing=0 and post.pid=ht.pid) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc",
                     function (result) {
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
@@ -816,7 +811,6 @@ function searching(req, res, search, type, callback) {
                 }
                 query("select u.id,u.pcnt,nvl(c.scnt,0) as scnt from (select users.*,NVL(u.pcnt,0) as pcnt from users left outer join (select userid as id,count(*) as pcnt from post group by userid) u on u.id=users.id) u left outer join (select channeluser,count(*) as scnt from subscribe group by channeluser) c on c.channeluser=u.id where "+pageListString,
                     function (result) {
-                        console.log(result);
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
                                 logo: include.logo(),
@@ -856,7 +850,21 @@ function searching(req, res, search, type, callback) {
                     pageListString += ")";
                 }
 
-                query("select h.*,c.cnt from (select h.*,c.cost from (select h.*,p.briefing,p.userid from (select h.pid,h.hashtag,nvl(p.title,(select title from commentary where pid=h.pid)) from (select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag where "+pageListString+" group by hashtag.PID) h left outer join (SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.mdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM (select pid,headline,mdate from( select post.pid, briefingdetail.headline,post.mdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, mdate desc) p GROUP BY p.pid) p on p.pid=h.pid) h,post p where p.pid=h.pid) h left join commentary c on h.pid=c.pid) h left join (select commentary.pid,c.* from commentary, (select cid, count(*) as cnt from comments group by cid) c where c.cid=commentary.cid) c on c.pid = h.pid",
+                query("select h.*,cate.cate from (select h.*,c.cnt from "+
+                    "(select h.*,c.cost from "+
+                    "(select h.*,p.briefing,p.userid from "+
+                    "(select h.pid,h.hashtag,nvl(p.title,"+
+                    "(select title from commentary where pid=h.pid)) from "+
+                    "(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag where "+pageListString+" group by hashtag.PID) h "+
+                    "left outer join "+
+                    "(SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.mdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM "+
+                    "(select pid,headline,mdate from"+
+                    "( select post.pid, briefingdetail.headline,post.mdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid)"+
+                    "where rn <=3 order by pid desc, mdate desc) p GROUP BY p.pid"+
+                    ") p on p.pid=h.pid) h,post p where p.pid=h.pid) h "+
+                    "left join commentary c on h.pid=c.pid) h left join "+
+                    "(select commentary.pid,c.* from commentary,"+ 
+                    "(select cid, count(*) as cnt from comments group by cid) c where c.cid=commentary.cid) c on c.pid = h.pid) h, (select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where h.pid=cate.pid",
                     function (result) {
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {

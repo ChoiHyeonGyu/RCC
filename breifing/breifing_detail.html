@@ -35,42 +35,20 @@
             <h2>헤드라인 게시판</h2>
             <table class="table hashTable">
                 <tbody>
-                    <%  
-                        var pid=-1;
-                        var string="";
-                        for(var i=0; i<result.rows.length; i++){
-                            if(result.rows[i][0]!=pid){
-                                if(pid!=-1){
-                                    //저장값출력
-                                    string+="</th><td>";
-                                    var count=0;
-                                    for(var j=0;j<hashResult.rows.length;j++){
-                                        if(hashResult.rows[j][0]==pid){
-                                            count++;
-                                            string+="#"+hashResult.rows[j][1]+" ";
-                                            if(count==5)break;
-                                        }
-                                    }
-                                    string+="</td></tr>";
-                                %><%- string %><%
-                                }
-                                pid = result.rows[i][0];
-                                string = "<tr class='hover-pointer hover-underline hover-bold' onclick=location.href='/breifing_view?postNo="+pid+"'><th scope='row'>";
-                            }
-                            string+=result.rows[i][2]+"<br>";
-                        }
-                        string+="</th><td>";
-                        var count=0;
-                        for(var j=0;j<hashResult.rows.length;j++){
-                            if(hashResult.rows[j][0]==pid){
-                                count++;
-                                string+="#"+hashResult.rows[j][1]+" ";
-                                if(count==5)break;
-                            }
-                        }
-                        string+="</td></tr>";
-                    %>
-                    <%- string %>
+                    <% for(var i=0;i<result.rows.length;i++){ %>
+                    <tr  class="hover-pointer hover-underline" onclick="location.href='/breifing_view?postNo=<%= result.rows[i][0] %>'">
+                        <% 
+                            result.rows[i][1] = result.rows[i][1].replace("&lt;br&gt;","");
+                            result.rows[i][1] = result.rows[i][1].split("&lt;").join("<");
+                            result.rows[i][1] = result.rows[i][1].split("&gt;").join(">");
+                        %>
+                        <th scope='row'><%- result.rows[i][1] %></th>
+                        <td rowspan="2"><%= result.rows[i][2] %></td>
+                    </tr>
+                    <tr>
+                        <td class='commentaryHash'><% for(var j=0;j<hashResult.rows.length;j++){if(hashResult.rows[j][0]==result.rows[i][0]){ %>#<%= hashResult.rows[j][1] %> <% }} %></td>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
             <div class="">

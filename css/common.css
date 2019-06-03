@@ -83,3 +83,6 @@
 .mg-10n0{
     margin:-10px 0px;
 }
+*,.btn{
+    transition: all 0.3s ease;
+}

@@ -19,7 +19,7 @@
                             var count = result['list'].rows[0][4];
                             var navSize = result['size'];
                             for(var i=0;i<result['list'].rows.length;i++){
-                                $('#subLink').append("<a class='btn btn-light' href='/channel?SEID="+result['list'].rows[i][3]+"'>"+result['list'].rows[i][3]+"</a>");
+                                $('#subLink').append("<a class='btn btn-light' href='/channel?chnlid="+result['list'].rows[i][3]+"'>"+result['list'].rows[i][3]+"</a>");
                             }
                             if(currPage>1){
                                 //이전버튼 생성
@@ -42,7 +42,7 @@
 </style>
 <div class="sideNav">
     <div class="navBtn">
-        <button type="button" style="height:200px;" class="btn btn-outline-secondary" onclick="sideBarClick();">&lt;</button>
+        <button type="button" id="sideNavBtn" style="height:200px;" class="btn btn-outline-secondary" onclick="sideBarClick();">&lt;</button>
     </div>
     <div class="navSide">
         <div class="SubscribeList">

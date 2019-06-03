@@ -24,9 +24,6 @@
     margin-top:10px;
     display: block;
 }
-.hashTable th{
-    width:85%;
-}
 .commTable{
     width:80%;
 }
@@ -76,6 +73,10 @@
 .commentForm input{
     padding:10px 15px;
     width:100%;
+}
+#commentText{
+    padding:10px 15px;
+    width:70%;
 }
 .commentForm{
     width:70%;

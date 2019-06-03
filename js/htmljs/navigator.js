@@ -1,13 +1,20 @@
 var sidebar = false;
 function sideBarClick(){
     if(!sidebar){
+        
         var nav = document.getElementsByClassName("sideNav")[0];
         nav.style.right = "0px";
+        document.getElementById("sideNavBtn").style.background="black";
+        document.getElementById("sideNavBtn").style.color="white";
+        document.getElementById("sideNavBtn").innerText=">";
         sidebar = true;
     }
     else{
         var nav = document.getElementsByClassName("sideNav")[0];
         nav.style.right = "-90px";
+        document.getElementById("sideNavBtn").style.background="white";
+        document.getElementById("sideNavBtn").style.color="black";
+        document.getElementById("sideNavBtn").innerText="<";
         sidebar = false;
     }
 }

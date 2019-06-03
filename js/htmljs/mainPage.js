@@ -6,7 +6,7 @@
  //get the slide width
  var sliderWidth = 0;
  
- 
+  
  $(document).ready(function(){
      
     totalSlides = $('#slider-wrap ul li').length;
@@ -16,6 +16,7 @@
       BUILD THE SLIDER
      *****************/
      //set width to be 'x' times the number of slides
+     
      $('#slider-wrap ul#slider').width(sliderWidth*totalSlides);
      
      //next slide    
@@ -34,7 +35,7 @@
       //*> OPTIONAL SETTINGS
      ************************/
      //automatic slider
-     var autoSlider = setInterval(slideRight, 3000);
+     var autoSlider = setInterval(slideRight, 5000);
      
      //for each slide 
      $.each($('#slider-wrap ul li'), function() { 
@@ -43,7 +44,7 @@
         var li = document.createElement('li');
         $('#pagination-wrap ul').append(li);    
      });
-     
+      
      //counter
      countSlides();
      
@@ -54,7 +55,7 @@
      //pause automatic slide when hover
      $('#slider-wrap').hover(
        function(){ $(this).addClass('active'); clearInterval(autoSlider); }, 
-       function(){ $(this).removeClass('active'); autoSlider = setInterval(slideRight, 3000); }
+       function(){ $(this).removeClass('active'); autoSlider = setInterval(slideRight, 5000); }
      );
      
      

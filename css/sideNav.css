@@ -6,11 +6,20 @@
     width:150px;
     background-color:white;
     padding:15px;
+    
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    -ms-transition: all 0.1s ease;
+    transition: all 0.4s ease;
 }
 .navBtn{
     display: inline-block;
     width:45px;
     float:left;
+}
+#sideNavBtn{
+    transition: all 0.4s linear;
 }
 .navSide{
     display: inline-block;

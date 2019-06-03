@@ -17,42 +17,34 @@
             <table class="table mainTable">
                 <tbody>
                     <% if(type==1){ %>
-                    <%  
-                        search = search.split(" ").join("%20");
-                        var pid=-1;
-                        var string="";
-                        for(var i=0; i<result.rows.length; i++){
-                            if(result.rows[i][0]!=pid){
-                                if(pid!=-1){
-                                    //저장값출력
-                                    string+="</th></tr>";%>
-                                    <%- string %>
-                                    <%
-                                }
-                                pid = result.rows[i][0];
-                                string = "<tr class='hover-pointer hover-underline hover-bold' onclick=location.href='/breifing_view?search="+search+"&type="+type+"&postNo="+pid+"'><th scope='row'>";
-                            }
-                            string+=result.rows[i][2]+"<br>";
-                        }
-                        string+="</th></tr>";
-                    %>
-                    <%- string %>
-                    <% } %>
-                    <% if(type==2){ %>
-                        <%
-                            var string="";
-                            for(var i=0;i<result.rows.length;i++){
-                        %>
-                            <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
-                            <th scope="row"><%= result.rows[i][5] %> <% if(result.rows[i][7]!=null){ %><%= "["+result.rows[i][7]+"]" %><% } %></th>
-                            <td class='w10'><%= result.rows[i][2] %></td>
-                            <td class='w10'><%= result.rows[i][6] %>$</td>
+                        <%for(var i=0;i<result.rows.length;i++){%>
+                            <% 
+                                result.rows[i][1] = result.rows[i][1].replace("&lt;br&gt;","");
+                                result.rows[i][1] = result.rows[i][1].split("&lt;").join("<");
+                                result.rows[i][1] = result.rows[i][1].split("&gt;").join(">");
+                            %>
+                            <tr class='hover-pointer hover-underline' onclick="location.href='/breifing_view?search=<%=search%>&type=<%=type%>&postNo=<%= result.rows[i][0] %>'">
+                                <th scope='row'><%- result.rows[i][1] %></th>
+                                <td><%= result.rows[i][2] %></td>
                             </tr>
-                        <%
-                            }
-                        %>
-
-                    <% } %>
+                            <tr>
+                                <td class='commentaryHash'><%= result.rows[i][4] %></td>
+                            </tr>
+                        <%}%>
+                    <%}%>
+                    <% if(type==2){ %>
+                        <%for(var i=0;i<result.rows.length;i++){%>
+                            <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">                                    
+                                <th scope='rows'><%= result.rows[i][6] %> <%if(result.rows[i][8]!=null){%>[<%= result.rows[i][8] %>]<%}%></th>                    
+                                <td class='' rowspan="2"><%= result.rows[i][10] %></td>
+                                <td class='w10' rowspan="2"><%= result.rows[i][9] %></td>
+                                <td class='w10' rowspan="2"><%= result.rows[i][7] %>$</td>
+                            </tr>
+                            <tr>
+                                <td class='commentaryHash'><%= result.rows[i][3] %></td>
+                            </tr> 
+                        <%}%>
+                    <%}%>
                     <% if(type==3){ %>
                         <tr><th>채널유저</th><th>게시글 수</th><th>구독자 수</th></tr>
                         <%
@@ -76,7 +68,8 @@
                                 %>
                                 <tr class="hover-pointer hover-underline" onclick="location.href='/breifing_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
                                     <td class='' rowspan="2">브리핑</td>
-                                    <th scope='rows' colspan="3"><%- result.rows[i][2] %></th>
+                                    <th scope='rows' colspan="3"><%- result.rows[i][2] %></th>            
+                                    <td class='' rowspan="2"><%= result.rows[i][7] %></td>
                                 </tr>
                                 <tr>
                                     <td class='commentaryHash'><%= result.rows[i][1] %></td>
@@ -86,7 +79,8 @@
                                 <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
                                     
                                     <td class='w10' rowspan="2">논평</td>    
-                                    <th scope='rows'><%= result.rows[i][2] %> <%if(result.rows[i][6]!=null){%>[<%= result.rows[i][6] %>]<%}%></th>
+                                    <th scope='rows'><%= result.rows[i][2] %> <%if(result.rows[i][6]!=null){%>[<%= result.rows[i][6] %>]<%}%></th>                    
+                                    <td class='' rowspan="2"><%= result.rows[i][7] %></td>
                                     <td class='w10' rowspan="2"><%= result.rows[i][4] %></td>
                                     <td class='w10' rowspan="2"><%= result.rows[i][5] %>$</td>
                                 </tr>
@@ -101,6 +95,7 @@
             
             <div class="">
                     <%
+                        search = search.split(" ").join("%20");
                         var paging="";
                         if(pagingResult.preBtn == '1'){
                             paging="<button class='btn btn-light' onclick=location.href='"+"/search_result?search="+search+"&type="+type+"&pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"

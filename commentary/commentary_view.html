@@ -114,7 +114,7 @@
         <% if(search==null){ %><div id="contentsSideNav"><%- contentsSideNav %></div><% } %>
         <div class="showFrame mainContents w85">
             <div class="showInfo show">
-                <span class="infospan"><%= postResult.rows[0][1] %></span>
+                <span class="infospan hover-pointer" onclick="location.href='/channel?chnlid=<%= postResult.rows[0][1] %>'"><%= postResult.rows[0][1] %></span>
                 <span class="infospan"><%= categoryResult.rows[0][0] %><br><%= categoryResult.rows[0][1] %></span>
                 <span class="infospan">작성일 : <%=  postResult.rows[0][3] %></span>
                 <span class="infospan">가치 : <%= commentResult.rows[0][4] %>$</span>
@@ -151,9 +151,7 @@
             <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
             <div class="commentDiv">
                 <div class="commentWrite tar">
-                    <form class="dib commentForm" action="/comments" method="POST">
-                        <input type="text" placeholder="Comment" id="commentText" name="comment">
-                    </form>
+                    <input type="text" placeholder="Comment" id="commentText" name="comment" onkeypress="if(event.keyCode==13)createComments();">
                     <button class="btn btn-light" onclick="createComments();">Comment</button>
                 </div>
                 <div class="commentList">
@@ -167,7 +165,7 @@
                                     else if(commentsResult.rows[i][4]==postResult.rows[0][1])commentsResult.rows[i][4]="<span style='font-weight:bold;'>"+commentsResult.rows[i][4]+"</span>";
                                 %>
                             <tr>
-                                <td class='commentInfo'><%- commentsResult.rows[i][4] %> <%= commentsResult.rows[i][3] %></td>
+                                <td class='commentInfo'><span class='hover-pointer' onclick="location.href='/channel?chnlid=<%= commentsResult.rows[i][4] %>'"><%- commentsResult.rows[i][4] %></span> <%= commentsResult.rows[i][3] %></td>
                             </tr>
                             <tr>
                                 <td class="commentContents" scope="row" colspan="2"><%= commentsResult.rows[i][2] %><%- deleteBtn %></td>

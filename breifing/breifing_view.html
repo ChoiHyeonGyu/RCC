@@ -49,7 +49,7 @@
         <% if(search==null){ %><div id="contentsSideNav"><%- contentsSideNav %></div><% } %>
         <div class="showFrame mainContents w85">
             <div class="showInfo show">
-                <span class="infospan"><%= postResult.rows[0][1] %></span>
+                <span class="infospan hover-pointer" onclick="location.href='/channel?chnlid=<%= postResult.rows[0][1] %>'"><%= postResult.rows[0][1] %></span>
                 <span class="infospan"><%= categoryResult.rows[0][0] %><br><%= categoryResult.rows[0][1] %></span>
                 <span class="infospan">작성일 : <%= postResult.rows[0][3] %></span>
                 <span class="infospan">수정일 : <%= postResult.rows[0][5] %></span>
