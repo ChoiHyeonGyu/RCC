@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
+var ether = require('../web3js/ethereum');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -50,16 +51,19 @@ router.get("/pw_find", function(req, res) {
 });
 
 
+
 router.get("/pw_change", function(req, res) {
+    var id = req.param('id');
+    console.log(id);
     fs.readFile("pw_change.html", "utf-8", function(error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
             main_header: include.main_header(req.session.user_id),
+            id : id,
         }));
     });
 
 });
-
 
 
 
@@ -100,6 +104,7 @@ router.post("/login", function(req, res){
     });
 });
 
+
 router.get("/logout",function(req,res){
     var preURL = req.param('preURL');
     if(req.session.user_id){
@@ -127,17 +132,19 @@ router.post("/signup", function(req, res){
     crypto.pbkdf2(pw, salt, parseInt(cellphone.substr(5, 6)), 64, "sha512", function(err, key){
         if(err) console.log(err);
 
-        dbconn.booleanQuery("insert into USERS values('"+id+"','"+key.toString("base64")+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
-            console.log(result);
-            if(result == false){//false
-                res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-                res.write("<script>alert('fail!');</script>")
-                res.end('<script>history.back();</script>')
-            } else {
-                res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-                res.write("<script>alert('signup!');</script>")
-                res.end('<script>history.go(-2);</script>')
-            }
+        ether.newAccount(id, function(addr){
+            dbconn.booleanQuery("insert into USERS values('"+id+"', '"+key.toString("base64")+"', '"+name+"', '"+nickname+"', '"+addr+"', '"+email+"', '"+cellphone+"', sysdate)", function(result){
+                console.log(result);
+                if(result == false){//false
+                    res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+                    res.write("<script>alert('fail!');</script>")
+                    res.end('<script>history.back();</script>')
+                } else {
+                    res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+                    res.write("<script>alert('signup!');</script>")
+                    res.end('<script>history.go(-2);</script>')
+                }
+            });
         });
     });
 // 1. login처리를 함.디비
@@ -199,36 +206,46 @@ router.post("/pw_find", function(req, res){
             res.write("<script>alert('회원정보가 없습니다!')</script>");
             res.end('<script>history.back();</script>');
         } else {
-            str=result.rows[0][1];
-            res.end('<script>location.href="/pw_change";</script>');
+            res.end('<script>location.href="/pw_change?id='+result.rows[0][0]+'";</script>');
         }
-        fs.readFile("pw_change.html", "utf-8", function(error, data) {
-            res.send(ejs.render(include.import_default() + data, {
-                logo: include.logo(),
-                main_header: include.main_header(req.session.user_id),
-                id : result.rows[0][0],
-            }));
-        });
     });
 });
 
 
 router.post("/pw_change", function(req, res){
     var pw=req.body.pw1;
-    console.log(pw);
     var id=req.body.hidden_id1
-    console.log(id);
-    dbconn.resultQuery("update users set pw='"+pw+"' where id="+id+"'", function(result){      
-        if(result.rows.length == 0){//false
-            console.log("실패실패시래패실패실패실패시랲시래");
-        }else{
-            console.log(result);
+    
+
+    dbconn.resultQuery("select name, nickname, email, cellphone from users where id='"+id+"'", function(result){
+        if(result.rows.length == 0){
             res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-            res.write("<script>alert('변경되었습니다.!');</script>");
-            res.end("<script>location.href='/login'</script>")
+            res.write("<script>alert('다시 입력해주세요!.');</script>");
+            res.end('<script>history.back()</script>');
+        } else {
+            var row = result.rows[0];
+            var salt = crypto.createHash("sha512").update(id+row[0]+row[1]+row[2]+row[3]).digest("base64");
+            crypto.pbkdf2(pw, salt,parseInt(row[3].substr(5, 6)), 64, "sha512", function(err, key){
+                if(err) console.log(err);
+                dbconn.booleanQuery("update users set pw='"+key.toString("base64")+"' where id='"+id+"'", function(result){      
+                if(result== false){//false
+                    console.log("실패실패시래패실패실패실패시랲시래");
+                }else{
+                    res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+                    res.write("<script>alert('변경되었습니다.!');</script>");
+                    res.end("<script>location.href='/login'</script>")
+                }
+                });
+            });
         }
     });
 });
+
+
+    
+
+    
+
 
 
 
