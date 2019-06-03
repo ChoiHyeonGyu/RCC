@@ -20,18 +20,25 @@ function getBalance(addr, callback){
     });
 }
 
-function sendCoin(sender, receiver, coin, callback){
-    web3.eth.personal.unlockAccount(sender, "1234", 300, function(err){
+function sendCoin(sender, receiver, coin, pw, callback){
+    var salt = crypto.createHash("sha512").update(pw).digest("base64");
+    crypto.pbkdf2(pw, salt, pw.length * 10000, 64, "sha512", function(err, key){
         if(err) console.log(err);
-    });
+        
+        web3.eth.personal.unlockAccount(sender, key.toString("base64"), 300, function(err){
+            if(err) console.log(err);
 
-    web3.eth.sendTransaction({
-        from: sender,
-        to: receiver,
-        value: web3.utils.toWei(coin, "ether")
-    }, "1234", function(err, txHash){
-        if(err) console.log(err);
-        if(txHash) callback();
+            web3.eth.sendTransaction({
+                from: sender,
+                to: receiver,
+                value: web3.utils.toWei(coin, "ether"),
+                gas: web3.utils.toHex(web3.utils.toWei("6700", "microether")),
+                gasPrice: web3.utils.toHex(web3.utils.toWei("20", "gwei"))
+            }, function(err, txHash){
+                if(err) console.log(err);
+                if(txHash) callback();
+            });
+        });
     });
 }
 

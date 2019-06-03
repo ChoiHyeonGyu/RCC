@@ -515,7 +515,7 @@ router.get("/donate", function(req, res){
 });
 
 router.post("/donate", function(req, res){
-    ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, function(){
+    ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
         res.redirect("/my");
     });
 });
