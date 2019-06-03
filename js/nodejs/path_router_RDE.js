@@ -199,16 +199,11 @@ router.post("/pw_find", function(req, res){
             res.write("<script>alert('회원정보가 없습니다!')</script>");
             res.end('<script>history.back();</script>');
         } else {
-            str=result.rows[0][1];
-            res.end('<script>location.href="/pw_change";</script>');
-        }
-        fs.readFile("pw_change.html", "utf-8", function(error, data) {
             res.send(ejs.render(include.import_default() + data, {
-                logo: include.logo(),
-                main_header: include.main_header(req.session.user_id),
                 id : result.rows[0][0],
             }));
-        });
+            res.end('<script>location.href="/pw_change";</script>');
+        }
     });
 });
 
