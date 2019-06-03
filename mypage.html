@@ -133,7 +133,7 @@
         <div id="empty"></div>
         <div id="account_info">
             <span id="account_address" class="account_num">Account Address</span><span class="account_num"><%= my.rows[0][4] %></span>
-            <span class="account_num">Coin 3,000,000</span>
+            <span class="account_num">Coin <%= coin %> ETH</span>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#buy_view">Buy</button>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
             <span id="font-30">Transactions</span>
@@ -247,7 +247,7 @@
                 <div class="modal-body tal">
                     <div><input type="text" placeholder="Buy Coin"></div>
                     <div><label>$ :</label><input type="text"></div>
-                    <div><label>Current Coin :</label><input type="text"></div>
+                    <div>Current Coin : <%= coin %> ETH</div>
                     <div><label>Result Coin :</label><input type="text"></div>
                 </div>
                 <div class="modal-footer">
@@ -269,7 +269,7 @@
                 <div class="modal-body tal">
                     <div><input type="text" placeholder="Sell Coin"></div>
                     <div><label>$ :</label><input type="text"></div>
-                    <div><label>Current Coin :</label><input type="text"></div>
+                    <div>Current Coin : <%= coin %> ETH</div>
                     <div><label>Result Coin :</label><input type="text"></div>
                 </div>
                 <div class="modal-footer">

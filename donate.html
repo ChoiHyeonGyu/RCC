@@ -1,6 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="css/donate.css">
+        <script src="/js/htmljs/donate.js"></script>
     </head>
     <body class="sort-center">
         <div id="header2"><%- main_header %></div>
@@ -34,22 +35,26 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
         <div id="donate_input" class="container">
             <div class="row">
                 <div class="col who">
-                    Sender : ADMIN<br><br>
-                    Account Address : 0x5a0b54d5dc17e0aadc383d2db43b0a0d3e029c4c
+                    Sender : <%= my.rows[0][0] %><br><br>
+                    Account Address : <%= my.rows[0][1] %>
                 </div>
                 <div class="col who">
-                    Receiver : ADMIN<br><br>
-                    Account Address : 0x5a0b54d5dc17e0aadc383d2db43b0a0d3e029c4c
+                    Receiver : <%= my.rows[0][2] %><br><br>
+                    Account Address : <%= my.rows[0][3] %>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    MyCoin : 3,000,000<br><br>
-                    <input type="text" id="sending_money" placeholder="Sending Ether">
+            <form method="POST" action="/donate">
+                <input type="hidden" name="sender" value="<%= my.rows[0][1] %>">
+                <input type="hidden" name="receiver" value="<%= my.rows[0][3] %>">
+                <div class="row">
+                    <div class="col">
+                        MyCoin : <%= coin %> ETH<br><br>
+                        <input type="text" id="sending_money" name="coin" placeholder="Sending ETH">
+                    </div>
+                    <div class="col"></div>
                 </div>
-                <div class="col"></div>
-            </div>
-            <button id="send_btn" class="btn btn-light">Send</button><button class="btn btn-light">Cancel</button>
+                <button id="send_btn" class="btn btn-light">Send</button><button id="cancel_btn" class="btn btn-light">Cancel</button>
+            </form>
         </div>
     </body>
 </html>
