@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
+var ether = require('../web3js/ethereum');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -131,17 +132,19 @@ router.post("/signup", function(req, res){
     crypto.pbkdf2(pw, salt, parseInt(cellphone.substr(5, 6)), 64, "sha512", function(err, key){
         if(err) console.log(err);
 
-        dbconn.booleanQuery("insert into USERS values('"+id+"','"+key.toString("base64")+"', '"+name+"','"+nickname+"','0x111111','"+email+"','"+cellphone+"',sysdate)", function(result){
-            console.log(result);
-            if(result == false){//false
-                res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-                res.write("<script>alert('fail!');</script>")
-                res.end('<script>history.back();</script>')
-            } else {
-                res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
-                res.write("<script>alert('signup!');</script>")
-                res.end('<script>history.go(-2);</script>')
-            }
+        ether.newAccount(id, function(addr){
+            dbconn.booleanQuery("insert into USERS values('"+id+"', '"+key.toString("base64")+"', '"+name+"', '"+nickname+"', '"+addr+"', '"+email+"', '"+cellphone+"', sysdate)", function(result){
+                console.log(result);
+                if(result == false){//false
+                    res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+                    res.write("<script>alert('fail!');</script>")
+                    res.end('<script>history.back();</script>')
+                } else {
+                    res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
+                    res.write("<script>alert('signup!');</script>")
+                    res.end('<script>history.go(-2);</script>')
+                }
+            });
         });
     });
 // 1. login처리를 함.디비
