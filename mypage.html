@@ -247,10 +247,10 @@
                 <form method="POST" action="/buy">
                     <div class="modal-body tal">
                             <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
-                            <div><input type="number" id="bc" name="coin" placeholder="Buy Coin"></div>
+                            <div><input type="number" class="coin" name="coin" placeholder="Buy Coin"></div>
                             <div>￦ : <input type="text" class="won" readonly></div>
                             <div>Current Coin : <%= coin %> ETH</div>
-                            <div>Result Coin : <input type="text" class="rc" readonly></div>
+                            <div>Result Coin : <input type="text" class="rc" save="<%= coin %>" readonly></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -272,10 +272,10 @@
                 <form method="POST" action="/sell">
                     <div class="modal-body tal">
                             <input type="hidden" name="sender" value="<%= my.rows[0][4] %>">
-                            <div><input type="number" id="sc" name="coin" placeholder="Sell Coin"></div>
+                            <div><input type="number" class="coin" name="coin" placeholder="Sell Coin"></div>
                             <div>￦ : <input type="text" class="won" readonly></div>
                             <div>Current Coin : <%= coin %> ETH</div>
-                            <div>Result Coin : <input type="text" class="rc" readonly></div>
+                            <div>Result Coin : <input type="text" class="rc" save="<%= coin %>" readonly></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

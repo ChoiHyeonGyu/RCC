@@ -72,6 +72,8 @@ router.get("/my", function(req, res){
                 });
             }
 
+            
+
             function listing(result2, result3, coin){
                 fs.readFile("mypage.html", "utf-8", function(error, data) {
                     res.send(ejs.render(include.import_default() + data, {
