@@ -13,7 +13,7 @@
     font-weight:bold;
     font-size:20px;
     margin:20px;
-    font-family:'Sunflower', sans-serif;
+    font-family:'Noto Sans KR', sans-serif;
 }
 
 .signup-block {
@@ -28,28 +28,29 @@
     background:#eeeeee33;
     margin: 0 auto;
     text-align:center;
-    
+    margin-bottom:100px;   
 }
 
+#auth_box{
+    width: 90%;
+    border-radius: 5px;
+    border:1px solid magenta;
+    text-align:center;
+}
 
-.signup-block h1 {
-    text-align: center;
-    color: #000;
-    font-size: 18px;
-    text-transform: uppercase;
-    margin-top: 0;
-    margin-bottom: 20px;
+#auth_num{
+    padding:0px;
 }
 
 .signup-block input {
-    width: 100%;
+    width: 90%;
     height: 42px;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     margin-bottom: 20px;
     font-size: 14px;
-    font-family: Montserrat;
+    font-family: 'Noto Sans KR', sans-serif;
     padding: 0 20px 0 50px;
     outline: none;
 }
@@ -140,17 +141,12 @@
 
 
 
-
-
-
-
-
 .signup-block input:active, .signup-block input:focus {
     border: 1px solid #ca7bff;
 }
 
 .signup-block .button {
-    width: 100%;
+    width: 90%;
     height: 40px;
     background: #bbbbbb;
     box-sizing: border-box;
@@ -159,18 +155,15 @@
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 16px;
     font-family: Montserrat;
     outline: none;
     cursor: pointer;
+    text-align:center;
 }
 
 .signup-block .button:hover {
     background: #ca7bff;
-}
-
-a {
-    text-align:center;
 }
 
 #pwcheckmsg{
