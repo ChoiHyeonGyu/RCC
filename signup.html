@@ -3,6 +3,7 @@
         <meta charset="utf-8">
         <script src="js/htmljs/signup.js"></script>
         <link rel="stylesheet" type='text/css' href="/css/signup.css?ver=1">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR|Sunflower:300&display=swap" rel="stylesheet">
         <style>
             input.button{
                 padding: 0px;
@@ -16,7 +17,7 @@
         <div class="signup container">
             <div class="signup-block">
                 <form action="/signup" method="post" onsubmit="return checkval();">
-                    <h1>회원가입</h1>
+                    <div id="text">회원가입</div>
                     <input type="text" value="" placeholder="아이디" id="id" name="id1"/>
                     <br>
                     <input type="button" value="아이디 중복확인" class="button" id="id_check"/>

@@ -3,6 +3,7 @@
         <meta charset="utf-8">
         <script src="js/htmljs/login.js"></script>
         <link rel="stylesheet" type='text/css' href="/css/login.css?ver=30">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR|Sunflower:300&display=swap" rel="stylesheet">
     </head>
     <body>
         <div id="header2"><%- main_header %></div>
@@ -10,7 +11,7 @@
         <div class="login container">
             <div class="login-block">
                 <form action="/login" method="post" onsubmit="return checkval();">
-                    <h1>로그인</h1>
+                    <div id="text">로그인</div>
                     <script>
                         onload=function(){
                             $('#hiddenTag').val(document.referrer);
@@ -20,8 +21,8 @@
                     <input type="text" value="" placeholder="아이디" id="id" name="id1"/>
                     <input type="password" value="" placeholder="비밀번호" id="pw" name="pw1"/>
                     <input type="submit" value="로그인" class="button">
-                    <input type="button" value="" class="button" style='background: url( "https://www.teachforkorea.go.kr/wp-includes/img/ico/sns_naver_ico_login.png" ) no-repeat;background-size:100% 40px;border:0px'>
-                    <input type="button" value="" class="button" style='background: url( "http://aginfo.kr/mobile_img/google_btn.gif" ) no-repeat;background-size:100% 40px; border:0px'>
+                    <!--<input type="button" value="" class="button" style='background: url( "https://www.teachforkorea.go.kr/wp-includes/img/ico/sns_naver_ico_login.png" ) no-repeat;background-size:100% 40px;border:0px'>
+                    <input type="button" value="" class="button" style='background: url( "http://aginfo.kr/mobile_img/google_btn.gif" ) no-repeat;background-size:100% 40px; border:0px'>-->
                     <input type="button" value="회원가입" class="button" onclick="location.href='/signup'">
                     <div style="text-align:center;"><a href="/id_find">아이디 찾기</a>/<a href="/pw_find">비밀번호찾기</a></div>
                 </form>
