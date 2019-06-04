@@ -292,7 +292,8 @@ $(function(){
 
     $('.coin').keyup(function(){
         $('.won').val(($(this).val() * 100000).toLocaleString());
-        $('.rc').val(Number($(this).val()) + Number($('.rc').attr('save')));
+        $('#brc').val(Number($(this).val()) + Number($('.rc').attr('save')));
+        $('#src').val(Number($('.rc').attr('save')) - Number($(this).val()));
     });
 
     $('button[data-dismiss]').click(function(){

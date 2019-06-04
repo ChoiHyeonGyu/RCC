@@ -168,9 +168,9 @@ router.get("/", function (req, res) {
     getMainBreifing(function(bResult){
         getMainCommentary(function(cResult){
             getMainUsers(function(uResult){
-                console.log(1,bResult)
-                console.log(2,cResult)
-                console.log(3,uResult)
+                //console.log(1,bResult)
+                //console.log(2,cResult)
+                //console.log(3,uResult)
                 fs.readFile("main.html", "utf-8", function (error, data) {
                     res.send(ejs.render(include.import_default() + data, {
                         logo: include.logo(),

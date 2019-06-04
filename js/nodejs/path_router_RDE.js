@@ -108,7 +108,6 @@ router.post("/login", function(req, res){
 router.get("/logout",function(req,res){
     var preURL = req.param('preURL');
     if(req.session.user_id){
-        console.log("로그아웃 처리");
         req.session.destroy(function(err){
             if(err){
                 return;
@@ -134,7 +133,6 @@ router.post("/signup", function(req, res){
 
         ether.newAccount(id, function(addr){
             dbconn.booleanQuery("insert into USERS values('"+id+"', '"+key.toString("base64")+"', '"+name+"', '"+nickname+"', '"+addr+"', '"+email+"', '"+cellphone+"', sysdate)", function(result){
-                console.log(result);
                 if(result == false){//false
                     res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
                     res.write("<script>alert('fail!');</script>")
@@ -258,13 +256,9 @@ router.post("/auth",function(req,res){
     req.session.save(function(err){
         if(err) console.log(err);
     });
-    console.log('post방식으로 호출.');
-    console.log(var_num);
-    console.log(cellphone);
+
     dbconn.resultQuery("select cellphone from users where cellphone='"+cellphone+"'", function(result,err){
-        console.log(result);
         if(result.rows.length == 0){//false
-            console.log(1)
             request({
                 'method': 'POST',
                 'json': true,
@@ -286,7 +280,6 @@ router.post("/auth",function(req,res){
               });
               return res.json({ result : true });
         } else {
-            console.log(2)
             return res.json({ result : false }); 
         }
     });
