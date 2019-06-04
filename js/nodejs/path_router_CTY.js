@@ -143,20 +143,20 @@ function getMainBreifing(callback){
     dbconn.resultQuery("select h.*,cate.cate from (select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline)).EXTRACT('//text()').GETSTRINGVAL(),2) headline "+
     "from (select b.pid,nvl(h.headline,substr((select headline from briefingdetail where bid=b.bid),0,47)||'...') as headline from"+
     "(select pid,bid from briefingdetail where pid in (select c.pid from ("+
-    "select pid from (select rownum row1, c.* from (select post.pid from post where briefing=1 order by pdate desc) c) where row1>=1 and row1<=6) c)) b left join (select bid,headline from briefingdetail) h on b.bid=h.bid and length(h.headline)<50) group by pid) h,"+
+    "select pid from (select rownum row1, c.* from (select post.pid from post where briefing=1 order by pdate desc) c) where row1>=1 and row1<=4) c)) b left join (select bid,headline from briefingdetail) h on b.bid=h.bid and length(h.headline)<50) group by pid) h,"+
     "(select post.pid,category.CATEGORYNAME ||' - '||catedetail.DETAILNAME as cate from (select * from (select * from (select rownum row1, c.* from (select * from post where briefing=1 order by pdate desc) c) where row1>=1 and row1<=6) c where row1>=1 and row1<=5) post,category,catedetail where post.cate=category.CATEGORYID and post.CATEDETAIL = catedetail.DETAILID) cate where h.pid=cate.pid"
     ,function(result){
         callback(result);
     });
 }
 function getMainCommentary(callback){
-    dbconn.resultQuery("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 and pid in (select pid from (select rownum row1,c.pid from (select pid from post where briefing=0 order by pdate desc) c) where row1>=1 and row1<=15)) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc"
+    dbconn.resultQuery("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 and pid in (select pid from (select rownum row1,c.pid from (select pid from post where briefing=0 order by pdate desc) c) where row1>=1 and row1<=12)) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc"
     ,function(result){
         callback(result);
     });
 }
 function getMainUsers(callback){
-    dbconn.resultQuery("select users.*,cntp.cnt cntc,cntp.vcnt cost from (select users.*,cntp.cntb,cntp.vcnt from (select * from (select rownum row1, u.* from (select channeluser,count(*) cnt from subscribe group by channeluser order by cnt desc) u) where row1>=1 and row1<=10) users left join (select userid,count(*) cntb,sum(viewcount) vcnt from post where briefing=1 group by userid) cntp on cntp.userid = users.channeluser) users left join (select post.userid,count(*) cnt ,sum(cost) vcnt from commentary, post where post.pid=commentary.pid and post.briefing=0 group by post.userid) cntp on users.channeluser=cntp.userid"
+    dbconn.resultQuery("select users.*,nvl(cntp.cnt,0) cntc,nvl(cntp.vcnt,0) cost from (select users.*,nvl(cntp.cntb,0),nvl(cntp.vcnt,0) from (select * from (select rownum row1, u.* from (select channeluser,count(*) cnt from subscribe group by channeluser order by cnt desc) u) where row1>=1 and row1<=12) users left join (select userid,count(*) cntb,sum(viewcount) vcnt from post where briefing=1 group by userid) cntp on cntp.userid = users.channeluser) users left join (select post.userid,count(*) cnt ,sum(cost) vcnt from commentary, post where post.pid=commentary.pid and post.briefing=0 group by post.userid) cntp on users.channeluser=cntp.userid"
     ,function(result){
         callback(result);
     });

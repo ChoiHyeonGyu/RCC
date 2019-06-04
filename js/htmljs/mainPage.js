@@ -98,7 +98,7 @@
   //*> OPTIONAL SETTINGS
  ************************/
  function countSlides(){
-     $('#counter').html(pos+1 + ' / ' + totalSlides);
+    //$('#counter').html(pos+1 + ' / ' + totalSlides);
  }
  
  function pagination(){
