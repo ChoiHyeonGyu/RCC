@@ -293,9 +293,6 @@ router.get("/my/search/pagelist", function(req, res){
 
 router.post("/buy", function(req, res){
     dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
-        console.log(result.rows[0][0]);
-        console.log(req.body.receiver);
-        console.log(req.body.coin);
         ether.sendCoin(result.rows[0][0], req.body.receiver, req.body.coin, "admin", function(){
             res.redirect("/my");
         });
