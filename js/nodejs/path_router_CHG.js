@@ -68,6 +68,7 @@ router.get("/my", function(req, res){
 
             function ethereum(result2, result3){
                 ether.getBalance(result.rows[0][4], function(coin){
+                    ether.getTransactions();
                     listing(result2, result3, coin);
                 });
             }
@@ -289,6 +290,22 @@ router.get("/my/search/pagelist", function(req, res){
             }
         }
     }
+});
+
+router.post("/buy", function(req, res){
+    dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
+        ether.sendCoin(result.rows[0][0], req.body.receiver, req.body.coin, "admin", function(){
+            res.redirect("/my");
+        });
+    });
+});
+
+router.post("/sell", function(req, res){
+    dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
+        ether.sendCoin(req.body.sender, result.rows[0][0], req.body.coin, req.session.user_id, function(){
+            res.redirect("/my");
+        });
+    });
 });
 
 router.post("/user/modify", function(req, res){

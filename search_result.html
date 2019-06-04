@@ -3,6 +3,10 @@
 <head>
     <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
     <script>
+        onload = function(){
+            $('#selectBox option:eq(<%= type %>)').attr('selected','selected');
+            $('#searchInput').val('<%=search%>');
+        }
     </script>
 </head>
 

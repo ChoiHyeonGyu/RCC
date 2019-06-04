@@ -60,9 +60,6 @@
     width:15%;
     border-right:1px solid #DDDDDD;
 }
-.btn{
-    border: 1px solid #BBBBBB;
-}
 .showTitle{
     font-weight:bold;
     font-size: 20px;
@@ -111,4 +108,8 @@
 }
 .categoryHead{
     border-bottom: 1px solid #999999;
+}
+#sortingBox{
+    padding:10px;
+    border:none;
 }

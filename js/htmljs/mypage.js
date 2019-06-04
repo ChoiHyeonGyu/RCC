@@ -1,7 +1,5 @@
 $(function(){
     var lastnum = 0;
-    var srchpost = null;
-    var srchcmnt = null;
 
     function pageSelecting(){
         if($(location).attr('search').match('s=1')){
@@ -290,6 +288,17 @@ $(function(){
         } else if($(this).val() == "후원 총액") {
             location.href = my + "3";
         }
+    });
+
+    $('.coin').keyup(function(){
+        $('.won').val(($(this).val() * 100000).toLocaleString());
+        $('.rc').val(Number($(this).val()) + Number($('.rc').attr('save')));
+    });
+
+    $('button[data-dismiss]').click(function(){
+        $('.coin').val('');
+        $('.won').val('');
+        $('.rc').val('');
     });
 });
 

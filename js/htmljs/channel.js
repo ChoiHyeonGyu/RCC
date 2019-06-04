@@ -176,6 +176,10 @@ $(function(){
         }
     });
 
+    $('#channel_do_btn').click(function(){
+        location.href = "/donate?chnlid=" + $('input[type=hidden]').val();
+    });
+
     $(document).on('keydown', '#search_input', function(){
         if(event.keyCode == 13){
             $.ajax({

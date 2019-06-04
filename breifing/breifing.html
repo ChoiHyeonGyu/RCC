@@ -2,9 +2,13 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
+    <script src="js/htmljs/board.js"></script>
     <script>
+        var url;
         onload = function () {
             $("#mainNavBtn02").addClass("active");
+            $('#sortingBox option:eq(<%= sort-1 %>)').attr('selected','selected');
+
         }
     </script>
 </head>
@@ -17,7 +21,10 @@
     <div class="briefingContents container contentsBox tac">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
         <div class="hotBriefing mainContents">
-            <h2>헤드라인 게시판</h2>
+            <h2>헤드라인 게시판</h2><select class='fr' id='sortingBox' onchange="sort(location.pathname+'?pageNo=<%=pagingResult.curPage%>&sort='+$('#sortingBox option:selected').val())">
+                <option value='1'>최신 순</option>
+                <option value='2'>오래된 순</option>
+            </select>
             <table class="table mainTable">
                 <tbody>
                     <%for(var i=0;i<result.rows.length;i++){%>
@@ -38,18 +45,18 @@
                     <%
                         var paging="";
                         if(pagingResult.preBtn == '1'){
-                            paging="<button class='btn btn-light' onclick=location.href='"+"/breifing?pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"
+                            paging="<button class='btn btn-light' onclick=location.href='"+"/breifing?sort="+sort+"&pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"
                         }
                     %><%- paging %><%
                         paging="";
                         for(var i=pagingResult.startPage; i<=pagingResult.endPage;i++){
-                            if(i==pagingResult.curPage) paging+="<button class='btn btn-light active' onclick=location.href='"+"/breifing?pageNo="+i+"'>"+i+"</button>"
-                            else paging+="<button class='btn btn-light' onclick=location.href='"+"/breifing?pageNo="+i+"'>"+i+"</button>"
+                            if(i==pagingResult.curPage) paging+="<button class='btn btn-light active' onclick=location.href='"+"/breifing?sort="+sort+"&pageNo="+i+"'>"+i+"</button>"
+                            else paging+="<button class='btn btn-light' onclick=location.href='"+"/breifing?sort="+sort+"&pageNo="+i+"'>"+i+"</button>"
                         }
                     %><%- paging %><%
                         paging="";
                         if(pagingResult.nextBtn == '1'){
-                        paging="<button class='btn btn-light' onclick=location.href='"+"/breifing?pageNo="+(parseInt(pagingResult.endPage)+1)+"'>&gt;</button>"
+                        paging="<button class='btn btn-light' onclick=location.href='"+"/breifing?sort="+sort+"&pageNo="+(parseInt(pagingResult.endPage)+1)+"'>&gt;</button>"
                         }
                     %><%- paging %>
                     <div>
