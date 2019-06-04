@@ -86,3 +86,6 @@
 *,.btn{
     transition: all 0.3s ease;
 }
+.mg20{
+    margin:20px;
+}

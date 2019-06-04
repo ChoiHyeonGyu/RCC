@@ -23,8 +23,8 @@
     <div id="header3" class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
     <div class='main2 container tac mainSliderContainer'>
-        <div class="hotBriefing mainContents mainSlider tac">
-            <h2>게시판</h2>
+        <div class="hotBriefing mg20 mainSlider tac">
+            <h2 style="font-size:30px;">게시판</h2>
             <div id="wrapper">
                 <div id="slider-wrap">
                     <ul id="slider">
@@ -32,31 +32,17 @@
                             <span style='color:black;'>Page5</span>
                             <table class="table mainTable commTable">
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
+                                    <%for(var i=0;i<bResult.rows.length;i++){%>
+                                        <tr class='hover-pointer hover-underline' onclick='location.href="/breifing_view?postNo=<%= bResult.rows[i][0] %>"'>
+                                            <% 
+                                                bResult.rows[i][1] = bResult.rows[i][1].replace("&lt;br&gt;","");
+                                                bResult.rows[i][1] = bResult.rows[i][1].split("&lt;").join("<");
+                                                bResult.rows[i][1] = bResult.rows[i][1].split("&gt;").join(">");
+                                            %>
+                                            <th scope='row'><%- bResult.rows[i][1] %></th>
+                                            <td><%= bResult.rows[i][2] %></td>
+                                        </tr>
+                                    <%}%>
                                 </tbody>
                             </table>
                         </li>
@@ -64,133 +50,42 @@
                         <li data-color="#3498db">
                             <table class="table mainTable commTable">
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
+                                    <%for(var i=0;i<cResult.rows.length;i++){%>
+                                        <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?postNo=<%= cResult.rows[i][0] %>'">
+                                            <th scope="row"><%= cResult.rows[i][5] %> <% if(cResult.rows[i][7]!=null){ %><%= "["+cResult.rows[i][7]+"]" %><% } %></th>
+                                            <td calss='w10'><%= cResult.rows[i][9] %></td>
+                                            <td class='w10'><%= cResult.rows[i][2] %></td>
+                                            <td class='w10'><%= cResult.rows[i][6].toFixed(2) %>c</td>
+                                        </tr>
+                                    <%}%>
                                 </tbody>
                             </table>
                         </li>
 
                         <li data-color="#9b59b6">
                             <table class="table mainTable commTable">
+                                <thead>
+                                    <th scope="row">유저</th>
+                                    <th>구독자 수</th>
+                                    <th>브리핑</th>
+                                    <th>브리핑 누적 뷰</th>
+                                    <th>논평</th>
+                                    <th>논평 누적 후원</th>
+                                </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
+                                    <%for(var i=0;i<uResult.rows.length;i++){%>
+                                        <tr class="hover-pointer hover-underline" onclick="location.href='/channel?chnlid=<%=uResult.rows[i][1]%>'">
+                                            <th scope='row'><%=uResult.rows[i][1]%></th>
+                                            <td><%=uResult.rows[i][2]%></td>
+                                            <td><%=uResult.rows[0][3]%></td>
+                                            <td><%=uResult.rows[0][4]%></td>
+                                            <td><%=uResult.rows[0][5]%></td>
+                                            <td><%=uResult.rows[0][6].toFixed(2)%>c</td>
+                                        </tr>
+                                    <%}%>
                                 </tbody>
                             </table>
                         </li>
-
-                        <li data-color="#34495e">
-                            <table class="table mainTable commTable">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </li>
-
-                        <li data-color="#e74c3c">
-                            <span>Page5</span>
-                            <table class="table mainTable commTable">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">택시업계 '타다 퇴출' 주장에…이재웅 "억지 쓰지 말라" 관련기사 개수</th>
-                                        <td class='w10'></td>
-                                        <td class='w10'>0.00$</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </li>
-
-
                     </ul>
 
                     <!--controls-->
