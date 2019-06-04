@@ -31,6 +31,10 @@
                         <li data-color="#1abc9c">
                             <span style='color:black;'>Page5</span>
                             <table class="table mainTable commTable">
+                                    <thead>
+                                        <th scope="row">헤드라인</th>
+                                        <th>카테고리</th>
+                                    </thead>
                                 <tbody>
                                     <%for(var i=0;i<bResult.rows.length;i++){%>
                                         <tr class='hover-pointer hover-underline' onclick='location.href="/breifing_view?postNo=<%= bResult.rows[i][0] %>"'>
@@ -48,7 +52,13 @@
                         </li>
 
                         <li data-color="#3498db">
-                            <table class="table mainTable commTable">
+                            <table class="table mainTable commTable">                                
+                            <thead>
+                                <th scope="row">제목</th>
+                                <th>카테고리</th>
+                                <th>작성자</th>
+                                <th>가치</th>
+                            </thead>
                                 <tbody>
                                     <%for(var i=0;i<cResult.rows.length;i++){%>
                                         <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?postNo=<%= cResult.rows[i][0] %>'">

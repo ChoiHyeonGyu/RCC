@@ -150,7 +150,7 @@ function getMainBreifing(callback){
     });
 }
 function getMainCommentary(callback){
-    dbconn.resultQuery("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 and pid in (select pid from (select rownum row1,c.pid from (select pid from post where briefing=0 order by pdate desc) c) where row1>=1 and row1<=15)) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by c.pdate desc"
+    dbconn.resultQuery("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 and pid in (select pid from (select rownum row1,c.pid from (select pid from post where briefing=0 order by pdate desc) c) where row1>=1 and row1<=15)) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc"
     ,function(result){
         callback(result);
     });
