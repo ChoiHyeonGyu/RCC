@@ -2,76 +2,76 @@
 
 
 
-.login-naver{
-    background: url( "https://www.teachforkorea.go.kr/wp-includes/img/ico/sns_naver_ico_login.png" ) no-repeat;
+#text{
+    text-align:center;
+    font-weight:bold;
+    font-size:20px;
+    margin:20px;
+    font-family:'Sunflower', sans-serif;
 }
-.login-daum{
-    background: url( "images/button_search.png" ) no-repeat;
-}
-
 
 .login-block {
-    width: 320px;
-    padding: 20px;
+    width: 400px;
+    padding: 0 20px 20px 20px;
     background: #fff;
     border-radius: 5px;
     border-top: 5px solid #bbbbbb;
+    border-bottom:1px solid #bbbbbb;
+    /*border-right:1px solid #bbbbbb;
+    border-left:1px solid #bbbbbb;*/
+    background:#eeeeee33;
     margin: 0 auto;
+    text-align:center;
+    
 }
 
-.login-block h1 {
-    text-align: center;
-    color: #000;
-    font-size: 18px;
-    text-transform: uppercase;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
+
 
 .login-block input {
-    width: 100%;
+    width: 90%;
     height: 42px;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     margin-bottom: 20px;
     font-size: 14px;
-    font-family: Montserrat;
+    font-family: 'Noto Sans KR', sans-serif;
     padding: 0 20px 0 50px;
     outline: none;
 }
 
 input.button{
     padding: 0px;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .login-block input#id {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px no-repeat;
     background-size: 16px 80px;
 }
 
 .login-block input#id:focus {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px bottom no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px  no-repeat;
     background-size: 16px 80px;
 }
 
 .login-block input#pw {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/1096/1096513.svg') 20px  no-repeat;
     background-size: 16px 80px;
 }
 
 .login-block input#pw:focus {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px bottom no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/1096/1096513.svg') 20px  no-repeat;
     background-size: 16px 80px;
 }
 
 .login-block input:active, .login-block input:focus {
-    border: 1px solid #ca7bff;
+    border: 2px solid #ca7bff;
 }
 
 
 .login-block .button {
-    width: 100%;
+    width: 90%;
     height: 40px;
     background: #bbbbbb;
     box-sizing: border-box;
@@ -80,7 +80,7 @@ input.button{
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 16px;
     font-family: Montserrat;
     outline: none;
     cursor: pointer;
@@ -95,4 +95,5 @@ a {
     text-align:center;
     text-decoration:none;
     color:black;
+    font-family: 'Noto Sans KR', sans-serif;
 }
