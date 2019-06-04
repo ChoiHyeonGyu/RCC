@@ -244,16 +244,19 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body tal">
-                    <div><input type="text" placeholder="Buy Coin"></div>
-                    <div><label>$ :</label><input type="text"></div>
-                    <div>Current Coin : <%= coin %> ETH</div>
-                    <div><label>Result Coin :</label><input type="text"></div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-light">Buy</button>
-                </div>
+                <form method="POST" action="/buy">
+                    <div class="modal-body tal">
+                            <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
+                            <div><input type="number" id="bc" name="coin" placeholder="Buy Coin"></div>
+                            <div>￦ : <input type="text" class="won" readonly></div>
+                            <div>Current Coin : <%= coin %> ETH</div>
+                            <div>Result Coin : <input type="text" class="rc" readonly></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-light">Buy</button>
+                    </div>
+                </form>
               </div>
             </div>
           </div>
@@ -266,16 +269,19 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body tal">
-                    <div><input type="text" placeholder="Sell Coin"></div>
-                    <div><label>$ :</label><input type="text"></div>
-                    <div>Current Coin : <%= coin %> ETH</div>
-                    <div><label>Result Coin :</label><input type="text"></div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-light">Sell</button>
-                </div>
+                <form method="POST" action="/sell">
+                    <div class="modal-body tal">
+                            <input type="hidden" name="sender" value="<%= my.rows[0][4] %>">
+                            <div><input type="number" id="sc" name="coin" placeholder="Sell Coin"></div>
+                            <div>￦ : <input type="text" class="won" readonly></div>
+                            <div>Current Coin : <%= coin %> ETH</div>
+                            <div>Result Coin : <input type="text" class="rc" readonly></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-light">Sell</button>
+                    </div>
+                </form>
               </div>
             </div>
           </div>

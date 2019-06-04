@@ -64,8 +64,16 @@
     margin-bottom: 20px;
 }
 
-.modal-body label {
-    width: 100%;
+.modal-body #bc, #sc {
+    margin-left: 103px;
+}
+
+.modal-body .won {
+    margin-left: 75px;
+}
+
+.modal-body .rc {
+    margin-left: 12px;
 }
 
 .mypageATag {

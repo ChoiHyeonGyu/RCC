@@ -291,6 +291,25 @@ router.get("/my/search/pagelist", function(req, res){
     }
 });
 
+router.post("/buy", function(req, res){
+    dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
+        console.log(result.rows[0][0]);
+        console.log(req.body.receiver);
+        console.log(req.body.coin);
+        ether.sendCoin(result.rows[0][0], req.body.receiver, req.body.coin, "admin", function(){
+            res.redirect("/my");
+        });
+    });
+});
+
+router.post("/sell", function(req, res){
+    dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
+        ether.sendCoin(req.body.sender, result.rows[0][0], req.body.coin, req.session.user_id, function(){
+            res.redirect("/my");
+        });
+    });
+});
+
 router.post("/user/modify", function(req, res){
     var id = req.session.user_id;
     var pw = req.body.pw1;

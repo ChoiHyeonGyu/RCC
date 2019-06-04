@@ -32,8 +32,7 @@ function sendCoin(sender, receiver, coin, pw, callback){
                 from: sender,
                 to: receiver,
                 value: web3.utils.toWei(coin, "ether"),
-                gas: web3.utils.toHex(web3.utils.toWei("6700", "microether")),
-                gasPrice: web3.utils.toHex(web3.utils.toWei("20", "gwei"))
+                gasPrice: web3.utils.toWei("20", "gwei")
             }, function(err, txHash){
                 if(err) console.log(err);
                 if(txHash) callback();
