@@ -7,7 +7,7 @@
     font-weight:bold;
     font-size:20px;
     margin:20px;
-    font-family:'Sunflower', sans-serif;
+    font-family:'Noto Sans KR', sans-serif;
 }
 
 .login-block {
@@ -22,9 +22,8 @@
     background:#eeeeee33;
     margin: 0 auto;
     text-align:center;
-    
+    margin-bottom:100px;
 }
-
 
 
 .login-block input {
@@ -42,7 +41,6 @@
 
 input.button{
     padding: 0px;
-    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .login-block input#id {
