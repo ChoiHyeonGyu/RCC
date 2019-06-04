@@ -41,8 +41,29 @@ function sendCoin(sender, receiver, coin, pw, callback){
     });
 }
 
+function getTransactions(){
+    web3.eth.getBlockNumber(function(err, bn){
+        if(err) console.log(err);
+        
+        web3.eth.getBlock(8, function(err, blk){
+            if(err) console.log(err);
+            console.log(blk);
+            console.log(blk.transactions);
+            web3.eth.getTransaction(blk.transactions[0], function(err, tx){
+                if(err) console.log(err);
+                console.log(tx);
+                console.log(tx.blockNumber);
+                console.log(tx.from);
+                console.log(tx.to);
+                console.log(tx.value);
+            });
+        });
+    });
+}
+
 module.exports = {
     getBalance: getBalance,
     sendCoin: sendCoin,
-    newAccount: newAccount
+    newAccount: newAccount,
+    getTransactions: getTransactions
 }
