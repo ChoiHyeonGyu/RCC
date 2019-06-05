@@ -399,12 +399,20 @@ function createPost(name, cate, catedetail, breifing, callback) {
 function createBreifingDetail(pid, headLine, url) {
     headLine = headLine.split("\"").join("“");
     headLine = headLine.split("\'").join("‘");
+    headLine = headLine.split("<").join("");
+    headLine = headLine.split(">").join("");
+    headLine = headLine.split("$(").join("");
     dbconn.booleanQuery("insert into briefingdetail values(briefingdetail_sequence.nextval," + pid + ",'" + headLine + "','" + url + "')", function (result) {
     });
 }
 function createBreifingSummary(pid, summary) {
     summary = summary.split("\"").join("“");
     summary = summary.split("\'").join("‘");
+    summary = summary.split("<").join("");
+    summary = summary.split(">").join("");
+    summary = summary.split("$(").join("");
+    summary = summary.split(" ").join("&nbsp;");
+    summary = summary.split("\n").join("<br>");
     dbconn.booleanQuery("insert into briefingsummary values (briefingsummary_sequence.nextval," + pid + ",'" + summary + "')", function (result) {
     });
 }
@@ -436,6 +444,11 @@ function deleteHashTag(postId, callback) {
 function updateSummary(postId, summary, callback) {
     summary = summary.split("\"").join("“");
     summary = summary.split("\'").join("‘");
+    summary = summary.split("<").join("");
+    summary = summary.split(">").join("");
+    summary = summary.split("$(").join("");
+    summary = summary.split(" ").join("&nbsp;");
+    summary = summary.split("\n").join("<br>");
     dbconn.booleanQuery("update briefingsummary set bsummary='" + summary + "' where pid=" + postId, function (result) {
         callback(result);
     });
@@ -1000,8 +1013,16 @@ function createCommentary(postId, title, contents, callback) {
     //작은따옴표 변환 할 것
     title = title.split("\"").join("“");
     title = title.split("\'").join("‘");
+    title = title.split("<").join("");
+    title = title.split(">").join("");
+    title = title.split("$(").join("");
     contents = contents.split("\"").join("“");
     contents = contents.split("\'").join("‘");
+    contents = contents.split("<").join("");
+    contents = contents.split(">").join("");
+    contents = contents.split("$(").join("");
+    contents = contents.split(" ").join("&nbsp;");
+    contents = contents.split("\n").join("<br>");
     dbconn.booleanQuery("insert into commentary values (commentary_sequence.nextval," + postId + ",'" + title + "','" + contents + "',0)", function (result) {
         callback(result);
     });
@@ -1158,6 +1179,9 @@ router.post("/subscribe", function (req, res) {
 function createComments(cid, comments, userId, callback){
     comments = comments.split("\"").join("“");
     comments = comments.split("\'").join("‘");
+    comments = comments.split("<").join("");
+    comments = comments.split(">").join("");
+    comments = comments.split("$(").join("");
     dbconn.booleanQuery("insert into comments values (comments_sequence.nextval,"+cid+",'"+comments+"',sysdate,'"+userId+"')",function(result){
         if(result){
             //댓글리스트를 다시 불러와서 줌
