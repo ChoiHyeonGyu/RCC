@@ -1,10 +1,10 @@
 <script>
-    function logoutButton(){
-        location.href='/logout?preURL='+location.pathname+location.search;
+    function logoutButton() {
+        location.href = '/logout?preURL=' + location.pathname + location.search;
     }
 </script>
 <div class="mainHeader container">
-    <ul class="nav justify-content-end">
+    <ul class="nav justify-content-end r0">
         <% if(user == null){ %>
         <li class="nav-item">
             <a class="btn btn-light" href="/login">Login</a>
@@ -13,6 +13,19 @@
             <a class="btn btn-light" href="/signup">Signup</a>
         </li>
         <% } else { %>
+        <li class="nav-item dropdown hover-pointer">
+            <a class="nav-link dropdown-toggle fs14 fwb" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <%= user %>   
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="/channel?chnlid=<%= user %>">channel</a>
+                <a class="dropdown-item" href="/my">mypage</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" onclick="logoutButton();">logout</a>
+            </div>
+        </li>
+        <!--
         <span class="mainNavUserSpan">[ <%= user %>님 ]</span>
         <li class="nav-item">
             <a class="btn btn-light" onclick="logoutButton();" id="logoutBtn">logout</a>
@@ -22,7 +35,7 @@
         </li>
         <li class="nav-item">
             <a class="btn btn-light" href="/channel?chnlid=<%= user %>">channel</a>
-        </li>
+        </li>-->
         <% } %>
     </ul>
 </div>

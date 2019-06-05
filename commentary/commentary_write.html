@@ -62,7 +62,7 @@
                 <div class='divBox cw65'><span class='titleWord'>Title</span> <input type='text' name='commtitle' placeholder="title" value='<% if(commentaryResult!=null){ %><%= commentaryResult.rows[0][2] %><% } %>'>
                 </div>
                 <div class='divBox cw65'><span class='titleWord'>Contents</span> <textarea
-                        placeholder="contents" name='commta'><% if(commentaryResult!=null){ %><%= commentaryResult.rows[0][3] %><% } %></textarea></div>
+                        placeholder="contents" name='commta'><% if(commentaryResult!=null){ %><%- commentaryResult.rows[0][3].split("<br>").join("") %><% } %></textarea></div>
             </div>
             <div class="fileDiv">
                 <input type="file">

@@ -142,7 +142,7 @@
                 </div>
                 <br>
                 <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary' placeholder="summary"
-                        class="w80"><%= summaryResult.rows[0][2] %></textarea></div>
+                        class="w80"><%- summaryResult.rows[0][2].split("<br>").join("") %></textarea></div>
                 <div class='dib w100'>
                     <%  
                         var hashValue = "";

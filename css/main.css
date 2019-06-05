@@ -1,5 +1,7 @@
 
-
+body{
+	background: #F0F0F0 url(/images/bg.png) repeat;
+}
 .mainContents{
     display:inline-block;
     width:98%;
@@ -12,7 +14,11 @@
 .w85{
     width:85%;
 }
-
+.mainSliderContainer{
+    padding-top:30px;
+    padding-bottom:30px;
+    background-color: white;
+}
 
 
 
@@ -40,7 +46,7 @@
  *{list-style:none;}
  #wrapper{
      width:1000px;
-     margin:50px auto;
+     margin:0 auto;
      height:600px;
      position:relative;
      color:#fff;
