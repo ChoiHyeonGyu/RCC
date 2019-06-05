@@ -2,6 +2,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type='text/css' href="/css/pw_find.css?after">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR|Sunflower:300&display=swap" rel="stylesheet">
     </head>
     
     <body>
@@ -10,7 +11,7 @@
         <div class="pw-find container">
             <div class="pw-find-block">
                 <form action="/pw_find" method="post" onsubmit="return checkval();">
-                    <h1>비밀번호 찾기</h1>
+                    <div id="text">비밀번호 찾기</div>
                     <input type="text" value="" placeholder="아이디" id="id" name="id1" />
                     <input type="text" value="" placeholder="이름" id="name" name="name1"/>
                     <input type="text" value="" placeholder="abc@abc.com" id="email" name="email1"/>

@@ -2,6 +2,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type='text/css' href="css/id_find.css">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR|Sunflower:300&display=swap" rel="stylesheet">
     </head>
     <body>
         <div id="header2"><%- main_header %></div>
@@ -9,7 +10,7 @@
         <div class="id-find container">
             <div class="id-find-block">
                 <form action="/id_find" method="post" onsubmit="return checkval();">
-                    <h1>아이디 찾기</h1>
+                    <div id="text">아이디 찾기</div>
                     <input type="text" value="" placeholder="이름" id="name" name="name1" />
                     <input type="text" value="" placeholder="abc@abc.abc" id="email" name="email1" />
                     <input type="text" value="" placeholder="01011112222" id="cellphone" name="cellphone1" />
