@@ -1,44 +1,40 @@
 
 
 
-
-#id-findbox{
-    display:inline-block;
-    border:1px black;
-    background:lightgreen;
+#text{
+    text-align:center;
+    font-weight:bold;
+    font-size:20px;
+    margin:20px;
+    font-family:'Noto Sans KR', sans-serif;
 }
 
-
-
 .id-find-block {
-    width: 320px;
-    padding: 20px;
+    width: 400px;
+    padding: 0 20px 20px 20px;
     background: #fff;
     border-radius: 5px;
     border-top: 5px solid #bbbbbb;
+    border-bottom:1px solid #bbbbbb;
+    /*border-right:1px solid #bbbbbb;
+    border-left:1px solid #bbbbbb;*/
+    background:#eeeeee33;
     margin: 0 auto;
-}
-
-.id-find-block h1 {
-    text-align: center;
-    color: #000;
-    font-size: 18px;
-    text-transform: uppercase;
-    margin-top: 0;
-    margin-bottom: 20px;
+    text-align:center;
+    margin-bottom:100px;   
 }
 
 .id-find-block input {
-    width: 100%;
+    width: 90%;
     height: 42px;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     margin-bottom: 20px;
     font-size: 14px;
-    font-family: Montserrat;
+    font-family: 'Noto Sans KR', sans-serif;
     padding: 0 20px 0 50px;
-    outline: none;
+    outline: none
 }
 
 input.button{
@@ -46,32 +42,24 @@ input.button{
 }
 
 .id-find-block input#name {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px no-repeat;
     background-size: 16px 80px;
 }
 
 .id-find-block input#name:focus {
-    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px bottom no-repeat;
-    background-size: 16px 80px;
-}
-
-.id-find-block input#pw {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
-    background-size: 16px 80px;
-}
-
-.id-find-block input#pw:focus {
-    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px bottom no-repeat;
+    background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px  no-repeat;
     background-size: 16px 80px;
 }
 
 .id-find-block input:active, .id-find-block input:focus {
-    border: 1px solid #ca7bff;
+    border: 2px solid #ca7bff;
 }
+
 .id-find-block input#email {
     background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
     background-size: 16px 80px;
 }
+
 .id-find-block input#email:focus {
     background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
     background-size: 16px 80px;
@@ -88,17 +76,17 @@ input.button{
 }
 
 .id-find-block .button {
-    width: 100%;
+    width: 90%;
     height: 40px;
     background: #bbbbbb;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 1px solid #bbbbbb;
+    border: 0px solid #bbbbbb;
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 14px;
-    font-family: Montserrat;
+    font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
     outline: none;
     cursor: pointer;
     text-align:center;
@@ -108,8 +96,6 @@ input.button{
     background: #ca7bff;
 }
 
-a {
-    text-align:center;
-    text-decoration:none;
-    color:black;
+.id-find-block input:active, .id-find-block input:focus {
+    border: 0px;
 }

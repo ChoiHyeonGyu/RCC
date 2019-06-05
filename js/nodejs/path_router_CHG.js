@@ -68,12 +68,13 @@ router.get("/my", function(req, res){
 
             function ethereum(result2, result3){
                 ether.getBalance(result.rows[0][4], function(coin){
-                    ether.getTransactions();
-                    listing(result2, result3, coin);
+                    ether.getTransactions(function(txlist){
+                        listing(result2, result3, coin, txlist);
+                    });
                 });
             }
 
-            function listing(result2, result3, coin){
+            function listing(result2, result3, coin, txlist){
                 fs.readFile("mypage.html", "utf-8", function(error, data) {
                     res.send(ejs.render(include.import_default() + data, {
                         logo: include.logo(),
@@ -82,7 +83,8 @@ router.get("/my", function(req, res){
                         list: result2,
                         page: result3,
                         sort: req.query.sort,
-                        coin: coin
+                        coin: coin,
+                        txlist: txlist
                     }));
                 });
             }
