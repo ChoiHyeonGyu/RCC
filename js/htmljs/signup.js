@@ -42,9 +42,9 @@ $(document).on("click","#phone_click",function(){ // 처음 폰번호 클릭할�
             if(result['result']==true){
                 $('#result').html('인증번호를 입력해 주세요.');
                 $("#result").css("color","blue");
-                $("#auth_num").css("display","block");
-                $("#auth_btn").css("display","block");
-                $("#auth_box").css("display","block");
+                $("#auth_num").css("display","inline-block");
+                $("#auth_btn").css("display","inline-block");
+                $("#auth_box").css("display","inline-block");
             }else if(result['result']==false){
                 $('#result').html('이미 있는 번호 입니다');
                 $("#result").css("color","red");
@@ -68,6 +68,8 @@ $(document).on("click","#auth_btn",function(){
                 $("#auth_num").css("display","none");
                 $("#auth_btn").css("display","none");
                 $("#auth_box").css("display","none");
+                $("#auth_box").css("margin","0px");
+                $("#cellphone").css("margin-bottom","0px");
                 $('#result').html('인증되었습니다.');
                 $("#result").css("color","green");
                 $("#phone_click").css("display","none");
