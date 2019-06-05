@@ -1,5 +1,7 @@
 
-
+body{
+	background: #F0F0F0 url(/images/bg.png) repeat;
+}
 .mainContents{
     display:inline-block;
     width:98%;
@@ -12,7 +14,11 @@
 .w85{
     width:85%;
 }
-
+.mainSliderContainer{
+    padding-top:30px;
+    padding-bottom:30px;
+    background-color: white;
+}
 
 
 
@@ -30,12 +36,17 @@
 }
 .mainSlider{
     width:1020px;
+    text-align: center;
+    margin: auto;
+}
+.mainPageTable tbody tr{
+    height: 95px;
 }
  /*GLOBALS*/
  *{list-style:none;}
  #wrapper{
      width:1000px;
-     margin:50px auto;
+     margin:0 auto;
      height:600px;
      position:relative;
      color:#fff;
@@ -56,7 +67,9 @@
      top:0;
      left:0;     
  }
- 
+ #slider-wrap ul#slider{
+     padding:0px;
+ }
  #slider-wrap ul#slider li{
      float:left;
      position:relative;
@@ -86,6 +99,9 @@
    height: 100%;
  }
  
+ table{
+     margin:auto;
+ }
  
  /*btns*/
  .btns{
@@ -133,7 +149,7 @@
  /*bar*/
  #pagination-wrap{
      min-width:20px;
-     margin-top:350px;
+     margin-top:580px;
      margin-left: auto; 
      margin-right: auto;
      height:15px;

@@ -44,8 +44,23 @@ function sendCoin(sender, receiver, coin, pw, callback){
 function getTransactions(){
     web3.eth.getBlockNumber(function(err, bn){
         if(err) console.log(err);
+
+        var txlist = 0;
         
-        web3.eth.getBlock(8, function(err, blk){
+        for(var i = bn; i > 0; i--){
+            addTX(i);
+        }
+
+        function addTX(tx){
+            txlist += tx;
+        }
+
+        console.log(txlist); //재귀를 써야 할 듯...
+    });
+}
+
+/*
+web3.eth.getBlock(1, function(err, blk){
             if(err) console.log(err);
             console.log(blk);
             console.log(blk.transactions);
@@ -57,9 +72,7 @@ function getTransactions(){
                 console.log(tx.to);
                 console.log(tx.value);
             });
-        });
-    });
-}
+        });*/
 
 module.exports = {
     getBalance: getBalance,

@@ -214,17 +214,17 @@
         <div id="user_modify">
             <div class="signup-block">
                 <form action="/user/modify" method="post" onsubmit="return checkval();">
-                    <h1>회원정보 수정</h1>
+                    <div id="text">회원정보 수정</div>
                     <input type="text" value="<%= my.rows[0][0] %>" placeholder="아이디" id="id" disabled>
-                    <br>
-                    <input type="password" value="" placeholder="비밀번호" id="pw" name="pw1" oninput="pw2();">
-                    <input type="password" value="" placeholder="비밀번호 확인" id="pwcheck1" name="pwcheck" oninput="pwcheck2();">
+                    <input type="password" value="" placeholder="비밀번호 (8자 이상)" id="pw" name="pw1" oninput="pw2();">
+                    <input type="password" value="" placeholder="비밀번호 확인 (8자 이상)" id="pwcheck" name="pwcheck1" oninput="pwcheck2();">
                     <div id="pwcheckmsg" style="color:white;">1</div>
                     <input type="text" value="<%= my.rows[0][2] %>" placeholder="이름" id="name"  name="name1">
                     <input type="text" value="<%= my.rows[0][3] %>" placeholder="닉네임" id="nickname"  name="nickname1">
-                    <input type="text" value="<%= my.rows[0][5] %>" placeholder="이메일" id="email" name="email1">
-                    <input type="tel" value="<%= my.rows[0][6] %>" placeholder="폰번호" id="cellphone" name="cellphone1">
-                    <input type="submit" value="회원정보 수정      " class="button">
+                    <input type="text" value="<%= my.rows[0][5] %>" placeholder="abc@abcd.abc" id="email" name="email1">
+                    <input type="tel" value="<%= my.rows[0][6] %>" placeholder="01011112222" id="cellphone" name="cellphone1">
+                    <div id="result" style="color:white;">1</div>
+                    <input type="submit" value="회원정보 수정     " class="button">
                 </form>
             </div>
         </div>
@@ -250,7 +250,7 @@
                             <div><input type="number" class="coin" name="coin" placeholder="Buy Coin"></div>
                             <div>￦ : <input type="text" class="won" readonly></div>
                             <div>Current Coin : <%= coin %> ETH</div>
-                            <div>Result Coin : <input type="text" class="rc" save="<%= coin %>" readonly></div>
+                            <div>Result Coin : <input type="text" id="brc" class="rc" save="<%= coin %>" readonly></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -275,7 +275,7 @@
                             <div><input type="number" class="coin" name="coin" placeholder="Sell Coin"></div>
                             <div>￦ : <input type="text" class="won" readonly></div>
                             <div>Current Coin : <%= coin %> ETH</div>
-                            <div>Result Coin : <input type="text" class="rc" save="<%= coin %>" readonly></div>
+                            <div>Result Coin : <input type="text" id="src" class="rc" save="<%= coin %>" readonly></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

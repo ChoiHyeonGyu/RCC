@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <script src="js/htmljs/mainPage.js"></script>
 <html>
 
@@ -18,22 +19,21 @@
 </head>
 
 <body>
-    <div id="header2"><%- main_header %></div>
+    <div id="header2" class='' style='margin:0px;'><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
-    <div id="header3" class="container"><%- navigator %></div>
+    <div id="header3" style='padding:0px 100px;' class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
     <div class='main2 container tac mainSliderContainer'>
-        <div class="hotBriefing mg20 mainSlider tac">
-            <h2 style="font-size:30px;">게시판</h2>
+        <div class="hotBriefing mtg20 mainSlider tac">
             <div id="wrapper">
                 <div id="slider-wrap">
                     <ul id="slider">
-                        <li data-color="#1abc9c">
-                            <span style='color:black;'>Page5</span>
-                            <table class="table mainTable commTable">
+                        <li class='tac' data-color="#1abc9c">
+                            <span style='font-size: 20px;color:gray;'>브리핑</span>
+                            <table class="table mainPageTable commTable">
                                     <thead>
-                                        <th scope="row">헤드라인</th>
-                                        <th>카테고리</th>
+                                        <th class='tac' scope="row">헤드라인</th>
+                                        <th class='tac'>카테고리</th>
                                     </thead>
                                 <tbody>
                                     <%for(var i=0;i<bResult.rows.length;i++){%>
@@ -44,7 +44,7 @@
                                                 bResult.rows[i][1] = bResult.rows[i][1].split("&gt;").join(">");
                                             %>
                                             <th scope='row'><%- bResult.rows[i][1] %></th>
-                                            <td><%= bResult.rows[i][2] %></td>
+                                            <td class='tac'><%= bResult.rows[i][2] %></td>
                                         </tr>
                                     <%}%>
                                 </tbody>
@@ -52,20 +52,21 @@
                         </li>
 
                         <li data-color="#3498db">
+                            <span style='font-size: 20px;color:gray;'>논평</span>
                             <table class="table mainTable commTable">                                
                             <thead>
-                                <th scope="row">제목</th>
-                                <th>카테고리</th>
-                                <th>작성자</th>
-                                <th>가치</th>
+                                <th class='tac' scope="row">제목</th>
+                                <th class='tac'>카테고리</th>
+                                <th class='tac'>작성자</th>
+                                <th class='tac'>가치</th>
                             </thead>
                                 <tbody>
                                     <%for(var i=0;i<cResult.rows.length;i++){%>
                                         <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?postNo=<%= cResult.rows[i][0] %>'">
                                             <th scope="row"><%= cResult.rows[i][5] %> <% if(cResult.rows[i][7]!=null){ %><%= "["+cResult.rows[i][7]+"]" %><% } %></th>
-                                            <td calss='w10'><%= cResult.rows[i][9] %></td>
-                                            <td class='w10'><%= cResult.rows[i][2] %></td>
-                                            <td class='w10'><%= cResult.rows[i][6].toFixed(2) %>c</td>
+                                            <td calss='w10 tac'><%= cResult.rows[i][9] %></td>
+                                            <td class='w10 tac'><%= cResult.rows[i][2] %></td>
+                                            <td class='w10 tac'><%= cResult.rows[i][6].toFixed(2) %>c</td>
                                         </tr>
                                     <%}%>
                                 </tbody>
@@ -73,24 +74,25 @@
                         </li>
 
                         <li data-color="#9b59b6">
+                            <span style='font-size: 20px;color:gray;'>유저</span>
                             <table class="table mainTable commTable">
                                 <thead>
-                                    <th scope="row">유저</th>
-                                    <th>구독자 수</th>
-                                    <th>브리핑</th>
-                                    <th>브리핑 누적 뷰</th>
-                                    <th>논평</th>
-                                    <th>논평 누적 후원</th>
+                                    <th class='tac' scope="row">유저</th>
+                                    <th class='tac'>구독자 수</th>
+                                    <th class='tac'>브리핑</th>
+                                    <th class='tac'>브리핑 누적 뷰</th>
+                                    <th class='tac'>논평</th>
+                                    <th class='tac'>논평 누적 후원</th>
                                 </thead>
                                 <tbody>
                                     <%for(var i=0;i<uResult.rows.length;i++){%>
                                         <tr class="hover-pointer hover-underline" onclick="location.href='/channel?chnlid=<%=uResult.rows[i][1]%>'">
-                                            <th scope='row'><%=uResult.rows[i][1]%></th>
-                                            <td><%=uResult.rows[i][2]%></td>
-                                            <td><%=uResult.rows[0][3]%></td>
-                                            <td><%=uResult.rows[0][4]%></td>
-                                            <td><%=uResult.rows[0][5]%></td>
-                                            <td><%=uResult.rows[0][6].toFixed(2)%>c</td>
+                                            <th class='w40 tac' scope='row'><%=uResult.rows[i][1]%></th>
+                                            <td class='tac'><%=uResult.rows[i][2]%></td>
+                                            <td class='tac'><%=uResult.rows[i][3]%></td>
+                                            <td class='tac'><%=uResult.rows[i][4]%></td>
+                                            <td class='tac'><%=uResult.rows[i][5]%></td>
+                                            <td class='tac'><%=uResult.rows[i][6].toFixed(2)%>c</td>
                                         </tr>
                                     <%}%>
                                 </tbody>
@@ -102,14 +104,16 @@
                     <div class="btns" id="next"><i class="fa fa-arrow-right"></i></div>
                     <div class="btns" id="previous"><i class="fa fa-arrow-left"></i></div>
                     <div style='color:black;' id="counter"></div>
-
-                    <div id="pagination-wrap">
-                        <ul>
-                        </ul>
-                    </div>
                     <!--controls-->
+                    
+                    <div id="pagination-wrap">
+                            <ul>
+                            </ul>
+                        </div>
                 </div>
+                
             </div>
+            
         </div>
     </div>
 
