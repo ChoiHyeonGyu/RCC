@@ -68,13 +68,30 @@ router.get("/my", function(req, res){
 
             function ethereum(result2, result3){
                 ether.getBalance(result.rows[0][4], function(coin){
-                    ether.getTransactions(function(txlist){
-                        listing(result2, result3, coin, txlist);
+                    ether.getTransactions(result.rows[0][4], function(txlist){
+                        ether.pagingTransactions(result.rows[0][4], function(txpage){
+                            var arr = [];
+                            dbEtherConn(result2, result3, coin, txlist, txpage, 0, arr);
+                        });
                     });
                 });
             }
 
-            function listing(result2, result3, coin, txlist){
+            function dbEtherConn(result2, result3, coin, txlist, txpage, idx, arr){
+                dbconn.resultQuery("select nickname, coinaddress from users where coinaddress = '"+txlist[idx].from+"' or coinaddress = '"+txlist[idx].to+"'", function(result){
+                    arr.push(result.rows[0]);
+                    arr.push(result.rows[1]);
+
+                    if(txlist.length - 1 == idx){
+                        listing(result2, result3, coin, txlist, txpage, arr);
+                    } else {
+                        idx++;
+                        dbEtherConn(result2, result3, coin, txlist, txpage, idx, arr);
+                    }
+                });
+            }
+
+            function listing(result2, result3, coin, txlist, txpage, arr){
                 fs.readFile("mypage.html", "utf-8", function(error, data) {
                     res.send(ejs.render(include.import_default() + data, {
                         logo: include.logo(),
@@ -84,7 +101,9 @@ router.get("/my", function(req, res){
                         page: result3,
                         sort: req.query.sort,
                         coin: coin,
-                        txlist: txlist
+                        txlist: txlist,
+                        txpage: txpage,
+                        converter: arr
                     }));
                 });
             }

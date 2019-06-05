@@ -140,7 +140,7 @@
             <table class="table table-striped container">
                 <thead>
                     <tr>
-                        <th scope="col">BLOCKNUMBER</th>
+                        <th scope="col">BLOCK_NO</th>
                         <th scope="col">TX_INDEX</th>
                         <th scope="col">FROM</th>
                         <th scope="col">TO</th>
@@ -154,8 +154,26 @@
                     <tr>
                         <th scope="row"><%= txlist[i].bn %></th>
                         <td><%= txlist[i].txidx %></td>
-                        <td><%= txlist[i].from %></td>
-                        <td><%= txlist[i].to %></td>
+                        <% if(txlist[i].from == my.rows[0][4]){ %>
+                        <td><%= my.rows[0][3] %></td>
+                        <% } else { %>
+                            <% for(var j = 0; j < converter.length; j++){ %>
+                                <% if(txlist[i].from == converter[j][1]){ %>
+                        <td><%= converter[j][0] %><br><%= txlist[i].from %></td>
+                                <% break; %>
+                                <% } %>
+                            <% } %>
+                        <% } %>
+                        <% if(txlist[i].to == my.rows[0][4]){ %>
+                        <td><%= my.rows[0][3] %></td>
+                        <% } else { %>
+                            <% for(var j = 0; j < converter.length; j++){ %>
+                                <% if(txlist[i].to == converter[j][1]){ %>
+                        <td><%= converter[j][0] %><br><%= txlist[i].to %></td>
+                                <% break; %>
+                                <% } %>
+                            <% } %>
+                        <% } %>
                         <td><%= txlist[i].value %></td>
                         <td><%= txlist[i].fee %></td>
                         <td><%= txlist[i].time %></td>
@@ -163,6 +181,17 @@
                     <% } %>
                 </tbody>
             </table>
+            <div class="btn-group mr-2" role="group" id="pagelist">
+                <% for(var i = 0; i < txpage.length; i++){ %>
+                    <% if(i == 0){ %>
+                <button type="button" class="btn btn-light active txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">1</button>
+                    <% } else if(i == 10) { %>
+                <button type="button" class="btn btn-light ntxpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">&gt;</button>
+                    <% } else { %>
+                <button type="button" class="btn btn-light txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>"><%= i + 1 %></button>
+                    <% } %>
+                <% } %>
+            </div>
         </div>
         <div id="empty"></div>
         <div id="user_modify">
