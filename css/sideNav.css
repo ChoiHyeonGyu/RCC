@@ -4,9 +4,8 @@
     top:48%;
     display: inline-block;
     width:150px;
-    background-color:white;
     padding:15px;
-    
+    background: #F0F0F0 url(/images/bg.png) repeat;
     -webkit-transition: all 0.1s ease;
     -moz-transition: all 0.1s ease;
     -o-transition: all 0.1s ease;
