@@ -1,6 +1,7 @@
 var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var crypto = require('crypto');
+var moment = require('moment');
 
 function newAccount(pw, callback){
     var salt = crypto.createHash("sha512").update(pw).digest("base64");
@@ -41,38 +42,55 @@ function sendCoin(sender, receiver, coin, pw, callback){
     });
 }
 
-function getTransactions(){
+function getTransactions(callback){
     web3.eth.getBlockNumber(function(err, bn){
         if(err) console.log(err);
-
-        var txlist = 0;
-        
-        for(var i = bn; i > 0; i--){
-            addTX(i);
-        }
-
-        function addTX(tx){
-            txlist += tx;
-        }
-
-        console.log(txlist); //재귀를 써야 할 듯...
+        var txlist = [];
+        getBlock(bn, txlist);
     });
-}
 
-/*
-web3.eth.getBlock(1, function(err, blk){
+    function getBlock(bn, txlist){
+        web3.eth.getBlock(bn, function(err, blk){
             if(err) console.log(err);
-            console.log(blk);
-            console.log(blk.transactions);
-            web3.eth.getTransaction(blk.transactions[0], function(err, tx){
-                if(err) console.log(err);
-                console.log(tx);
-                console.log(tx.blockNumber);
-                console.log(tx.from);
-                console.log(tx.to);
-                console.log(tx.value);
+
+            if(blk.transactions[0] == null){
+                getBlock(blk.number - 1, txlist);
+            } else if(txlist[0] != null) {
+                if(txlist[txlist.length - 1].bn != blk.number) {
+                    getTX(blk.transactions[blk.transactions.length - 1], blk.timestamp, txlist);
+                } else {
+                    getTX(blk.transactions[txlist[txlist.length - 1].txidx - 1], blk.timestamp, txlist);
+                }
+            } else {
+                getTX(blk.transactions[blk.transactions.length - 1], blk.timestamp, txlist);
+            }
+        });
+    }
+
+    function getTX(txhash, unixtime, txlist){
+        web3.eth.getTransaction(txhash, function(err, tx){
+            if(err) console.log(err);
+            
+            txlist.push({
+                bn: tx.blockNumber,
+                txidx: tx.transactionIndex,
+                from: tx.from,
+                to: tx.to,
+                value: web3.utils.fromWei(tx.value, "ether"),
+                fee: web3.utils.fromWei(String(tx.gas * tx.gasPrice), "ether"),
+                time: moment(new Date(unixtime * 1000)).format("YYYY-MM-DD HH:mm:ss")
             });
-        });*/
+
+            if(txlist.length > 9){
+                callback(txlist);
+            } else if(tx.transactionIndex == 0) {
+                getBlock(tx.blockNumber - 1, txlist);
+            } else {
+                getBlock(tx.blockNumber, txlist);
+            }
+        });
+    }
+}
 
 module.exports = {
     getBalance: getBalance,
