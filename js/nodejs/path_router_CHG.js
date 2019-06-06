@@ -363,9 +363,13 @@ router.get("/txpaging", function(req, res){
 router.get("/tx/searchandsort", function(req, res){
     if(req.session.user_id){
         dbconn.resultQuery("select coinaddress from users where nickname like '%"+req.query.slctuser+"%'", function(result){
-            ether.searchAndsortTransactions(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, 0, 0, function(txlist){
-                var arr = [];
-                dbEtherConn(txlist, 0, 0, 0, arr);
+            ether.searchAndsortTransactions(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, req.query.bn, req.query.txidx, function(txlist){
+                ether.searchAndsortPagingTransactions(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, req.query.bn, req.query.txidx, function(txpage){
+                    ether.searchAndsortPrevFirstPageValue(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, req.query.bn, req.query.txidx, function(pfpv){
+                        var arr = [];
+                        dbEtherConn(txlist, txpage, pfpv, 0, arr);
+                    });
+                });
             });
         });
 

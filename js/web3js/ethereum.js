@@ -197,7 +197,7 @@ function prevFirstPageValue(addr, nextbn, nextxidx, callback){
     }
 }
 
-function searchAndsortTransactions(addr, txsc, txio, slctuser, slctcoin, txscope, nextbn, nextxidx, callback){
+function searchAndsortTransactions(addr, txsc, txio, slctuser, slctcoin, txscope, nextbn = 0, nextxidx, callback){
     if(nextbn == 0){
         if(txsc == '0'){
             web3.eth.getBlockNumber(function(err, bn){
@@ -289,27 +289,27 @@ function searchAndsortTransactions(addr, txsc, txio, slctuser, slctcoin, txscope
             }
 
             function processingCoin(){
-                if(slctcoin == '' || isNaN(Number(slctcoin))){
+                if(slctcoin == '' || isNaN(Number(slctcoin)) || txscope == '0'){
                     pushTX();
                 } else {
                     if(txscope == '1'){
-                        if(tx.value > web3.eth.toWei(Number(slctcoin), "ether")){
+                        if(tx.value > web3.utils.toWei(slctcoin, "ether")){
                             pushTX();
                         }
                     } else if(txscope == '2') {
-                        if(tx.value >= web3.eth.toWei(Number(slctcoin), "ether")){
+                        if(tx.value >= web3.utils.toWei(slctcoin, "ether")){
                             pushTX();
                         }
                     } else if(txscope == '3') {
-                        if(tx.value == web3.eth.toWei(Number(slctcoin), "ether")){
+                        if(tx.value == web3.utils.toWei(slctcoin, "ether")){
                             pushTX();
                         }
                     } else if(txscope == '4') {
-                        if(tx.value <= web3.eth.toWei(Number(slctcoin), "ether")){
+                        if(tx.value <= web3.utils.toWei(slctcoin, "ether")){
                             pushTX();
                         }
                     } else if(txscope == '5') {
-                        if(tx.value < web3.eth.toWei(Number(slctcoin), "ether")){
+                        if(tx.value < web3.utils.toWei(slctcoin, "ether")){
                             pushTX();
                         }
                     }
@@ -351,6 +351,291 @@ function searchAndsortTransactions(addr, txsc, txio, slctuser, slctcoin, txscope
     }
 }
 
+function searchAndsortPagingTransactions(addr, txsc, txio, slctuser, slctcoin, txscope, nextbn = 0, nextxidx, callback){
+    if(nextbn == 0){
+        if(txsc == '0'){
+            web3.eth.getBlockNumber(function(err, bn){
+                if(err) console.log(err);
+                var txpage = [];
+                var txroad = -1;
+                getBlock(bn, txroad, txpage);
+            });
+        } else if(txsc == '1') {
+            var txpage = [];
+            getBlock(1, -1, txpage);
+        }
+    } else {
+        var txpage = [];
+        var txroad = nextxidx;
+        getBlock(nextbn, txroad, txpage);
+    }
+
+    function getBlock(bn, txroad, txpage){
+        web3.eth.getBlock(bn, function(err, blk){
+            if(err) console.log(err);
+            
+            if(txsc == '0'){
+                if(blk.transactions[0] == null){
+                    getBlock(blk.number - 1, txroad, txpage);
+                } else if(txroad == -1) {
+                    txroad = blk.transactions.length - 1;
+                    getTX(blk.transactions[txroad], txroad, txpage);
+                } else {
+                    getTX(blk.transactions[txroad], txroad, txpage);
+                }
+            } else if(txsc == '1') {
+                if(blk == null){
+                    processingLast(txpage);
+                } else if(blk.transactions[0] == null || blk.transactions.length == txroad){
+                    getBlock(blk.number + 1, -1, txpage);
+                } else if(txroad == -1) {
+                    getTX(blk.transactions[0], 0, txpage);
+                } else {
+                    getTX(blk.transactions[txroad], txroad, txpage);
+                }
+            }
+        });
+    }
+
+    function getTX(txhash, txroad, txpage){
+        web3.eth.getTransaction(txhash, function(err, tx){
+            if(err) console.log(err);
+            
+            if(txio == '0'){
+                if(tx.from == addr || tx.to == addr){
+                    if(slctuser[0] != null){
+                        for(var i = 0; i < slctuser.length; i++){
+                            if(tx.from == slctuser[i][0] || tx.to == slctuser[i][0]){
+                                processingCoin();
+                                break;
+                            }
+                        }
+                    } else {
+                        processingCoin();
+                    }
+                }
+            } else if(txio == '1') {
+                if(tx.to == addr){
+                    if(slctuser[0] != null){
+                        for(var i = 0; i < slctuser.length; i++){
+                            if(tx.from == slctuser[i][0]){
+                                processingCoin();
+                                break;
+                            }
+                        }
+                    } else {
+                        processingCoin();
+                    }
+                }
+            } else if(txio == '2') {
+                if(tx.from == addr){
+                    if(slctuser[0] != null){
+                        for(var i = 0; i < slctuser.length; i++){
+                            if(tx.to == slctuser[i][0]){
+                                processingCoin();
+                                break;
+                            }
+                        }
+                    } else {
+                        processingCoin();
+                    }
+                }
+            }
+
+            function processingCoin(){
+                if(slctcoin == '' || isNaN(Number(slctcoin)) || txscope == '0'){
+                    pushTX();
+                } else {
+                    if(txscope == '1'){
+                        if(tx.value > web3.utils.toWei(slctcoin, "ether")){
+                            pushTX();
+                        }
+                    } else if(txscope == '2') {
+                        if(tx.value >= web3.utils.toWei(slctcoin, "ether")){
+                            pushTX();
+                        }
+                    } else if(txscope == '3') {
+                        if(tx.value == web3.utils.toWei(slctcoin, "ether")){
+                            pushTX();
+                        }
+                    } else if(txscope == '4') {
+                        if(tx.value <= web3.utils.toWei(slctcoin, "ether")){
+                            pushTX();
+                        }
+                    } else if(txscope == '5') {
+                        if(tx.value < web3.utils.toWei(slctcoin, "ether")){
+                            pushTX();
+                        }
+                    }
+                }
+            }
+
+            function pushTX(){
+                txpage.push({
+                    bn: tx.blockNumber,
+                    txidx: tx.transactionIndex
+                });
+            }
+
+            if(txsc == '0'){
+                txroad--;
+
+                if(txpage.length > 101 || (tx.blockNumber == 1 && tx.transactionIndex == 0)){
+                    processingLast(txpage);
+                } else if(tx.transactionIndex == 0) {
+                    getBlock(tx.blockNumber - 1, txroad, txpage);
+                } else {
+                    getBlock(tx.blockNumber, txroad, txpage);
+                }
+            } else if(txsc == '1') {
+                txroad++;
+
+                if(txpage.length > 101){
+                    processingLast(txpage);
+                } else {
+                    getBlock(tx.blockNumber, txroad, txpage);
+                }
+            }
+        });
+    }
+
+    function processingLast(txpage){
+        var sendpage = [];
+        for(var i = 0; i < txpage.length; i+=10){
+            sendpage.push(txpage[i]);
+        }
+        callback(sendpage);
+    }
+}
+
+function searchAndsortPrevFirstPageValue(addr, txsc, txio, slctuser, slctcoin, txscope, nextbn, nextxidx, callback){
+    getBlock(nextbn, nextxidx, 0);
+
+    function getBlock(bn, txroad, cnt){
+        web3.eth.getBlock(bn, function(err, blk){
+            if(err) console.log(err);
+            
+            if(txsc == '1'){
+                if(blk == null){
+                    callback();
+                } else if(blk.transactions[0] == null){
+                    getBlock(blk.number - 1, txroad, cnt);
+                } else if(txroad == -1) {
+                    txroad = blk.transactions.length - 1;
+                    getTX(blk.transactions[txroad], txroad, cnt);
+                } else {
+                    getTX(blk.transactions[txroad], txroad, cnt);
+                }
+            } else if(txsc == '0') {
+                if(blk == null){
+                    callback();
+                } else if(blk.transactions[0] == null || blk.transactions.length == txroad){
+                    getBlock(blk.number + 1, -1, cnt);
+                } else if(txroad == -1) {
+                    getTX(blk.transactions[0], 0, cnt);
+                } else {
+                    getTX(blk.transactions[txroad], txroad, cnt);
+                }
+            }
+        });
+    }
+
+    function getTX(txhash, txroad, cnt){
+        web3.eth.getTransaction(txhash, function(err, tx){
+            if(err) console.log(err);
+            console.log(addr);
+            if(txio == '0'){
+                if(tx.from == addr || tx.to == addr){
+                    if(slctuser[0] != null){
+                        for(var i = 0; i < slctuser.length; i++){
+                            if(tx.from == slctuser[i][0] || tx.to == slctuser[i][0]){
+                                processingCoin();
+                                break;
+                            }
+                        }
+                    } else {
+                        processingCoin();
+                    }
+                }
+            } else if(txio == '1') {
+                if(tx.to == addr){
+                    if(slctuser[0] != null){
+                        for(var i = 0; i < slctuser.length; i++){
+                            if(tx.from == slctuser[i][0]){
+                                processingCoin();
+                                break;
+                            }
+                        }
+                    } else {
+                        processingCoin();
+                    }
+                }
+            } else if(txio == '2') {
+                if(tx.from == addr){
+                    if(slctuser[0] != null){
+                        for(var i = 0; i < slctuser.length; i++){
+                            if(tx.to == slctuser[i][0]){
+                                processingCoin();
+                                break;
+                            }
+                        }
+                    } else {
+                        processingCoin();
+                    }
+                }
+            }
+
+            function processingCoin(){
+                if(slctcoin == '' || isNaN(Number(slctcoin)) || txscope == '0'){
+                    cnt++;
+                } else {
+                    if(txscope == '1'){
+                        if(tx.value > web3.utils.toWei(slctcoin, "ether")){
+                            cnt++;
+                        }
+                    } else if(txscope == '2') {
+                        if(tx.value >= web3.utils.toWei(slctcoin, "ether")){
+                            cnt++;
+                        }
+                    } else if(txscope == '3') {
+                        if(tx.value == web3.utils.toWei(slctcoin, "ether")){
+                            cnt++;
+                        }
+                    } else if(txscope == '4') {
+                        if(tx.value <= web3.utils.toWei(slctcoin, "ether")){
+                            cnt++;
+                        }
+                    } else if(txscope == '5') {
+                        if(tx.value < web3.utils.toWei(slctcoin, "ether")){
+                            cnt++;
+                        }
+                    }
+                }
+            }
+
+            if(txsc == '1'){
+                txroad--;
+
+                if(cnt == 101){
+                    callback({bn: tx.blockNumber, txidx: tx.transactionIndex});
+                } else if(tx.transactionIndex == 0) {
+                    getBlock(tx.blockNumber - 1, txroad, cnt);
+                } else {
+                    getBlock(tx.blockNumber, txroad, cnt);
+                }
+            } else if(txsc == '0') {
+                txroad++;
+
+                if(cnt == 101){
+                    callback({bn: tx.blockNumber, txidx: tx.transactionIndex});
+                } else {
+                    getBlock(tx.blockNumber, txroad, cnt);
+                }
+            }
+        });
+    }
+}
+
 module.exports = {
     getBalance: getBalance,
     sendCoin: sendCoin,
@@ -358,5 +643,7 @@ module.exports = {
     getTransactions: getTransactions,
     pagingTransactions: pagingTransactions,
     prevFirstPageValue: prevFirstPageValue,
-    searchAndsortTransactions: searchAndsortTransactions
+    searchAndsortTransactions: searchAndsortTransactions,
+    searchAndsortPagingTransactions: searchAndsortPagingTransactions,
+    searchAndsortPrevFirstPageValue: searchAndsortPrevFirstPageValue
 }

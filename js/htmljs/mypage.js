@@ -406,34 +406,44 @@ $(function(){
         }
     }
 
-    $('.srchandsort').change(function(){
+    function txscSelecting(){
         if($('#txsc').val() == "최신 순"){
-            var txsc = 0;
+            return 0;
         } else if($('#txsc').val() == "오래된 순") {
-            var txsc = 1;
+            return 1;
         }
+    }
 
+    function txioSelecting(){
         if($('#txio').val() == "입출금 내역"){
-            var txio = 0;
+            return 0;
         } else if($('#txio').val() == "입금 내역") {
-            var txio = 1;
+            return 1;
         } else if($('#txio').val() == "출금 내역") {
-            var txio = 2;
+            return 2;
         }
+    }
 
+    function txscopeSelecting(){
         if($('#txscope').val() == "선택"){
-            var txscope = 0;
+            return 0;
         } else if($('#txscope').val() == "초과") {
-            var txscope = 1;
+            return 1;
         } else if($('#txscope').val() == "이상") {
-            var txscope = 2;
+            return 2;
         } else if($('#txscope').val() == "같음") {
-            var txscope = 3;
+            return 3;
         } else if($('#txscope').val() == "이하") {
-            var txscope = 4;
+            return 4;
         } else if($('#txscope').val() == "미만") {
-            var txscope = 5;
+            return 5;
         }
+    }
+
+    $('.srchandsort').change(function(){
+        var txsc = txscSelecting();
+        var txio = txioSelecting();
+        var txscope = txscopeSelecting();
 
         $.ajax({
             url: '/tx/searchandsort',
@@ -447,14 +457,115 @@ $(function(){
             },
             success: function(result){
                 txsProcessing(result);
-                //txpagegroup -= 10;
-                //txpageProcessing(result);
+                txpagegroup = 0;
+                sasTxpageProcessing(result);
             },
             error: function(error){
                 console.log(error);
             }
         });
     });
+
+    $(document).on('click', '.stxpb', function(){
+        var txsc = txscSelecting();
+        var txio = txioSelecting();
+        var txscope = txscopeSelecting();
+
+        $.ajax({
+            url: '/tx/searchandsort',
+            data: {
+                addr: $('#account_address').next().text(),
+                txsc: txsc,
+                txio: txio,
+                slctuser: $('#slctuser').val(),
+                slctcoin: $('#slctcoin').val(),
+                txscope: txscope,
+                bn: $(this).attr('nextbn'),
+                txidx: $(this).attr('nextxidx')
+            },
+            success: function(result){
+                txsProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+        $('.stxpb').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(document).on('click', '.nstxpb', function(){
+        var txsc = txscSelecting();
+        var txio = txioSelecting();
+        var txscope = txscopeSelecting();
+
+        $.ajax({
+            url: '/tx/searchandsort',
+            data: {
+                addr: $('#account_address').next().text(),
+                txsc: txsc,
+                txio: txio,
+                slctuser: $('#slctuser').val(),
+                slctcoin: $('#slctcoin').val(),
+                txscope: txscope,
+                bn: $(this).attr('nextbn'),
+                txidx: $(this).attr('nextxidx')
+            },
+            success: function(result){
+                txsProcessing(result);
+                txpagegroup += 10;
+                sasTxpageProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    $(document).on('click', '.prestxpb', function(){
+        var txsc = txscSelecting();
+        var txio = txioSelecting();
+        var txscope = txscopeSelecting();
+
+        $.ajax({
+            url: '/tx/searchandsort',
+            data: {
+                addr: $('#account_address').next().text(),
+                txsc: txsc,
+                txio: txio,
+                slctuser: $('#slctuser').val(),
+                slctcoin: $('#slctcoin').val(),
+                txscope: txscope,
+                bn: $(this).attr('nextbn'),
+                txidx: $(this).attr('nextxidx')
+            },
+            success: function(result){
+                txsProcessing(result);
+                txpagegroup -= 10;
+                sasTxpageProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    function sasTxpageProcessing(result){
+        var page = result.txpage;
+        $('#txpage button').remove();
+        for(var i = 0; i < page.length; i++){
+            if(i == 0){
+                if(result.pfpv){
+                    $('#txpage').append("<button type='button' class='btn btn-light prestxpb' nextbn='"+result.pfpv.bn+"' nextxidx='"+result.pfpv.txidx+"'>&lt;</button>");
+                }
+                $('#txpage').append("<button type='button' class='btn btn-light active stxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + 1)+"</button>");
+            } else if(i == 10) {
+                $('#txpage').append("<button type='button' class='btn btn-light nstxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>&gt;</button>");
+            } else {
+                $('#txpage').append("<button type='button' class='btn btn-light stxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + i + 1)+"</button>");
+            }
+        }
+    }
 });
 
 var a = false;
