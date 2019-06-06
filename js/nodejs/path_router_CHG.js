@@ -68,8 +68,8 @@ router.get("/my", function(req, res){
 
             function ethereum(result2, result3){
                 ether.getBalance(result.rows[0][4], function(coin){
-                    ether.getTransactions(result.rows[0][4], function(txlist){
-                        ether.pagingTransactions(result.rows[0][4], function(txpage){
+                    ether.getTransactions(result.rows[0][4], 0, 0, function(txlist){
+                        ether.pagingTransactions(result.rows[0][4], 0, 0, function(txpage){
                             var arr = [];
                             dbEtherConn(result2, result3, coin, txlist, txpage, 0, arr);
                         });
@@ -314,43 +314,101 @@ router.get("/my/search/pagelist", function(req, res){
 });
 
 router.post("/buy", function(req, res){
-    dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
-        ether.sendCoin(result.rows[0][0], req.body.receiver, req.body.coin, "admin", function(){
-            res.redirect("/my");
+    if(req.session.user_id){
+        dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
+            ether.sendCoin(result.rows[0][0], req.body.receiver, req.body.coin, "admin", function(){
+                res.redirect("/my");
+            });
         });
-    });
+    }
 });
 
 router.post("/sell", function(req, res){
-    dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
-        ether.sendCoin(req.body.sender, result.rows[0][0], req.body.coin, req.session.user_id, function(){
-            res.redirect("/my");
+    if(req.session.user_id){
+        dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
+            ether.sendCoin(req.body.sender, result.rows[0][0], req.body.coin, req.session.user_id, function(){
+                res.redirect("/my");
+            });
         });
-    });
+    }
+});
+
+router.get("/txpaging", function(req, res){
+    if(req.session.user_id){
+        ether.getTransactions(req.query.addr, req.query.bn, req.query.txidx, function(txlist){
+            ether.pagingTransactions(req.query.addr, req.query.bn, req.query.txidx, function(txpage){
+                ether.prevFirstPageValue(req.query.addr, req.query.bn, req.query.txidx, function(pfpv){
+                    var arr = [];
+                    dbEtherConn(txlist, txpage, pfpv, 0, arr);
+                });
+            });
+        });
+
+        function dbEtherConn(txlist, txpage, pfpv, idx, arr){
+            dbconn.resultQuery("select nickname, coinaddress from users where coinaddress = '"+txlist[idx].from+"' or coinaddress = '"+txlist[idx].to+"'", function(result){
+                arr.push(result.rows[0]);
+                arr.push(result.rows[1]);
+
+                if(txlist.length - 1 == idx){
+                    res.send({txlist: txlist, txpage: txpage, pfpv: pfpv, converter: arr});
+                } else {
+                    idx++;
+                    dbEtherConn(txlist, txpage, pfpv, idx, arr);
+                }
+            });
+        }
+    }
+});
+
+router.get("/tx/searchandsort", function(req, res){
+    if(req.session.user_id){
+        dbconn.resultQuery("select coinaddress from users where nickname like '%"+req.query.slctuser+"%'", function(result){
+            ether.searchAndsortTransactions(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, 0, 0, function(txlist){
+                var arr = [];
+                dbEtherConn(txlist, 0, 0, 0, arr);
+            });
+        });
+
+        function dbEtherConn(txlist, txpage, pfpv, idx, arr){
+            dbconn.resultQuery("select nickname, coinaddress from users where coinaddress = '"+txlist[idx].from+"' or coinaddress = '"+txlist[idx].to+"'", function(result){
+                arr.push(result.rows[0]);
+                arr.push(result.rows[1]);
+
+                if(txlist.length - 1 == idx){
+                    res.send({txlist: txlist, txpage: txpage, pfpv: pfpv, converter: arr});
+                } else {
+                    idx++;
+                    dbEtherConn(txlist, txpage, pfpv, idx, arr);
+                }
+            });
+        }
+    }
 });
 
 router.post("/user/modify", function(req, res){
-    var id = req.session.user_id;
-    var pw = req.body.pw1;
-    var name = req.body.name1;
-    var nickname = req.body.nickname1;
-    var email = req.body.email1;
-    var cellphone = req.body.cellphone1;
-    
-    var salt = crypto.createHash("sha512").update(id+name+nickname+email+cellphone).digest("base64");
-    crypto.pbkdf2(pw, salt, parseInt(cellphone.substr(5, 6)), 64, "sha512", function(err, key){
-        if(err) console.log(err);
+    if(req.session.user_id){
+        var id = req.session.user_id;
+        var pw = req.body.pw1;
+        var name = req.body.name1;
+        var nickname = req.body.nickname1;
+        var email = req.body.email1;
+        var cellphone = req.body.cellphone1;
+        
+        var salt = crypto.createHash("sha512").update(id+name+nickname+email+cellphone).digest("base64");
+        crypto.pbkdf2(pw, salt, parseInt(cellphone.substr(5, 6)), 64, "sha512", function(err, key){
+            if(err) console.log(err);
 
-        dbconn.booleanQuery("update users set pw='"+key.toString("base64")+"', name='"+name+"', nickname='"+nickname+"', coinaddress='0x111111', email='"+email+"', cellphone='"+cellphone+"' where id='"+id+"'", function(result){
-            if(result == false){
-                res.write("<script>alert('fail!');</script>");
-                res.write('<script>history.back();</script>');
-            } else {
-                res.write("<script>alert('update completed!');</script>");
-                res.write('<script>history.go(-1);</script>');
-            }
+            dbconn.booleanQuery("update users set pw='"+key.toString("base64")+"', name='"+name+"', nickname='"+nickname+"', coinaddress='0x111111', email='"+email+"', cellphone='"+cellphone+"' where id='"+id+"'", function(result){
+                if(result == false){
+                    res.write("<script>alert('fail!');</script>");
+                    res.write('<script>history.back();</script>');
+                } else {
+                    res.write("<script>alert('update completed!');</script>");
+                    res.write('<script>history.go(-1);</script>');
+                }
+            });
         });
-    });
+    }
 });
 
 router.get("/channel", function(req, res){
@@ -462,23 +520,27 @@ router.get("/channel/pagelist", function(req, res){
 });
 
 router.get("/subscribe", function(req, res){
-    dbconn.booleanQuery("insert into subscribe values(subscribe_sequence.nextval, '"+req.session.user_id+"', '"+req.query.chnlid+"')", function(result){
-        if(result){
-            res.send('1');
-        } else {
-            res.send('0');
-        }
-    });
+    if(req.session.user_id){
+        dbconn.booleanQuery("insert into subscribe values(subscribe_sequence.nextval, '"+req.session.user_id+"', '"+req.query.chnlid+"')", function(result){
+            if(result){
+                res.send('1');
+            } else {
+                res.send('0');
+            }
+        });
+    }
 });
 
 router.get("/subscribe/cancel", function(req, res){
-    dbconn.booleanQuery("delete from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.chnlid+"'", function(result){
-        if(result){
-            res.send('1');
-        } else {
-            res.send('0');
-        }
-    });
+    if(req.session.user_id){
+        dbconn.booleanQuery("delete from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.chnlid+"'", function(result){
+            if(result){
+                res.send('1');
+            } else {
+                res.send('0');
+            }
+        });
+    }
 });
 
 router.get("/channel/search", function(req, res){
@@ -553,9 +615,11 @@ router.get("/donate", function(req, res){
 });
 
 router.post("/donate", function(req, res){
-    ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
-        res.redirect("/my");
-    });
+    if(req.session.user_id){
+        ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
+            res.redirect("/my");
+        });
+    }
 });
 
 module.exports = router;

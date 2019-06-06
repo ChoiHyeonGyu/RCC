@@ -132,10 +132,28 @@
         </div>
         <div id="empty"></div>
         <div id="account_info">
-            <span id="account_address" class="account_num">Account Address</span><span class="account_num"><%= my.rows[0][4] %></span>
-            <span class="account_num">Coin <%= coin %> ETH</span>
+            <span id="account_address" class="account_num">Account Address</span><span class="account_num"><%= my.rows[0][4] %></span><span class="account_num">Coin <%= coin %> ETH</span>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#buy_view">Buy</button>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
+            <select id="txsc" class="srchandsort">
+                <option>최신 순</option>
+                <option>오래된 순</option>
+            </select>
+            <select id="txio" class="srchandsort">
+                <option>입출금 내역</option>
+                <option>입금 내역</option>
+                <option>출금 내역</option>
+            </select>
+            <input type="text" id="slctuser" class="srchandsort" placeholder="Enter Nickname">
+            <input type="text" id="slctcoin" class="srchandsort" placeholder="Enter Coin">
+            <select id="txscope" class="srchandsort">
+                <option>선택</option>
+                <option>초과</option>
+                <option>이상</option>
+                <option>같음</option>
+                <option>이하</option>
+                <option>미만</option>
+            </select><br><br>
             <span id="font-30">Transactions</span>
             <table class="table table-striped container">
                 <thead>
@@ -149,7 +167,7 @@
                         <th scope="col">TX_DATE</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="txlist">
                     <% for(var i = 0; i < txlist.length; i++){ %>
                     <tr>
                         <th scope="row"><%= txlist[i].bn %></th>
@@ -181,7 +199,7 @@
                     <% } %>
                 </tbody>
             </table>
-            <div class="btn-group mr-2" role="group" id="pagelist">
+            <div class="btn-group mr-2" role="group" id="txpage">
                 <% for(var i = 0; i < txpage.length; i++){ %>
                     <% if(i == 0){ %>
                 <button type="button" class="btn btn-light active txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">1</button>

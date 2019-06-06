@@ -1,5 +1,6 @@
 $(function(){
     var lastnum = 0;
+    var txpagegroup = 0;
 
     function pageSelecting(){
         if($(location).attr('search').match('s=1')){
@@ -300,6 +301,159 @@ $(function(){
         $('.coin').val('');
         $('.won').val('');
         $('.rc').val('');
+    });
+
+    $(document).on('click', '.txpb', function(){
+        $.ajax({
+            url: '/txpaging',
+            data: {
+                addr: $('#account_address').next().text(),
+                bn: $(this).attr('nextbn'),
+                txidx: $(this).attr('nextxidx')
+            },
+            success: function(result){
+                txsProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+        $('.txpb').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(document).on('click', '.ntxpb', function(){
+        $.ajax({
+            url: '/txpaging',
+            data: {
+                addr: $('#account_address').next().text(),
+                bn: $(this).attr('nextbn'),
+                txidx: $(this).attr('nextxidx')
+            },
+            success: function(result){
+                txsProcessing(result);
+                txpagegroup += 10;
+                txpageProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    $(document).on('click', '.pretxpb', function(){
+        $.ajax({
+            url: '/txpaging',
+            data: {
+                addr: $('#account_address').next().text(),
+                bn: $(this).attr('nextbn'),
+                txidx: $(this).attr('nextxidx')
+            },
+            success: function(result){
+                txsProcessing(result);
+                txpagegroup -= 10;
+                txpageProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+
+    function txsProcessing(result){
+        var txs = result.txlist;
+        var cvt = result.converter;
+        $('#txlist tr').remove();
+        for(var i = 0; i < txs.length; i++){
+            if(txs[i].from == $('#account_address').next().text()){
+                var from = $('#channel_name').text();
+            } else {
+                for(var j = 0; j < cvt.length; j++){
+                    if(txs[i].from == cvt[j][1]){
+                        var from = cvt[j][0] + "<br>" + txs[i].from;
+                        break;
+                    }
+                }
+            }
+            if(txs[i].to == $('#account_address').next().text()){
+                var to = $('#channel_name').text();
+            } else {
+                for(var j = 0; j < cvt.length; j++){
+                    if(txs[i].to == cvt[j][1]){
+                        var to = cvt[j][0] + "<br>" + txs[i].to;
+                        break;
+                    }
+                }
+            }
+            $('#txlist').append("<tr> <th scope='row'>"+txs[i].bn+"</th> <td>"+txs[i].txidx+"</td> <td>"+from+"</td> <td>"+to+"</td> <td>"+txs[i].value+"</td> <td>"+txs[i].fee+"</td> <td>"+txs[i].time+"</td> </tr>");
+        }
+    }
+
+    function txpageProcessing(result){
+        var page = result.txpage;
+        $('#txpage button').remove();
+        for(var i = 0; i < page.length; i++){
+            if(i == 0){
+                if(result.pfpv){
+                    $('#txpage').append("<button type='button' class='btn btn-light pretxpb' nextbn='"+result.pfpv.bn+"' nextxidx='"+result.pfpv.txidx+"'>&lt;</button>");
+                }
+                $('#txpage').append("<button type='button' class='btn btn-light active txpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + 1)+"</button>");
+            } else if(i == 10) {
+                $('#txpage').append("<button type='button' class='btn btn-light ntxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>&gt;</button>");
+            } else {
+                $('#txpage').append("<button type='button' class='btn btn-light txpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + i + 1)+"</button>");
+            }
+        }
+    }
+
+    $('.srchandsort').change(function(){
+        if($('#txsc').val() == "최신 순"){
+            var txsc = 0;
+        } else if($('#txsc').val() == "오래된 순") {
+            var txsc = 1;
+        }
+
+        if($('#txio').val() == "입출금 내역"){
+            var txio = 0;
+        } else if($('#txio').val() == "입금 내역") {
+            var txio = 1;
+        } else if($('#txio').val() == "출금 내역") {
+            var txio = 2;
+        }
+
+        if($('#txscope').val() == "선택"){
+            var txscope = 0;
+        } else if($('#txscope').val() == "초과") {
+            var txscope = 1;
+        } else if($('#txscope').val() == "이상") {
+            var txscope = 2;
+        } else if($('#txscope').val() == "같음") {
+            var txscope = 3;
+        } else if($('#txscope').val() == "이하") {
+            var txscope = 4;
+        } else if($('#txscope').val() == "미만") {
+            var txscope = 5;
+        }
+
+        $.ajax({
+            url: '/tx/searchandsort',
+            data: {
+                addr: $('#account_address').next().text(),
+                txsc: txsc,
+                txio: txio,
+                slctuser: $('#slctuser').val(),
+                slctcoin: $('#slctcoin').val(),
+                txscope: txscope
+            },
+            success: function(result){
+                txsProcessing(result);
+                //txpagegroup -= 10;
+                //txpageProcessing(result);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
     });
 });
 
