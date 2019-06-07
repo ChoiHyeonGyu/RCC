@@ -32,8 +32,7 @@ $(document).on("click","#id_check",function(){
     
 });
 
-
-$(document).on("click","#phone_click",function(){ // 처음 폰번호 클릭할때
+function authStart(){
     $.ajax({
         url:'/auth',
         dataType:'json',
@@ -43,9 +42,9 @@ $(document).on("click","#phone_click",function(){ // 처음 폰번호 클릭할�
             if(result['result']==true){
                 $('#result').html('인증번호를 입력해 주세요.');
                 $("#result").css("color","blue");
-                $("#auth_num").css("display","inline-block");
-                $("#auth_btn").css("display","inline-block");
-                $("#auth_box").css("display","inline-block");
+                $("#auth_num").css("display","inline-flex");
+                $("#auth_btn").css("display","inline-flex");
+                $("#auth_box").css("display","inline-flex");
             }else if(result['result']==false){
                 $('#result').html('이미 있는 번호 입니다');
                 $("#result").css("color","red");
@@ -55,6 +54,19 @@ $(document).on("click","#phone_click",function(){ // 처음 폰번호 클릭할�
             }
         }
     });
+}
+
+$(document).on("click","#phone_click",function(){ // 처음 폰번호 클릭할때
+    result1="";
+    if(cellphone.value!="" && cellphone.value!=null){
+        for(var i=0;i<cellphone.value.length;i++){
+            if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){
+                result1+=cellphone.value.charAt(i);
+            }
+        }
+        cellphone.value=result1;
+        authStart();
+    }
 });  //휴대폰 번호 본인인증 부분.
 
 
@@ -173,14 +185,6 @@ function checkval(){
         alert("휴대폰 인증을 해주세요!");
         return false;
     }*/
-    if(cellphone.value!="" && cellphone.value!=null){
-        for(var i=0;i<cellphone.value.length;i++){
-            if(48<=cellphone.value.charCodeAt(i) && cellphone.value.charCodeAt(i)<=57){
-                result1+=cellphone.value.charAt(i);
-            }
-        }
-        cellphone.value=result1;
-    }
 }
 
 

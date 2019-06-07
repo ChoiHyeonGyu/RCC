@@ -102,6 +102,11 @@
                     } //function끝
                 }); // ------      ajax 끝-----------------
         }
+        function checkLogin(){
+            var user = '<%=user%>';
+            if(user.length==0)alert('로그인을 먼저 해주세요');
+            else location.href='/donate?chnlid=<%=user%>&preURL='+location.href
+        }
     </script>
 </head>
 
@@ -147,7 +152,7 @@
                 </div>
             </div>
             <% if(user!=postResult.rows[0][1]){ %><button class="btn btn-light <% if(subscribeResult){%>active<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button><% } %>
-            <button class="btn btn-light" value="Donate">Donate</button>
+            <button class="btn btn-light" value="Donate" onclick="checkLogin()" >Donate</button>
             <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
             <div class="commentDiv">
                 <div class="commentWrite tar">

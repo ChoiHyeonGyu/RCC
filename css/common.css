@@ -104,6 +104,9 @@ body{
 .mgt{
     margin-top: 15px;
 }
+.mgt30{
+    margin-top:30px;
+}
 .tar{
     text-align: right;
 }
@@ -166,4 +169,11 @@ h2{ color: #7f8c8d; font-family: Neucha, Arial, sans serif; font-size:18px; marg
 
 .nav-hyeon .nav-link {
     border-radius: .25rem;
+}
+.tyshadow{
+    box-shadow:0 5px 25px 0 rgba(0,0,0,.2);
+    box-shadow:0 -5px -25px 0 rgba(0,0,0,.2);
+}
+.bgw{
+    background-color: white;
 }

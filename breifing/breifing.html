@@ -20,7 +20,7 @@
     <div id="header4"><%- navigator_side %></div>
     <div class="briefingContents container contentsBox tac">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
-        <div class="hotBriefing mainContents">
+        <div class="hotBriefing mainContents card">
             <h2>헤드라인 게시판</h2><select class='fr' id='sortingBox' onchange="sort(location.pathname+'?pageNo=<%=pagingResult.curPage%>&sort='+$('#sortingBox option:selected').val())">
                 <option value='1'>최신 순</option>
                 <option value='2'>오래된 순</option>
@@ -65,6 +65,7 @@
             </div>
         </div>
     </div>
+
     <div id="footer"><%- footer %></div>
 </body>
 
