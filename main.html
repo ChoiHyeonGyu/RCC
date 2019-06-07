@@ -21,7 +21,7 @@
 <body>
     <div id="header2" class='' style='margin:0px;'><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
-    <div id="header3" style='padding:0px 100px;' class="container"><%- navigator %></div>
+    <div id="header3" class="container"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
     <div class='main2 container tac mainSliderContainer'>
         <div class="hotBriefing mtg20 mainSlider tac">
@@ -34,12 +34,12 @@
                         <div class="col-lg-10 col-md-12">
                             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                                 <ol class="carousel-indicators">
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                    <li class='bgb' style='background-color: black;' data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                    <li class='bgb' style='background-color: black;' data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                    <li class='bgb' style='background-color: black;' data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                                 </ol>
                                 <div class="carousel-inner" role="listbox">
-                                    <div class="carousel-item active">
+                                    <div class="carousel-item fixHeight active">
                                         <div class="d-block section" alt="First slide">
                                             <span style='font-size: 20px;color:gray;'>브리핑</span>
                                             <table class="table mainPageTable commTable">
@@ -63,11 +63,8 @@
                                                 </tbody>
                                             </table>
                                     </div>
-                                    <div class="carousel-caption d-none d-md-block">
-                                      <h5>Nature, United States</h5>
-                                    </div>
                                   </div>
-                                  <div class="carousel-item">
+                                  <div class="carousel-item fixHeight">
                                     <div class="d-block section" alt="Second slide">
                                             <span style='font-size: 20px;color:gray;'>논평</span>
                                             <table class="table mainTable commTable">                                
@@ -92,11 +89,8 @@
                                                 </tbody>
                                             </table>
                                     </div>
-                                    <div class="carousel-caption d-none d-md-block">
-                                      <h5>Somewhere Beyond, United States</h5>
-                                    </div>
                                   </div>
-                                  <div class="carousel-item">
+                                  <div class="carousel-item fixHeight">
                                     <div class="d-block section" alt="Third slide">
                                             <span style='font-size: 20px;color:gray;'>유저</span>
                                             <table class="table mainTable commTable">
@@ -122,9 +116,6 @@
                                                     <%}%>
                                                 </tbody>
                                             </table>
-                                    </div>
-                                    <div class="carousel-caption d-none d-md-block">
-                                      <h5>Yellowstone National Park, United States</h5>
                                     </div>
                                   </div>
                                 </div>

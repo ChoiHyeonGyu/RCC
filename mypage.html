@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col">
-                    <select class="sort">
+                    <select class="sort dropdown">
                         <option>최신 순</option>
                         <option <% if(sort == '1'){ %>selected<% } %>>오래된 순</option>
                         <% if(list.metaData[1].name == 'HEADLINE'){ %>
@@ -27,10 +27,10 @@
                         <option <% if(sort == '3'){ %>selected<% } %>>후원 총액</option>
                         <% } %>
                     </select>
-                    <input id="my_search" type="text" placeholder="Search">
+                    <input type="text" id="my_search" class="form-control" placeholder="Search">
                 </div>
             </div>
-            <ul class="nav nav-pills nav-fill container pad-0">
+            <ul class="nav nav-hyeon nav-fill container pad-0">
                 <li class="nav-item">
                     <a class="nav-link btn-light <% if(list.metaData[1].name == 'SUBSCRIBER'){ %>active<% } %>" href="/my">Subscriber List</a>
                 </li>
