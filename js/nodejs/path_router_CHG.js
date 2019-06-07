@@ -28,7 +28,7 @@ router.get("/my", function(req, res){
             var standard = "p.pid";
         }
 
-        dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), (select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"') where id = '"+req.session.user_id+"'", function(result) {
+        dbconn.resultQuery("select * from users, (select count(*) subscriber from subscribe where channeluser = '"+req.session.user_id+"'), (select count(*) post from post where userid = '"+req.session.user_id+"'), (select count(*) reply from comments where userid = '"+req.session.user_id+"'), (select coinaddress from users where id = 'admin') where id = '"+req.session.user_id+"'", function(result) {
             if(req.query.s == '1'){
                 dbconn.resultQuery("select * from (select s.sid, s.channeluser from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid "+sc+") where rownum <= 10", function(result2){
                     dbconn.resultQuery("select sid from (select rownum as rn, sid from (select s.sid from users u join subscribe s on u.id = s.subscriber where u.id = '"+req.session.user_id+"' order by s.sid "+sc+") where rownum <= 101) where mod((rn - 1), 10) = 0", function(result3){
@@ -67,31 +67,33 @@ router.get("/my", function(req, res){
             }
 
             function ethereum(result2, result3){
-                ether.getBalance(result.rows[0][4], function(coin){
-                    ether.getTransactions(result.rows[0][4], 0, 0, function(txlist){
-                        ether.pagingTransactions(result.rows[0][4], 0, 0, function(txpage){
-                            var arr = [];
-                            dbEtherConn(result2, result3, coin, txlist, txpage, 0, arr);
+                ether.getTotalDonate(result.rows[0][4], result.rows[0][11], function(dntl){
+                    ether.getBalance(result.rows[0][4], function(coin){
+                        ether.getTransactions(result.rows[0][4], 0, 0, function(txlist){
+                            ether.pagingTransactions(result.rows[0][4], 0, 0, function(txpage){
+                                var arr = [];
+                                dbEtherConn(result2, result3, dntl, coin, txlist, txpage, 0, arr);
+                            });
                         });
                     });
                 });
             }
 
-            function dbEtherConn(result2, result3, coin, txlist, txpage, idx, arr){
+            function dbEtherConn(result2, result3, dntl, coin, txlist, txpage, idx, arr){
                 dbconn.resultQuery("select nickname, coinaddress from users where coinaddress = '"+txlist[idx].from+"' or coinaddress = '"+txlist[idx].to+"'", function(result){
                     arr.push(result.rows[0]);
                     arr.push(result.rows[1]);
 
                     if(txlist.length - 1 == idx){
-                        listing(result2, result3, coin, txlist, txpage, arr);
+                        listing(result2, result3, dntl, coin, txlist, txpage, arr);
                     } else {
                         idx++;
-                        dbEtherConn(result2, result3, coin, txlist, txpage, idx, arr);
+                        dbEtherConn(result2, result3, dntl, coin, txlist, txpage, idx, arr);
                     }
                 });
             }
 
-            function listing(result2, result3, coin, txlist, txpage, arr){
+            function listing(result2, result3, dntl, coin, txlist, txpage, arr){
                 fs.readFile("mypage.html", "utf-8", function(error, data) {
                     res.send(ejs.render(include.import_default() + data, {
                         logo: include.logo(),
@@ -100,6 +102,7 @@ router.get("/my", function(req, res){
                         list: result2,
                         page: result3,
                         sort: req.query.sort,
+                        dntl: dntl,
                         coin: coin,
                         txlist: txlist,
                         txpage: txpage,
@@ -109,7 +112,7 @@ router.get("/my", function(req, res){
             }
         });
     } else {
-        res.redirect("/");
+        res.redirect("/login");
     }
 });
 
@@ -417,6 +420,20 @@ router.post("/user/modify", function(req, res){
     }
 });
 
+router.post("/user/delete", function(req, res){
+    if(req.session.user_id){
+        dbconn.booleanQuery("delete users where id = '"+req.session.user_id+"'", function(result){
+            if(result){
+                res.write("<script>alert('Delete Completed!');</script>");
+                res.end("<script>location.href = '/'</script>");
+            } else {
+                res.write("<script>alert('Fail!');</script>");
+                res.end("<script>location.href = '/my'</script>");
+            }
+        });
+    }
+});
+
 router.get("/channel", function(req, res){
     if(req.query.sort == '1') {
         var sc = "";
@@ -432,24 +449,30 @@ router.get("/channel", function(req, res){
         var standard = "p.pid";
     }
 
-    dbconn.resultQuery("select * from (select * from (select id, nickname from users where id = '"+req.query.chnlid+"'), (select count(*) subscriber from subscribe where channeluser = '"+req.query.chnlid+"'), (select count(*) post from post where userid = '"+req.query.chnlid+"')) u left join (select channeluser from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.chnlid+"') s on u.id = s.channeluser", function(result) {
+    dbconn.resultQuery("select u.id, u.nickname, u.subscriber, u.post, s.channeluser, u.coinaddress, u.adminaddr from (select * from (select id, nickname, coinaddress from users where id = '"+req.query.chnlid+"'), (select count(*) subscriber from subscribe where channeluser = '"+req.query.chnlid+"'), (select count(*) post from post where userid = '"+req.query.chnlid+"'), (select coinaddress adminaddr from users where id = 'admin')) u left join (select channeluser from subscribe where subscriber = '"+req.session.user_id+"' and channeluser = '"+req.query.chnlid+"') s on u.id = s.channeluser", function(result) {
         if(req.query.s == '1') {
             dbconn.resultQuery("select * from (select p.pid, c.title, p.categoryname, p.detailname, c.cost, p.pdate, p.mdate from commentary c join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = c.pid order by "+standard+" "+sc+") p where rownum <= 60", function(result2){
                 result2 = dataSorting(result2);
                 dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from commentary c join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = c.pid group by p.pid, c.cost order by "+standard+" "+sc+") where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
-                    listing(result2, result3);
+                    ethereum(result2, result3);
                 });
             });
         } else {
             dbconn.resultQuery("select * from (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from briefingdetail b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname order by "+standard+" "+sc+") p where rownum <= 60", function(result2){
                 result2 = dataSorting(result2);
                 dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from briefingdetail b join (select p.pid, p.viewcount from users u join post p on u.id = p.userid where u.id = '"+req.query.chnlid+"') p on p.pid = b.pid group by p.pid, p.viewcount order by "+standard+" "+sc+") where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
-                    listing(result2, result3);
+                    ethereum(result2, result3);
                 });
             });
         }
 
-        function listing(result2, result3){
+        function ethereum(result2, result3){
+            ether.getTotalDonate(result.rows[0][5], result.rows[0][6], function(dntl){
+                listing(result2, result3, dntl);
+            });
+        }
+
+        function listing(result2, result3, dntl){
             fs.readFile("channel.html", "utf-8", function(error, data) {
                 res.send(ejs.render(include.import_default() + data, {
                     logo: include.logo(),
@@ -458,7 +481,8 @@ router.get("/channel", function(req, res){
                     list: result2,
                     page: result3,
                     userid: req.session.user_id,
-                    sort: req.query.sort
+                    sort: req.query.sort,
+                    dntl: dntl
                 }));
             });
         }
@@ -610,7 +634,10 @@ router.get("/donate", function(req, res){
                         logo: include.logo(),
                         main_header: include.main_header(req.session.user_id),
                         my: result,
-                        coin: coin
+                        coin: coin,
+                        currentURL: req.url,
+                        preURL: req.query.preURL,
+                        postNo: req.query.preURL.match("postNo=").input.substr(req.query.preURL.match("postNo=").index + 7)
                     }));
                 });
             });
@@ -623,7 +650,14 @@ router.get("/donate", function(req, res){
 router.post("/donate", function(req, res){
     if(req.session.user_id && !isNaN(Number(req.body.coin))){
         ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
-            res.redirect("/my");
+            dbconn.booleanQuery("update commentary set cost="+req.body.coin+" where pid = "+req.body.postNo, function(result){
+                if(result){
+                    res.redirect(req.body.preURL);
+                } else {
+                    res.write("<script>alert('Fail!');</script>");
+                    res.end("<script>location.href = '"+req.body.currentURL+"'</script>");
+                }
+            });
         });
     }
 });

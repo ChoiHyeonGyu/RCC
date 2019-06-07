@@ -11,13 +11,13 @@
             <div class="row">
                 <div class="col">
                     <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num">Subscriber <%= my.rows[0][8] %></span>
-                    <span class="channel_num">Donate 2,500,000</span><span class="channel_num">Post <%= my.rows[0][9] %></span><span class="channel_num">Reply <%= my.rows[0][10] %></span>
+                    <span class="channel_num">Donate <%= dntl %> ETH</span><span class="channel_num">Post <%= my.rows[0][9] %></span><span class="channel_num">Reply <%= my.rows[0][10] %></span>
                 </div>
             </div><br>
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col">
-                    <select class="sort dropdown">
+                    <select class="sort">
                         <option>최신 순</option>
                         <option <% if(sort == '1'){ %>selected<% } %>>오래된 순</option>
                         <% if(list.metaData[1].name == 'HEADLINE'){ %>
@@ -180,6 +180,9 @@
                         <td><%= converter[j][0] %><br><%= txlist[i].from %></td>
                                 <% break; %>
                                 <% } %>
+                                <% if(j == converter.length - 1){ %>
+                        <td><%= txlist[i].from %></td>
+                                <% } %>
                             <% } %>
                         <% } %>
                         <% if(txlist[i].to == my.rows[0][4]){ %>
@@ -189,6 +192,9 @@
                                 <% if(txlist[i].to == converter[j][1]){ %>
                         <td><%= converter[j][0] %><br><%= txlist[i].to %></td>
                                 <% break; %>
+                                <% } %>
+                                <% if(j == converter.length - 1){ %>
+                        <td><%= txlist[i].to %></td>
                                 <% } %>
                             <% } %>
                         <% } %>
@@ -214,7 +220,7 @@
         <div id="empty"></div>
         <div id="user_modify">
             <div class="signup-block">
-                <form action="/user/modify" method="post" onsubmit="return checkval();">
+                <form action="/user/modify" method="post" id="modify" onsubmit="return checkval();">
                     <div id="text">회원정보 수정</div>
                     <input type="text" value="<%= my.rows[0][0] %>" placeholder="아이디" id="id" disabled>
                     <input type="password" value="" placeholder="비밀번호 (8자 이상)" id="pw" name="pw1" oninput="pw2();">
@@ -226,6 +232,9 @@
                     <input type="tel" value="<%= my.rows[0][6] %>" placeholder="01011112222" id="cellphone" name="cellphone1">
                     <div id="result" style="color:white;">1</div>
                     <input type="submit" value="회원정보 수정     " class="button">
+                </form>
+                <form method="POST" action="/user/delete" id="delete">
+                    <input type="submit" value="회원 탈퇴      " class="button">
                 </form>
             </div>
         </div>

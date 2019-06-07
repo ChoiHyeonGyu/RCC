@@ -46,6 +46,9 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
             <form method="POST" action="/donate">
                 <input type="hidden" name="sender" value="<%= my.rows[0][1] %>">
                 <input type="hidden" name="receiver" value="<%= my.rows[0][3] %>">
+                <input type="hidden" name="currentURL" value="<%= currentURL %>">
+                <input type="hidden" name="preURL" value="<%= preURL %>">
+                <input type="hidden" name="postNo" value="<%= postNo %>">
                 <div class="row">
                     <div class="col">
                         MyCoin : <%= coin %> ETH<br><br>
