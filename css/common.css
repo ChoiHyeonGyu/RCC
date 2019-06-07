@@ -123,6 +123,9 @@
 .bgi{
     background: #F0F0F0 url(/images/bg.png) repeat;
 }
+.bgNav{
+    background-color: rgba(222,222,222,0.3);
+}
 .lh2p5{
     line-height: 2.5rem;
 }
@@ -130,9 +133,12 @@
     border:1px solid gray;
 }
 .pv20{
-    padding-top:40px;
-    padding-bottom: 40px;
+    padding-top:60px;
+    padding-bottom: 60px;
 }
 h1, h2{text-shadow:none; text-align:center;}
 h1{ color: #666; text-transform:uppercase;  font-size:36px;}
 h2{ color: #7f8c8d; font-family: Neucha, Arial, sans serif; font-size:18px; margin-bottom:30px;} 
+.bgb{
+    background-color: black;
+}
