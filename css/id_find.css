@@ -14,8 +14,8 @@
     padding: 0 20px 20px 20px;
     background: #fff;
     border-radius: 5px;
-    border-top: 5px solid #bbbbbb;
-    border-bottom:1px solid #bbbbbb;
+    border-top: 5px solid #9a9a9a;
+    border-bottom:1px solid #9a9a9a;
     /*border-right:1px solid #bbbbbb;
     border-left:1px solid #bbbbbb;*/
     background:#eeeeee33;
@@ -51,9 +51,6 @@ input.button{
     background-size: 16px 80px;
 }
 
-.id-find-block input:active, .id-find-block input:focus {
-    border: 2px solid #ca7bff;
-}
 
 .id-find-block input#email {
     background: #fff url('https://image.flaticon.com/icons/svg/1789/1789934.svg') 20px center no-repeat;
@@ -78,10 +75,10 @@ input.button{
 .id-find-block .button {
     width: 90%;
     height: 40px;
-    background: #bbbbbb;
+    background: #9a9a9a;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 0px solid #bbbbbb;
+    border: 0px solid #9a9a9a;
     color: #fff;
     font-weight: bold;
     text-transform: uppercase;
@@ -93,9 +90,9 @@ input.button{
 }
 
 .id-find-block .button:hover {
-    background: #ca7bff;
+    background: #8f50ff;
 }
 
-.id-find-block input:active, .id-find-block input:focus {
-    border: 0px;
+input[type=text]:active,input[type=text]:focus {
+    border: 2px solid #8f50ff;
 }
