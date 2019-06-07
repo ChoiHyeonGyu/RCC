@@ -112,7 +112,7 @@ router.get("/my", function(req, res){
             }
         });
     } else {
-        res.redirect("/");
+        res.redirect("/login");
     }
 });
 
@@ -420,6 +420,20 @@ router.post("/user/modify", function(req, res){
     }
 });
 
+router.post("/user/delete", function(req, res){
+    if(req.session.user_id){
+        dbconn.booleanQuery("delete users where id = '"+req.session.user_id+"'", function(result){
+            if(result){
+                res.write("<script>alert('Delete Completed!');</script>");
+                res.end("<script>location.href = '/'</script>");
+            } else {
+                res.write("<script>alert('Fail!');</script>");
+                res.end("<script>location.href = '/my'</script>");
+            }
+        });
+    }
+});
+
 router.get("/channel", function(req, res){
     if(req.query.sort == '1') {
         var sc = "";
@@ -620,7 +634,10 @@ router.get("/donate", function(req, res){
                         logo: include.logo(),
                         main_header: include.main_header(req.session.user_id),
                         my: result,
-                        coin: coin
+                        coin: coin,
+                        currentURL: req.url,
+                        preURL: req.query.preURL,
+                        postNo: req.query.preURL.match("postNo=").input.substr(req.query.preURL.match("postNo=").index + 7)
                     }));
                 });
             });
@@ -633,10 +650,14 @@ router.get("/donate", function(req, res){
 router.post("/donate", function(req, res){
     if(req.session.user_id && !isNaN(Number(req.body.coin))){
         ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
-            /*dbconn.booleanQuery("update commentary set cost="++" where pid = "+, function(result){
-
-            });*/
-            res.redirect("/my");
+            dbconn.booleanQuery("update commentary set cost="+req.body.coin+" where pid = "+req.body.postNo, function(result){
+                if(result){
+                    res.redirect(req.body.preURL);
+                } else {
+                    res.write("<script>alert('Fail!');</script>");
+                    res.end("<script>location.href = '"+req.body.currentURL+"'</script>");
+                }
+            });
         });
     }
 });
