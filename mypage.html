@@ -248,7 +248,7 @@
                 <form method="POST" action="/buy">
                     <div class="modal-body tal">
                             <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
-                            <div><input type="number" class="coin" name="coin" placeholder="Buy Coin"></div>
+                            <div><input type="text" class="coin" name="coin" placeholder="Buy Coin"></div>
                             <div>￦ : <input type="text" class="won" readonly></div>
                             <div>Current Coin : <%= coin %> ETH</div>
                             <div>Result Coin : <input type="text" id="brc" class="rc" save="<%= coin %>" readonly></div>
@@ -273,7 +273,7 @@
                 <form method="POST" action="/sell">
                     <div class="modal-body tal">
                             <input type="hidden" name="sender" value="<%= my.rows[0][4] %>">
-                            <div><input type="number" class="coin" name="coin" placeholder="Sell Coin"></div>
+                            <div><input type="text" class="coin" name="coin" placeholder="Sell Coin"></div>
                             <div>￦ : <input type="text" class="won" readonly></div>
                             <div>Current Coin : <%= coin %> ETH</div>
                             <div>Result Coin : <input type="text" id="src" class="rc" save="<%= coin %>" readonly></div>

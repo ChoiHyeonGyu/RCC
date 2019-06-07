@@ -303,6 +303,13 @@ $(function(){
         $('.rc').val('');
     });
 
+    $('form').submit(function(){
+        if(isNaN(Number($('.coin').val()))){
+            alert("Please. Enter Number!");
+            return false;
+        }
+    });
+
     $(document).on('click', '.txpb', function(){
         $.ajax({
             url: '/txpaging',

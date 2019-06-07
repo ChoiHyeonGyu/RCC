@@ -509,7 +509,11 @@ function searchAndsortPagingTransactions(addr, txsc, txio, slctuser, slctcoin, t
 }
 
 function searchAndsortPrevFirstPageValue(addr, txsc, txio, slctuser, slctcoin, txscope, nextbn, nextxidx, callback){
-    getBlock(nextbn, nextxidx, 0);
+    if(nextbn == undefined){
+        callback();
+    } else {
+        getBlock(nextbn, nextxidx, 0);
+    }
 
     function getBlock(bn, txroad, cnt){
         web3.eth.getBlock(bn, function(err, blk){
@@ -541,9 +545,10 @@ function searchAndsortPrevFirstPageValue(addr, txsc, txio, slctuser, slctcoin, t
     }
 
     function getTX(txhash, txroad, cnt){
+        
         web3.eth.getTransaction(txhash, function(err, tx){
             if(err) console.log(err);
-            console.log(addr);
+            
             if(txio == '0'){
                 if(tx.from == addr || tx.to == addr){
                     if(slctuser[0] != null){
