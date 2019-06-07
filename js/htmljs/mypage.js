@@ -380,6 +380,9 @@ $(function(){
                         var from = cvt[j][0] + "<br>" + txs[i].from;
                         break;
                     }
+                    if(j == cvt.length - 1){
+                        var from = txs[i].from;
+                    }
                 }
             }
             if(txs[i].to == $('#account_address').next().text()){
@@ -389,6 +392,9 @@ $(function(){
                     if(txs[i].to == cvt[j][1]){
                         var to = cvt[j][0] + "<br>" + txs[i].to;
                         break;
+                    }
+                    if(j == cvt.length - 1){
+                        var from = txs[i].to;
                     }
                 }
             }

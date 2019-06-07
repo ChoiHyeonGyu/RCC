@@ -180,6 +180,9 @@
                         <td><%= converter[j][0] %><br><%= txlist[i].from %></td>
                                 <% break; %>
                                 <% } %>
+                                <% if(j == converter.length - 1){ %>
+                        <td><%= txlist[i].from %></td>
+                                <% } %>
                             <% } %>
                         <% } %>
                         <% if(txlist[i].to == my.rows[0][4]){ %>
@@ -189,6 +192,9 @@
                                 <% if(txlist[i].to == converter[j][1]){ %>
                         <td><%= converter[j][0] %><br><%= txlist[i].to %></td>
                                 <% break; %>
+                                <% } %>
+                                <% if(j == converter.length - 1){ %>
+                        <td><%= txlist[i].to %></td>
                                 <% } %>
                             <% } %>
                         <% } %>
