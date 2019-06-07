@@ -86,3 +86,25 @@
     background-color:#EEEEEE;
     color:mediumpurple;
 }
+
+.nav-hyeon .nav-item .nav-link.active, .nav-hyeon .nav-item .nav-link.active:focus, .nav-hyeon .nav-item .nav-link.active:hover {
+    background-color: #9a9a9a;
+    color: #fff;
+    box-shadow: 0 5px 35px 0 rgba(0,0,0,.3);
+}
+
+.nav-hyeon .nav-item .nav-link, .nav-hyeon .nav-item .nav-link:hover {
+    background-color: hsla(0,0%,87%,.3);
+}
+
+.nav-hyeon .nav-item .nav-link {
+    padding: 10px 23px;
+    min-width: 100px;
+    font-weight: 400;
+    text-align: center;
+    color: #444;
+}
+
+.nav-hyeon .nav-link {
+    border-radius: .25rem;
+}
