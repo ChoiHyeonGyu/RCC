@@ -13,11 +13,11 @@
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
-    <div id="header3" class="container"><%- navigator %></div>
+    <div id="header3" class="container tyshadow"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
     <div class="briefingContents container contentsBox tac">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
-        <div class="hotBriefing mainContents">
+        <div class="hotBriefing mainContents card">
             <h2>논평</h2><select class='fr' id='sortingBox' onchange="sort(location.pathname+'?pageNo=<%=pagingResult.curPage%>&sort='+$('#sortingBox option:selected').val())">
                     <option value='1'>최신 순</option>
                     <option value='2'>오래된 순</option>

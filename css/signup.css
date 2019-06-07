@@ -1,5 +1,7 @@
 
-
+* {
+    transition: all 0.3s ease;
+}
 #id_check, #pwcheck, #phone_click{
     margin-bottom:0px;
 }

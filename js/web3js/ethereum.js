@@ -14,6 +14,48 @@ function newAccount(pw, callback){
     });
 }
 
+function getTotalDonate(myaddr, adminaddr, callback){
+    web3.eth.getBlockNumber(function(err, bn){
+        if(err) console.log(err);
+        getBlock(bn, -1, 0);
+    });
+
+    function getBlock(bn, txroad, sum){
+        web3.eth.getBlock(bn, function(err, blk){
+            if(err) console.log(err);
+            
+            if(blk.transactions[0] == null){
+                getBlock(blk.number - 1, txroad, sum);
+            } else if(txroad == -1) {
+                txroad = blk.transactions.length - 1;
+                getTX(blk.transactions[txroad], txroad, sum);
+            } else {
+                getTX(blk.transactions[txroad], txroad, sum);
+            }
+        });
+    }
+
+    function getTX(txhash, txroad, sum){
+        web3.eth.getTransaction(txhash, function(err, tx){
+            if(err) console.log(err);
+            
+            if(tx.to == myaddr && tx.from != adminaddr){
+                sum += Number(tx.value);
+            }
+
+            txroad--;
+
+            if(tx.blockNumber == 1 && tx.transactionIndex == 0){
+                callback(web3.utils.fromWei(String(sum), "ether"));
+            } else if(tx.transactionIndex == 0) {
+                getBlock(tx.blockNumber - 1, txroad, sum);
+            } else {
+                getBlock(tx.blockNumber, txroad, sum);
+            }
+        });
+    }
+}
+
 function getBalance(addr, callback){
     web3.eth.getBalance(addr, function(err, coin){
         if(err) console.log(err);
@@ -642,9 +684,10 @@ function searchAndsortPrevFirstPageValue(addr, txsc, txio, slctuser, slctcoin, t
 }
 
 module.exports = {
+    newAccount: newAccount,
+    getTotalDonate: getTotalDonate,
     getBalance: getBalance,
     sendCoin: sendCoin,
-    newAccount: newAccount,
     getTransactions: getTransactions,
     pagingTransactions: pagingTransactions,
     prevFirstPageValue: prevFirstPageValue,

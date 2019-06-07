@@ -9,14 +9,13 @@
 .mainContents{
     display:inline-block;
     width:77%;
+    margin-top:30px;
     text-align: center;  
-    border: 2px solid gray;
     border-radius: 7px;
     padding:10px;
 }
 .sideContents{
     text-align: center;  
-    border: 2px solid gray;
     border-radius: 7px;
     padding:10px;
 }
@@ -103,11 +102,11 @@
     display:none;
 }
 .contentsSideNavDetail{
-    border:1px solid;
     border-radius: 7px;
 }
 .categoryHead{
-    border-bottom: 1px solid #999999;
+    background-color: #EDEDED;
+    border-bottom: 1px solid #DDDDDD;
 }
 #sortingBox{
     padding:10px;
