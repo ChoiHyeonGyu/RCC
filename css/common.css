@@ -1,3 +1,6 @@
+body{
+	background: #F0F0F0 url(/images/bg.png) repeat;
+}
 .sort-center {
     width: 100%;
     text-align: center;

@@ -27,6 +27,7 @@ router.get("/signup", function(req, res) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
             main_header: include.main_header(req.session.user_id),
+            footer: include.footer(),
         }));
     });
 });
