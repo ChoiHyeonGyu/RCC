@@ -277,8 +277,8 @@ router.post("/auth",function(req,res){
                   'contentType':"COMM",
                   'countryCode':"82",
                 }
-                
               });
+              console.log(var_num);
               return res.json({ result : true });
         } else {
             return res.json({ result : false }); 
