@@ -84,7 +84,7 @@ input.button{
 }
 
 .login-block .button:hover {
-    background: #ca7bff;
+    background: #8f50ff;
 }
 
 a {
@@ -92,4 +92,15 @@ a {
     text-decoration:none;
     color:black;
     font-family: 'Noto Sans KR', sans-serif;
+}
+
+#id:active, #id:focus {
+    border: 2px solid #8f50ff;
+}
+#pw:active, #pw:focus {
+    border: 2px solid #8f50ff;
+}
+
+.button{
+    border:0px;
 }

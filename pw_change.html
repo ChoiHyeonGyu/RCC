@@ -2,6 +2,13 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type='text/css' href="/css/pw_find.css?after">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR|Sunflower:300&display=swap" rel="stylesheet">
+        <style>
+            #pwcheckmsg{
+                margin:10px;
+
+            }
+        </style>
     </head>
     
     <body>
@@ -10,9 +17,9 @@
         <div class="pw-find container">
             <div class="pw-find-block">
                 <form action="/pw_change" method="post" onsubmit="return checkval();">
-                    <h1>비밀번호 변경</h1>
+                    <div id="text">비밀번호 변경</div>
                     <input type="password" value="" placeholder="비밀번호(8자 이상)" id="pw" name="pw1" oninput="pw2();"/>
-                    <input type="password" value="" placeholder="비밀번호확인(8자이상)" id="pwcheck" name="pwcheck1" oninput="pwcheck2();"/>
+                    <input type="password" value="" placeholder="비밀번호확인(8자이상)" style="margin:0px;" id="pwcheck" name="pwcheck1" oninput="pwcheck2();"/>
                     <input type="hidden" value="" id="hidden_id" name="hidden_id1">
                     <div id="pwcheckmsg" style="color:white;">1</div>
                     <input type="submit" value="비밀번호 변경" class="button"/>
