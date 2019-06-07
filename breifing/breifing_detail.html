@@ -31,11 +31,11 @@
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
-    <div id="header3" class="container"><%- navigator %></div>
+    <div id="header3" class="container tyshadow"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
     <div class="briefingContents container contentsBox tac">
         <div id="contentsSideNav"><%- contentsSideNav %></div>
-        <div class="hotBriefing mainContents w85">
+        <div class="hotBriefing mainContents w85 card">
             <h2>헤드라인 게시판</h2><select class='fr' id='sortingBox' onchange="sort(location.pathname+'?pageNo=<%=pagingResult.curPage%>&sort='+$('#sortingBox option:selected').val()+addUrl)">                    
                     <option value='1'>최신 순</option>
                     <option value='2'>오래된 순</option>
@@ -58,30 +58,36 @@
                     <% } %>
                 </tbody>
             </table>
-            <div class="">
-                    <%
-                        var detail="";
-                        if(detailId!=null)detail="detailId="+detailId+"&";
-
-                        var paging="";
-                        if(pagingResult.preBtn == '1'){
-                            paging="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?sort="+sort+"&"+detail+"cateId="+cateId+"&pageNo="+(parseInt(pagingResult.startPage)-1)+"'>&lt;</button>"
-                        }
-                    %><%- paging %><%
-                        paging="";
-                        for(var i=pagingResult.startPage; i<=pagingResult.endPage;i++){
-                            if(i==pagingResult.curPage) paging+="<button class='btn btn-light active' onclick=location.href='"+"/breifing_detail?sort="+sort+"&"+detail+"cateId="+cateId+"&pageNo="+i+"'>"+i+"</button>"
-                            else paging+="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?sort="+sort+"&"+detail+"cateId="+cateId+"&pageNo="+i+"'>"+i+"</button>"
-                        }
-                    %><%- paging %><%
-                        paging="";
-                        if(pagingResult.nextBtn == '1'){
-                        paging="<button class='btn btn-light' onclick=location.href='"+"/breifing_detail?sort="+sort+"&"+detail+"cateId="+cateId+"&pageNo="+(parseInt(pagingResult.endPage)+1)+"'>&gt;</button>"
-                        }
-                    %><%- paging %>
-                    <div>
-                        <button class='btn btn-light fr' onclick='location.href="/breifing_write?"'>글쓰기</button>
-                    </div>
+            <div class="tac dib">
+                    <ul class="pagination">
+                            <%if(pagingResult.preBtn=='1'){ %>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="/breifing_detail?sort=<%=sort%>&pageNo=<%=(parseInt(pagingResult.startPage)-1)%><%if(detailId!=null){%>&detailId=<%=detailId%><%}%>&cateId=<%=cateId%>"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&lt;<i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+                            </a>
+                        </li>
+                        <%}%>
+                            <%for(var i=pagingResult.startPage;i<=pagingResult.endPage;i++){%>
+                        <li class="page-item <%if(i==pagingResult.curPage){%>active<%}%>">
+                                  <a class="page-link" href="/breifing_detail?sort=<%=sort%>&pageNo=<%=i%><%if(detailId!=null){%>&detailId=<%=detailId%><%}%>&cateId=<%=cateId%>"><%=i%></a>
+                        </li>
+                        <%}%>
+                            
+                            <%if(pagingResult.nextBtn=='1'){%>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="/breifing_detail?sort=<%=sort%>&pageNo=<%=(parseInt(pagingResult.endPage)+1)%><%if(detailId!=null){%>&detailId=<%=detailId%><%}%>&cateId=<%=cateId%>"
+                                aria-label="Next">
+                                <span aria-hidden="true">&gt;<i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                            </a>
+                        </li>
+                        <%}%>
+                              </ul>
+            </div>
+            <div>
+                <button class='btn btn-primary fr' onclick='location.href="/breifing_write?"'>글쓰기</button>
             </div>
         </div>
     </div>

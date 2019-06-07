@@ -42,9 +42,9 @@ function authStart(){
             if(result['result']==true){
                 $('#result').html('인증번호를 입력해 주세요.');
                 $("#result").css("color","blue");
-                $("#auth_num").css("display","inline-flex");
-                $("#auth_btn").css("display","inline-flex");
-                $("#auth_box").css("display","inline-flex");
+                $("#auth_num").css("display","inline-block");
+                $("#auth_btn").css("display","inline-block");
+                $("#auth_box").css("display","inline-block");
             }else if(result['result']==false){
                 $('#result').html('이미 있는 번호 입니다');
                 $("#result").css("color","red");

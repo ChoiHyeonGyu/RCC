@@ -1226,12 +1226,10 @@ router.post("/getNavSubscribe", function (req, res) {
         res.send({result:true});
         return;
     }
-    var navSize = 5;
-    var currPage = req.body.currPage;
     //(navSize)*(currPage-1)+1
     //(navSize*currPage)
-    dbconn.resultQuery("select * from (select rownum row1, s.*,c.cnt from subscribe s,(select subscriber,count(*) as cnt from subscribe where subscriber='"+req.session.user_id+"' group by subscriber) c where c.subscriber=s.subscriber) where row1>="+(navSize*(currPage-1)+1)+" and row1<="+(navSize*currPage),function(result){
-        res.send({result:true,list:result,size:navSize});
+    dbconn.resultQuery("select * from (select rownum row1, s.*,c.cnt from subscribe s,(select subscriber,count(*) as cnt from subscribe where subscriber='"+req.session.user_id+"' group by subscriber) c where c.subscriber=s.subscriber)",function(result){
+        res.send({result:true,list:result});
     });
     //최대 다섯명까지 출력. 다섯명이 넘으면 다음 버튼 생성. 다음 버튼 클릭시 이전 버튼 생성
 });

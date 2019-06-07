@@ -22,10 +22,10 @@
                     success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
                         if ( result['result'] == true ) {
                             if(subStatus) {
-                                $('#subBtn').removeClass('active');
+                                $('#subBtn').removeClass('btn-primary');
                             }
                             else {
-                                $('#subBtn').addClass('active');
+                                $('#subBtn').addClass('btn-primary');
                             }
                             subStatus==true ? subStatus=false : subStatus=true;
                         }
@@ -48,12 +48,12 @@
 <body>
     <div id="header2"><%- main_header %></div>
     <div id="header" class="container"><%- logo %></div>
-    <div id="header3" class="container"><%- navigator %></div>
+    <div id="header3" class="container tyshadow"><%- navigator %></div>
     <div id="header4"><%- navigator_side %></div>
     <div class="briefingView container contentsBox tac">
         <% if(search==null){ %><div id="contentsSideNav"><%- contentsSideNav %></div><% } %>
-        <div class="showFrame mainContents w85">
-            <div class="showInfo show">
+        <div class="showFrame mainContents w85 card">
+            <div class="showInfo showallContents">
                 <span class="infospan hover-pointer" onclick="location.href='/channel?chnlid=<%= postResult.rows[0][1] %>'"><%= postResult.rows[0][1] %></span>
                 <span class="infospan"><%= categoryResult.rows[0][0] %><br><%= categoryResult.rows[0][1] %></span>
                 <span class="infospan">작성일 : <%= postResult.rows[0][3] %></span>
@@ -67,25 +67,25 @@
                 %>
                 <%- writer %>
             </div>
-            <div class="showHeader show">
+            <div class="showHeader showallContents">
                 <span class="showspan">Header</span>
                 <div class="headerURL dib">
                     <%
                         var headline="";
                         for(var i=0; i<headlineResult.rows.length;i++){
-                            headline+= "<a style='dispaly:block;' href='"+ headlineResult.rows[i][3] +"'>"+headlineResult.rows[i][2]+"</a>";
+                            headline+= "<a style='dispaly:block;' href='"+ headlineResult.rows[i][3] +"'>"+headlineResult.rows[i][2]+"</a><br>";
                         }
                     %>
                     <%- headline %>
                 </div>
             </div>
-            <div class="showSummary show">
+            <div class="showSummary showallContents">
                 <span class="showspan">Summary</span>
                 <div class="summaryDiv dib">
                     <%- summaryResult.rows[0][2] %>
                 </div>
             </div>
-            <div class="showHash show">
+            <div class="showHash showallContents">
                 <span class="showspan">HashTag</span>
                 <div class="hashDiv dib">
                     <%
@@ -97,7 +97,7 @@
                     <%- hash %>
                 </div>
             </div>
-            <% if(user!=postResult.rows[0][1]){ %><button class="btn btn-light <% if(subscribeResult){%>active<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button><% } %>
+            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button><% } %>
             <button class="btn btn-light" value="Donate" onclick="checkLogin()">Donate</button>
             <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
         </div>
