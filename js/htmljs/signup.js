@@ -9,7 +9,8 @@ $(document).on("click","#id_check",function(){
     if($('#id').val().length<4){
         $('#id_msg').html('4개 이상 입력해주세요.');
         $("#id_msg").css("color","blue");
-    }else{
+    }
+    else{
         $.ajax({
             url:'/idcheck',
             dataType:'json',

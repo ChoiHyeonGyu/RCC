@@ -314,20 +314,22 @@ router.get("/my/search/pagelist", function(req, res){
 });
 
 router.post("/buy", function(req, res){
-    if(req.session.user_id){
+    if(req.session.user_id && !isNaN(Number(req.body.coin))){
         dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
             ether.sendCoin(result.rows[0][0], req.body.receiver, req.body.coin, "admin", function(){
-                res.redirect("/my");
+                res.write("<script>alert('Buy Coin!!!');</script>");
+                res.end("<script>location.href = '/my'</script>");
             });
         });
     }
 });
 
 router.post("/sell", function(req, res){
-    if(req.session.user_id){
+    if(req.session.user_id && !isNaN(Number(req.body.coin))){
         dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
             ether.sendCoin(req.body.sender, result.rows[0][0], req.body.coin, req.session.user_id, function(){
-                res.redirect("/my");
+                res.write("<script>alert('Sell Coin!!!');</script>");
+                res.end("<script>location.href = '/my'</script>");
             });
         });
     }
@@ -404,11 +406,11 @@ router.post("/user/modify", function(req, res){
 
             dbconn.booleanQuery("update users set pw='"+key.toString("base64")+"', name='"+name+"', nickname='"+nickname+"', coinaddress='0x111111', email='"+email+"', cellphone='"+cellphone+"' where id='"+id+"'", function(result){
                 if(result == false){
-                    res.write("<script>alert('fail!');</script>");
-                    res.write('<script>history.back();</script>');
+                    res.write("<script>alert('Fail!');</script>");
+                    res.end("<script>location.href = '/my'</script>");
                 } else {
-                    res.write("<script>alert('update completed!');</script>");
-                    res.write('<script>history.go(-1);</script>');
+                    res.write("<script>alert('Update Completed!');</script>");
+                    res.end("<script>location.href = '/my'</script>");
                 }
             });
         });
@@ -619,7 +621,7 @@ router.get("/donate", function(req, res){
 });
 
 router.post("/donate", function(req, res){
-    if(req.session.user_id){
+    if(req.session.user_id && !isNaN(Number(req.body.coin))){
         ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
             res.redirect("/my");
         });
