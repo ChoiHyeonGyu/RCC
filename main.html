@@ -25,99 +25,125 @@
     <div id="header4"><%- navigator_side %></div>
     <div class='main2 container tac mainSliderContainer'>
         <div class="hotBriefing mtg20 mainSlider tac">
-            <div id="wrapper">
-                <div id="slider-wrap">
-                    <ul id="slider">
-                        <li class='tac' data-color="#1abc9c">
-                            <span style='font-size: 20px;color:gray;'>브리핑</span>
-                            <table class="table mainPageTable commTable">
-                                    <thead>
-                                        <th class='tac' scope="row">헤드라인</th>
-                                        <th class='tac'>카테고리</th>
-                                    </thead>
-                                <tbody>
-                                    <%for(var i=0;i<bResult.rows.length;i++){%>
-                                        <tr class='hover-pointer hover-underline' onclick='location.href="/breifing_view?postNo=<%= bResult.rows[i][0] %>"'>
-                                            <% 
-                                                bResult.rows[i][1] = bResult.rows[i][1].replace("&lt;br&gt;","");
-                                                bResult.rows[i][1] = bResult.rows[i][1].split("&lt;").join("<");
-                                                bResult.rows[i][1] = bResult.rows[i][1].split("&gt;").join(">");
-                                            %>
-                                            <th scope='row'><%- bResult.rows[i][1] %></th>
-                                            <td class='tac'><%= bResult.rows[i][2] %></td>
-                                        </tr>
-                                    <%}%>
-                                </tbody>
-                            </table>
-                        </li>
-
-                        <li data-color="#3498db">
-                            <span style='font-size: 20px;color:gray;'>논평</span>
-                            <table class="table mainTable commTable">                                
-                            <thead>
-                                <th class='tac' scope="row">제목</th>
-                                <th class='tac'>카테고리</th>
-                                <th class='tac'>작성자</th>
-                                <th class='tac'>가치</th>
-                            </thead>
-                                <tbody>
-                                    <%for(var i=0;i<cResult.rows.length;i++){%>
-                                        <tr class="hover-pointer hover-underline" onclick="location.href='/commentary_view?postNo=<%= cResult.rows[i][0] %>'">
-                                            <th scope="row"><%= cResult.rows[i][5] %> <% if(cResult.rows[i][7]!=null){ %><%= "["+cResult.rows[i][7]+"]" %><% } %></th>
-                                            <td calss='w10 tac'><%= cResult.rows[i][9] %></td>
-                                            <td class='w10 tac'><%= cResult.rows[i][2] %></td>
-                                            <td class='w10 tac'><%= cResult.rows[i][6].toFixed(2) %>c</td>
-                                        </tr>
-                                    <%}%>
-                                </tbody>
-                            </table>
-                        </li>
-
-                        <li data-color="#9b59b6">
-                            <span style='font-size: 20px;color:gray;'>유저</span>
-                            <table class="table mainTable commTable">
-                                <thead>
-                                    <th class='tac' scope="row">유저</th>
-                                    <th class='tac'>구독자 수</th>
-                                    <th class='tac'>브리핑</th>
-                                    <th class='tac'>브리핑 누적 뷰</th>
-                                    <th class='tac'>논평</th>
-                                    <th class='tac'>논평 누적 후원</th>
-                                </thead>
-                                <tbody>
-                                    <%for(var i=0;i<uResult.rows.length;i++){%>
-                                        <tr class="hover-pointer hover-underline" onclick="location.href='/channel?chnlid=<%=uResult.rows[i][1]%>'">
-                                            <th class='w40 tac' scope='row'><%=uResult.rows[i][1]%></th>
-                                            <td class='tac'><%=uResult.rows[i][2]%></td>
-                                            <td class='tac'><%=uResult.rows[i][3]%></td>
-                                            <td class='tac'><%=uResult.rows[i][4]%></td>
-                                            <td class='tac'><%=uResult.rows[i][5]%></td>
-                                            <td class='tac'><%=uResult.rows[i][6].toFixed(2)%>c</td>
-                                        </tr>
-                                    <%}%>
-                                </tbody>
-                            </table>
-                        </li>
-                    </ul>
-
-                    <!--controls-->
-                    <div class="btns" id="next"><i class="fa fa-arrow-right"></i></div>
-                    <div class="btns" id="previous"><i class="fa fa-arrow-left"></i></div>
-                    <div style='color:black;' id="counter"></div>
-                    <!--controls-->
-                    
-                    <div id="pagination-wrap">
-                            <ul>
-                            </ul>
+            <div class="" id="carousel">
+                <div class="secontainer">
+                    <div class="title">
+                        <h4>게시판</h4>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10 col-md-12">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                </ol>
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="carousel-item active">
+                                        <div class="d-block section" alt="First slide">
+                                            <span style='font-size: 20px;color:gray;'>브리핑</span>
+                                            <table class="table mainPageTable commTable">
+                                                <thead>
+                                                    <th class='tac' scope="row">헤드라인</th>
+                                                    <th class='tac'>카테고리</th>
+                                                </thead>
+                                                <tbody>
+                                                    <%for(var i=0;i<bResult.rows.length;i++){%>
+                                                    <tr class='hover-pointer hover-underline'
+                                                        onclick='location.href="/breifing_view?postNo=<%= bResult.rows[i][0] %>"'>
+                                                        <% 
+                                                                bResult.rows[i][1] = bResult.rows[i][1].replace("&lt;br&gt;","");
+                                                                bResult.rows[i][1] = bResult.rows[i][1].split("&lt;").join("<");
+                                                                bResult.rows[i][1] = bResult.rows[i][1].split("&gt;").join(">");
+                                                            %>
+                                                        <th scope='row'><%- bResult.rows[i][1] %></th>
+                                                        <td class='tac'><%= bResult.rows[i][2] %></td>
+                                                    </tr>
+                                                    <%}%>
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                    <div class="carousel-caption d-none d-md-block">
+                                      <h5>Nature, United States</h5>
+                                    </div>
+                                  </div>
+                                  <div class="carousel-item">
+                                    <div class="d-block section" alt="Second slide">
+                                            <span style='font-size: 20px;color:gray;'>논평</span>
+                                            <table class="table mainTable commTable">                                
+                                            <thead>
+                                                <th class='tac' scope="row">제목</th>
+                                                <th class='tac'>카테고리</th>
+                                                <th class='tac'>작성자</th>
+                                                <th class='tac'>가치</th>
+                                            </thead>
+                                                <tbody>
+                                                    <%for(var i=0;i<cResult.rows.length;i++){%>
+                                                    <tr class="hover-pointer hover-underline"
+                                                        onclick="location.href='/commentary_view?postNo=<%= cResult.rows[i][0] %>'">
+                                                        <th scope="row"><%= cResult.rows[i][5] %>
+                                                            <% if(cResult.rows[i][7]!=null){ %><%= "["+cResult.rows[i][7]+"]" %><% } %>
+                                                        </th>
+                                                        <td calss='w10 tac'><%= cResult.rows[i][9] %></td>
+                                                        <td class='w10 tac'><%= cResult.rows[i][2] %></td>
+                                                        <td class='w10 tac'><%= cResult.rows[i][6].toFixed(2) %>c</td>
+                                                    </tr>
+                                                    <%}%>
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                    <div class="carousel-caption d-none d-md-block">
+                                      <h5>Somewhere Beyond, United States</h5>
+                                    </div>
+                                  </div>
+                                  <div class="carousel-item">
+                                    <div class="d-block section" alt="Third slide">
+                                            <span style='font-size: 20px;color:gray;'>유저</span>
+                                            <table class="table mainTable commTable">
+                                                <thead>
+                                                    <th class='tac' scope="row">유저</th>
+                                                    <th class='tac'>구독자 수</th>
+                                                    <th class='tac'>브리핑</th>
+                                                    <th class='tac'>브리핑 누적 뷰</th>
+                                                    <th class='tac'>논평</th>
+                                                    <th class='tac'>논평 누적 후원</th>
+                                                </thead>
+                                                <tbody>
+                                                    <%for(var i=0;i<uResult.rows.length;i++){%>
+                                                    <tr class="hover-pointer hover-underline"
+                                                        onclick="location.href='/channel?chnlid=<%=uResult.rows[i][1]%>'">
+                                                        <th class='w40 tac' scope='row'><%=uResult.rows[i][1]%></th>
+                                                        <td class='tac'><%=uResult.rows[i][2]%></td>
+                                                        <td class='tac'><%=uResult.rows[i][3]%></td>
+                                                        <td class='tac'><%=uResult.rows[i][4]%></td>
+                                                        <td class='tac'><%=uResult.rows[i][5]%></td>
+                                                        <td class='tac'><%=uResult.rows[i][6].toFixed(2)%>c</td>
+                                                    </tr>
+                                                    <%}%>
+                                                </tbody>
+                                            </table>
+                                    </div>
+                                    <div class="carousel-caption d-none d-md-block">
+                                      <h5>Yellowstone National Park, United States</h5>
+                                    </div>
+                                  </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                  <i class="now-ui-icons arrows-1_minimal-left"></i>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                  <i class="now-ui-icons arrows-1_minimal-right"></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                </div>
-                
-            </div>
+                      </div>
             
         </div>
     </div>
-
-    <div id="footer"><%- footer %></div>
+    <div id="footer"><%- footer %>
+                                        </div>
 </body>
 
 </html>
