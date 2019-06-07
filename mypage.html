@@ -214,7 +214,7 @@
         <div id="empty"></div>
         <div id="user_modify">
             <div class="signup-block">
-                <form action="/user/modify" method="post" onsubmit="return checkval();">
+                <form action="/user/modify" method="post" id="modify" onsubmit="return checkval();">
                     <div id="text">회원정보 수정</div>
                     <input type="text" value="<%= my.rows[0][0] %>" placeholder="아이디" id="id" disabled>
                     <input type="password" value="" placeholder="비밀번호 (8자 이상)" id="pw" name="pw1" oninput="pw2();">
@@ -226,6 +226,9 @@
                     <input type="tel" value="<%= my.rows[0][6] %>" placeholder="01011112222" id="cellphone" name="cellphone1">
                     <div id="result" style="color:white;">1</div>
                     <input type="submit" value="회원정보 수정     " class="button">
+                </form>
+                <form method="POST" action="/user/delete" id="delete">
+                    <input type="submit" value="회원 탈퇴      " class="button">
                 </form>
             </div>
         </div>

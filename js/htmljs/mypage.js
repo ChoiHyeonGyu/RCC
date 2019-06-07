@@ -303,7 +303,7 @@ $(function(){
         $('.rc').val('');
     });
 
-    $('form').submit(function(){
+    $('#modify').submit(function(){
         if(isNaN(Number($('.coin').val()))){
             alert("Please. Enter Number!");
             return false;
@@ -573,6 +573,10 @@ $(function(){
             }
         }
     }
+
+    $('#delete').submit(function(){
+        return confirm("정말로 삭제하시겠습니까?");
+    });
 });
 
 var a = false;
