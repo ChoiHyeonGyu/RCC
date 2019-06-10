@@ -27,38 +27,6 @@
     font-size: 17px;
 }
 
-.hyeon-input {
-    padding: 8px 18px;
-
-    background-color: transparent;
-    border: 1px solid #838282;
-    border-radius: 30px;
-    color: #2c2c2c;
-    height: auto;
-    line-height: normal;
-    font-size: .8571em;
-    transition: color .3s ease-in-out,border-color .3s ease-in-out,background-color .3s ease-in-out;
-    box-shadow: none;
-
-    font-weight: 400;
-    background-clip: padding-box;
-
-    font-family: Montserrat,Helvetica Neue,Arial,sans-serif;
-
-    overflow: visible;
-
-    margin: 0;
-}
-
-.hyeon-input:focus {
-    border: 1px solid #8f50ff;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    outline: 0 !important;
-    background-color: #ffffff;
-    color: #2c2c2c;
-}
-
 .hyeon-select {
     background-color: transparent;
     border: none;
@@ -107,24 +75,25 @@
 }
 
 .modal-body .coin {
-    margin-left: 103px;
+    margin-left: 96px;
 }
 
 .modal-body .won {
-    margin-left: 75px;
+    margin-left: 70px;
 }
 
 .modal-body .rc {
     margin-left: 12px;
 }
 
-.mypageATag {
-    display:inline-block;
-    width:100%;
-    padding:10px 5px;
+.fixed-right-tab {
+    display: block;
+    padding: 10px 5px;
+    color: mediumpurple;
 }
 
-.mypageATag:hover {
-    background-color:#EEEEEE;
-    color:mediumpurple;
+.fixed-right-tab:hover {
+    border-color: mediumpurple;
+    background-color: #EEEEEE;
+    color: mediumpurple;
 }

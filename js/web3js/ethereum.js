@@ -1,5 +1,5 @@
 var Web3 = require('web3');
-var web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.55.62:8545"));
+var web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.0.8:8545"));
 var crypto = require('crypto');
 var moment = require('moment');
 

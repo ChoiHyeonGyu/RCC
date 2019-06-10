@@ -124,7 +124,7 @@
                         <% if(i == 0){ %>
                     <li class="page-item active"><a class="page-link pb" nextid="<%= page.rows[i] %>">1</a></li>
                         <% } else if(i == 10) { %>
-                    <li class="page-item"><a class="page-link nb" nextid="<%= page.rows[i] %>" aria-label="Next">&gt;</a></li>
+                    <li class="page-item"><a class="page-link nb" nextid="<%= page.rows[i] %>">&gt;</a></li>
                         <% } else { %>
                     <li class="page-item"><a class="page-link pb" nextid="<%= page.rows[i] %>"><%= i + 1 %></a></li>
                         <% } %>
@@ -135,8 +135,8 @@
         <div id="empty"></div>
         <div id="account_info">
             <span id="account_address" class="account_num">Account Address</span><span class="account_num  hyeon-font"><%= my.rows[0][4] %></span><span class="account_num  hyeon-font">Coin <%= coin %> ETH</span>
-            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#buy_view">Buy</button>
-            <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buy_view">Buy</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
             <select id="txsc" class="srchandsort hyeon-select">
                 <option>최신 순</option>
                 <option>오래된 순</option>
@@ -213,7 +213,7 @@
                         <% if(i == 0){ %>
                     <li class="page-item active"><a class="page-link txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">1</a></li>
                         <% } else if(i == 10) { %>
-                    <li class="page-item"><a class="page-link ntxpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>" aria-label="Next">&gt;</a></li>
+                    <li class="page-item"><a class="page-link ntxpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">&gt;</a></li>
                         <% } else { %>
                     <li class="page-item"><a class="page-link txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>"><%= i + 1 %></a></li>
                         <% } %>
@@ -229,12 +229,11 @@
                     <input type="text" value="<%= my.rows[0][0] %>" placeholder="아이디" id="id" disabled>
                     <input type="password" value="" placeholder="비밀번호 (8자 이상)" id="pw" name="pw1" oninput="pw2();">
                     <input type="password" value="" placeholder="비밀번호 확인 (8자 이상)" id="pwcheck" name="pwcheck1" oninput="pwcheck2();">
-                    <div id="pwcheckmsg" style="color:white;">1</div>
+                    <div id="pwcheckmsg" style="color:#9e9e9e17;">1</div>
                     <input type="text" value="<%= my.rows[0][2] %>" placeholder="이름" id="name"  name="name1">
                     <input type="text" value="<%= my.rows[0][3] %>" placeholder="닉네임" id="nickname"  name="nickname1">
                     <input type="text" value="<%= my.rows[0][5] %>" placeholder="abc@abcd.abc" id="email" name="email1">
                     <input type="tel" value="<%= my.rows[0][6] %>" placeholder="01011112222" id="cellphone" name="cellphone1">
-                    <div id="result" style="color:white;">1</div>
                     <input type="submit" value="회원정보 수정     " class="button">
                 </form>
                 <form method="POST" action="/user/delete" id="delete">
@@ -245,9 +244,9 @@
         <div id="empty_last"></div>
         <div id="side_list">
             <label>MyPage</label><hr>
-            <a class="mypageATag btn btn-outline-secondary" href="#channel_info">Channel Information</a>
-            <a class="mypageATag btn btn-outline-secondary" href="#account_info">Account Information</a>
-            <a class="mypageATag btn btn-outline-secondary" href="#user_modify">Modify User Information</a>
+            <a class="fixed-right-tab btn btn-outline-secondary" href="#header2">Channel Information</a>
+            <a class="fixed-right-tab btn btn-outline-secondary" href="#account_info">Account Information</a>
+            <a class="fixed-right-tab btn btn-outline-secondary" href="#user_modify">Modify User Information</a>
         </div>
         <div class="modal fade" id="buy_view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -268,7 +267,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-light">Buy</button>
+                        <button type="submit" class="btn btn-primary">Buy</button>
                     </div>
                 </form>
               </div>
@@ -293,7 +292,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-light">Sell</button>
+                        <button type="submit" class="btn btn-primary">Sell</button>
                     </div>
                 </form>
               </div>

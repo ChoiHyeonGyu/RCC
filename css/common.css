@@ -1,6 +1,7 @@
 body{
 	background: #F0F0F0 url(/images/bg.png) repeat;
 }
+
 .sort-center {
     width: 100%;
     text-align: center;
@@ -83,65 +84,85 @@ body{
     font-weight:bold;
     padding:5px 10px;
 }
+
 .mg-10n0{
     margin:-10px 0px;
 }
+
 *,.btn{
     transition: all 0.3s ease;
 }
+
 .mg20{
     margin:20px;
 }
+
 .mtg20{
     margin:20px;
 }
+
 .w40{
     width:40%;
 }
+
 .w50{
     width:50%;
 }
+
 .mgt{
     margin-top: 15px;
 }
+
 .mgt30{
     margin-top:30px;
 }
+
 .tar{
     text-align: right;
 }
+
 .fs14{
     font-size:14px;
-} 
+}
+
 .fwb{
     font-weight: bold;
 }
+
 .pds10{
     padding-left: 10px;
     padding-right: 10px;
 }
+
 .cb{
     color:black;
 }
+
 .mgr0{
     margin-right: 0px;
 }
+
 .bgi{
     background: #F0F0F0 url(/images/bg.png) repeat;
 }
+
 .bgNav{
     background-color: rgba(222,222,222,0.3);
 }
+
 .lh2p5{
     line-height: 2.5rem;
 }
+
 .bd1ps{
     border:1px solid gray;
 }
+
 .pv20{
     padding-top:60px;
     padding-bottom: 60px;
 }
+
 h1, h2{text-shadow:none; text-align:center;}
 h1{ color: #666; text-transform:uppercase;  font-size:36px;}
 h2{ color: #7f8c8d; font-family: Neucha, Arial, sans serif; font-size:18px; margin-bottom:30px;} 
@@ -170,13 +191,48 @@ h2{ color: #7f8c8d; font-family: Neucha, Arial, sans serif; font-size:18px; marg
 .nav-hyeon .nav-link {
     border-radius: .25rem;
 }
+
+.hyeon-input {
+    padding: 8px 18px;
+
+    background-color: transparent;
+    border: 1px solid #838282;
+    border-radius: 30px;
+    color: #2c2c2c;
+    height: auto;
+    line-height: normal;
+    font-size: .8571em;
+    transition: color .3s ease-in-out,border-color .3s ease-in-out,background-color .3s ease-in-out;
+    box-shadow: none;
+
+    font-weight: 400;
+    background-clip: padding-box;
+
+    font-family: Montserrat,Helvetica Neue,Arial,sans-serif;
+
+    overflow: visible;
+
+    margin: 0;
+}
+
+.hyeon-input:focus {
+    border: 1px solid #8f50ff;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: 0 !important;
+    background-color: #ffffff;
+    color: #2c2c2c;
+}
+
 .tyshadow{
     box-shadow:0 5px 25px 0 rgba(0,0,0,.2);
     box-shadow:0 -5px -25px 0 rgba(0,0,0,.2);
 }
+
 .bgw{
     background-color: white;
 }
+
 .tal{
     text-align: left;
 }

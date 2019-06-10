@@ -60,6 +60,10 @@
     margin-top: 3%;
 }
 
+.hyeon-font2 {
+    font-size: 16px;
+}
+
 @media screen and (min-width: 150px) {
     #mycoin, #sending_money {
         margin-left: -43%;

@@ -34,11 +34,11 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
         </textarea>
         <div id="donate_input" class="container">
             <div class="row">
-                <div class="col who">
+                <div class="col who hyeon-font2">
                     Sender : <%= my.rows[0][0] %><br><br>
                     Account Address : <%= my.rows[0][1] %>
                 </div>
-                <div class="col who">
+                <div class="col who hyeon-font2">
                     Receiver : <%= my.rows[0][2] %><br><br>
                     Account Address : <%= my.rows[0][3] %>
                 </div>
@@ -50,13 +50,13 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
                 <input type="hidden" name="preURL" value="<%= preURL %>">
                 <input type="hidden" name="postNo" value="<%= postNo %>">
                 <div class="row">
-                    <div class="col">
+                    <div class="col hyeon-font2">
                         MyCoin : <%= coin %> ETH<br><br>
-                        <input type="text" id="sending_money" name="coin" placeholder="Sending ETH">
+                        <input type="text" id="sending_money" name="coin" class="hyeon-input" placeholder="Sending ETH">
                     </div>
                     <div class="col"></div>
                 </div>
-                <button id="send_btn" class="btn btn-light">Send</button><button id="cancel_btn" class="btn btn-light">Cancel</button>
+                <button id="send_btn" class="btn btn-primary">Send</button><button id="cancel_btn" class="btn btn-primary">Cancel</button>
             </form>
         </div>
     </body>

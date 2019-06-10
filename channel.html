@@ -10,13 +10,13 @@
             <input type="hidden" value="<%= my.rows[0][0] %>">
             <div class="row">
                 <div class="col-9">
-                    <span id="channel_name" class="channel_num"><%= my.rows[0][1] %></span><span class="channel_num">Subscriber <%= my.rows[0][2] %></span>
-                    <span class="channel_num">Donate <%= dntl %> ETH</span><span class="channel_num">Post <%= my.rows[0][3] %></span>
+                    <span id="channel_name" class="channel_num"><%= my.rows[0][1] %></span><span class="channel_num hyeon-font">Subscriber <%= my.rows[0][2] %></span>
+                    <span class="channel_num hyeon-font">Donate <%= dntl %> ETH</span><span class="channel_num hyeon-font">Post <%= my.rows[0][3] %></span>
                 </div>
                 <% if(my.rows[0][0] != userid){ %>
                 <div class="col-3">
                     <button id="channel_sub_btn" class="btn <% if(my.rows[0][4]){ %>btn-success<% }else{ %>btn-light<% } %>">Subscribe</button>
-                    <button id="channel_do_btn" class="btn btn-light">Donate</button>
+                    <button id="channel_do_btn" class="btn btn-primary">Donate</button>
                 </div>
                 <% } %>
             </div><br>
@@ -26,7 +26,7 @@
                     <span id="font-30">Post List</span>
                 </div>
                 <div class="col-4">
-                    <select class="sort">
+                    <select class="sort hyeon-select">
                         <option>최신 순</option>
                         <option <% if(sort == '1'){ %>selected<% } %>>오래된 순</option>
                         <% if(list.metaData[1].name == 'HEADLINE'){ %>
@@ -36,10 +36,10 @@
                         <option <% if(sort == '3'){ %>selected<% } %>>후원 총액</option>
                         <% } %>
                     </select>
-                    <input id="search_input" type="text" placeholder="Search">
+                    <input id="search_input" type="text" class="hyeon-input" placeholder="Search">
                 </div>
             </div>
-            <ul class="nav nav-pills nav-fill container pad-0">
+            <ul class="nav nav-hyeon nav-fill container pad-0">
                 <li class="nav-item">
                     <a class="nav-link btn-light <% if(list.metaData[1].name == 'HEADLINE'){ %>active<% } %>" href="/channel?chnlid=<%= my.rows[0][0] %>">Briefing List</a>
                 </li>
@@ -85,16 +85,18 @@
                     <% } %>
                 </tbody>
             </table>
-            <div class="btn-group mr-2" role="group" id="pagelist">
-                <% for(var i = 0; i < page.rows.length; i++){ %>
-                    <% if(i == 0){ %>
-                <button type="button" class="btn btn-light active pb" nextid="<%= page.rows[i] %>">1</button>
-                    <% } else if(i == 10) { %>
-                <button type="button" class="btn btn-light nb" nextid="<%= page.rows[i] %>">&gt;</button>
-                    <% } else { %>
-                <button type="button" class="btn btn-light pb" nextid="<%= page.rows[i] %>"><%= i + 1 %></button>
+            <div class="dib">
+                <ul class="pagination" id="pagelist">
+                    <% for(var i = 0; i < page.rows.length; i++){ %>
+                        <% if(i == 0){ %>
+                    <li class="page-item active"><a class="page-link pb" nextid="<%= page.rows[i] %>">1</a></li>
+                        <% } else if(i == 10) { %>
+                    <li class="page-item"><a class="page-link nb" nextid="<%= page.rows[i] %>">&gt;</a></li>
+                        <% } else { %>
+                    <li class="page-item"><a class="page-link pb" nextid="<%= page.rows[i] %>"><%= i + 1 %></a></li>
+                        <% } %>
                     <% } %>
-                <% } %>
+                </ul>
             </div>
         </div>
         <div id="empty_last_chnl"></div>

@@ -41,8 +41,8 @@ $(function(){
                 console.log(error);
             }
         });
-        $('.pb').removeClass('active');
-        $(this).addClass('active');
+        $('.pb').parent().removeClass('active');
+        $(this).parent().addClass('active');
     });
 
     $(document).on('click', '.nb', function(){
@@ -107,17 +107,17 @@ $(function(){
 
     function pageProcessing(result){
         var page = result.page.rows;
-        $('#pagelist button').remove();
+        $('#pagelist li').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
                 if(result.previd){
-                    $('#pagelist').append("<button type='button' class='btn btn-light preb' nextid='"+result.previd+"'>&lt;</button>");
+                    $('#pagelist').append("<li class='page-item'><a class='page-link preb' nextid='"+result.previd+"'>&lt;</a></li>");
                 }
-                $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item active'><a class='page-link pb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</a></li>");
             } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nb' nextid='"+page[i]+"'>&gt;</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link nb' nextid='"+page[i]+"'>&gt;</a></li>");
             } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light pb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link pb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</a></li>");
             }
         }
     }
@@ -177,7 +177,7 @@ $(function(){
     });
 
     $('#channel_do_btn').click(function(){
-        location.href = "/donate?chnlid=" + $('input[type=hidden]').val();
+        location.href = "/donate?chnlid=" + $('input[type=hidden]').val() + "&preURL=" + location.href;
     });
 
     $(document).on('keydown', '#search_input', function(){
@@ -185,6 +185,7 @@ $(function(){
             $.ajax({
                 url: '/channel/search',
                 data: {
+                    s: pageSelecting(),
                     chnlid: $('input[type=hidden]').val(),
                     txt: $(this).val()
                 },
@@ -215,8 +216,8 @@ $(function(){
                 console.log(error);
             }
         });
-        $('.srchb').removeClass('active');
-        $(this).addClass('active');
+        $('.srchb').parent().removeClass('active');
+        $(this).parent().addClass('active');
     });
 
     $(document).on('click', '.nsrchb', function(){
@@ -259,17 +260,17 @@ $(function(){
 
     function searchPaging(result){
         var page = result.page.rows;
-        $('#pagelist button').remove();
+        $('#pagelist li').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
                 if(result.previd){
-                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextid='"+result.previd+"'>&lt;</button>");
+                    $('#pagelist').append("<li class='page-item'><a class='page-link presrchb' nextid='"+result.previd+"'>&lt;</a></li>");
                 }
-                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item active'><a class='page-link srchb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</a></li>");
             } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextid='"+page[i]+"'>&gt;</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link nsrchb' nextid='"+page[i]+"'>&gt;</a></li>");
             } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link srchb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</a></li>");
             }
         }
     }
