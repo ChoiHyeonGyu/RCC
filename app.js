@@ -16,7 +16,7 @@ app.use(session({
       maxAge: 24 * 60 * 60 * 1000
     },
     store: new MySQLStore({
-      host: '192.168.0.8',
+      host: '192.168.55.62',
       port: 3306,
       user: 'rcc',
       password: '1234',
@@ -38,6 +38,6 @@ app.use(path_router_CTY);
 var path_router_RDE = require('./js/nodejs/path_router_RDE.js');
 app.use(path_router_RDE);
 
-app.listen(3000, '192.168.0.8', function() {
+app.listen(3000, '192.168.55.62', function() {
     console.log("서버 구동 중...");
 });

@@ -71,8 +71,11 @@ router.get("/my", function(req, res){
                     ether.getBalance(result.rows[0][4], function(coin){
                         ether.getTransactions(result.rows[0][4], 0, 0, function(txlist){
                             ether.pagingTransactions(result.rows[0][4], 0, 0, function(txpage){
-                                var arr = [];
-                                dbEtherConn(result2, result3, dntl, coin, txlist, txpage, 0, arr);
+                                if(txlist[0] == null){
+                                    listing(result2, result3, dntl, coin, txlist, txpage, []);
+                                } else {
+                                    dbEtherConn(result2, result3, dntl, coin, txlist, txpage, 0, []);
+                                }
                             });
                         });
                     });
@@ -268,7 +271,7 @@ router.get("/my/search/pagelist", function(req, res){
                 });
             });
         } else if(req.query.s == '2') {
-            dbconn.resultQuery("select * from (select p.pid, p.headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from (select * from hashtag where keyword like '%"+req.query.txt+"%') group by pid) h join (select p.*, b.bsummary from (select * from briefingsummary where bsummary like '%"+req.query.txt+"%') b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from (select * from briefingdetail where headline like '%"+req.query.txt+"%') join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname) p on p.pid = b.pid) p on p.pid = h.pid order by p.pid desc) p where rownum <= 60", function(result2){
+            dbconn.resultQuery("select * from (select p.pid, p.headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from (select * from hashtag where keyword like '%"+req.query.txt+"%') group by pid) h join (select p.*, b.bsummary from (select * from briefingsummary where bsummary like '%"+req.query.txt+"%') b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2, 102) || '.....' headline, p.categoryname, p.detailname, p.viewcount, p.pdate, p.mdate from (select * from briefingdetail where headline like '%"+req.query.txt+"%') b join (select p.*, c.detailname from (select p.*, c.categoryname from (select p.* from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p join category c on p.cate = c.categoryid) p join catedetail c on p.cate = c.cateid or c.cateid = 0 where p.catedetail = c.detailid) p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid, p.pdate, p.viewcount, p.mdate, p.categoryname, p.detailname) p on p.pid = b.pid) p on p.pid = h.pid order by p.pid desc) p where rownum <= 60", function(result2){
                     result2 = dataSorting(result2);
                     dbconn.resultQuery("select pid from (select rownum as rn, pid from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.*, b.bsummary from briefingsummary b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2) headline from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid where p.pid <= "+req.query.id+" group by p.pid) p on p.pid = b.pid) p on p.pid = h.pid where p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%' order by p.pid desc) where rownum <= 61) where mod((rn - 1), 6) = 0", function(result3){
                         dbconn.resultQuery("select max(pid) from (select p.pid from (select pid, substr(xmlagg(xmlelement(col, ', ', keyword)).extract('//text()').getstringval(), 2) keyword from hashtag group by pid) h join (select p.*, b.bsummary from briefingsummary b join (select p.pid, substr(replace(xmlagg(xmlelement(col, ', ', b.headline) order by p.pid desc).extract('//text()').getstringval(), '&quot;', ''), 2) headline from briefingdetail b join (select p.pid from users u join post p on u.id = p.userid where u.id = '"+req.session.user_id+"') p on p.pid = b.pid where p.pid > "+req.query.id+" group by p.pid) p on p.pid = b.pid) p on p.pid = h.pid where p.headline like '%"+req.query.txt+"%' or p.bsummary like '%"+req.query.txt+"%' or h.keyword like '%"+req.query.txt+"%') where rownum <= 60", function(result4){
@@ -343,8 +346,11 @@ router.get("/txpaging", function(req, res){
         ether.getTransactions(req.query.addr, req.query.bn, req.query.txidx, function(txlist){
             ether.pagingTransactions(req.query.addr, req.query.bn, req.query.txidx, function(txpage){
                 ether.prevFirstPageValue(req.query.addr, req.query.bn, req.query.txidx, function(pfpv){
-                    var arr = [];
-                    dbEtherConn(txlist, txpage, pfpv, 0, arr);
+                    if(txlist[0] == null){
+                        res.send({txlist: txlist, txpage: txpage, pfpv: pfpv, converter: []});
+                    } else {
+                        dbEtherConn(txlist, txpage, pfpv, 0, []);
+                    }
                 });
             });
         });
@@ -371,8 +377,11 @@ router.get("/tx/searchandsort", function(req, res){
             ether.searchAndsortTransactions(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, req.query.bn, req.query.txidx, function(txlist){
                 ether.searchAndsortPagingTransactions(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, req.query.bn, req.query.txidx, function(txpage){
                     ether.searchAndsortPrevFirstPageValue(req.query.addr, req.query.txsc, req.query.txio, result.rows, req.query.slctcoin, req.query.txscope, req.query.bn, req.query.txidx, function(pfpv){
-                        var arr = [];
-                        dbEtherConn(txlist, txpage, pfpv, 0, arr);
+                        if(txlist[0] == null){
+                            res.send({txlist: txlist, txpage: txpage, pfpv: pfpv, converter: []});
+                        } else {
+                            dbEtherConn(txlist, txpage, pfpv, 0, []);
+                        }
                     });
                 });
             });

@@ -1,5 +1,5 @@
 var Web3 = require('web3');
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+var web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.55.62:8545"));
 var crypto = require('crypto');
 var moment = require('moment');
 
@@ -40,13 +40,13 @@ function getTotalDonate(myaddr, adminaddr, callback){
             if(err) console.log(err);
             
             if(tx.to == myaddr && tx.from != adminaddr){
-                sum += Number(tx.value);
+                sum += Number(web3.utils.fromWei(tx.value, "microether"));
             }
 
             txroad--;
 
             if(tx.blockNumber == 1 && tx.transactionIndex == 0){
-                callback(web3.utils.fromWei(String(sum), "ether"));
+                callback(sum / 1000000);
             } else if(tx.transactionIndex == 0) {
                 getBlock(tx.blockNumber - 1, txroad, sum);
             } else {
@@ -562,9 +562,7 @@ function searchAndsortPrevFirstPageValue(addr, txsc, txio, slctuser, slctcoin, t
             if(err) console.log(err);
             
             if(txsc == '1'){
-                if(blk == null){
-                    callback();
-                } else if(blk.transactions[0] == null){
+                if(blk.transactions[0] == null){
                     getBlock(blk.number - 1, txroad, cnt);
                 } else if(txroad == -1) {
                     txroad = blk.transactions.length - 1;
@@ -665,6 +663,8 @@ function searchAndsortPrevFirstPageValue(addr, txsc, txio, slctuser, slctcoin, t
 
                 if(cnt == 101){
                     callback({bn: tx.blockNumber, txidx: tx.transactionIndex});
+                } else if(tx.blockNumber == 1 && tx.transactionIndex == 0) {
+                    callback();
                 } else if(tx.transactionIndex == 0) {
                     getBlock(tx.blockNumber - 1, txroad, cnt);
                 } else {

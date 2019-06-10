@@ -10,14 +10,14 @@
         <div id="channel_info" class="container">
             <div class="row">
                 <div class="col">
-                    <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num">Subscriber <%= my.rows[0][8] %></span>
-                    <span class="channel_num">Donate <%= dntl %> ETH</span><span class="channel_num">Post <%= my.rows[0][9] %></span><span class="channel_num">Reply <%= my.rows[0][10] %></span>
+                    <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num hyeon-font">Subscriber <%= my.rows[0][8] %></span>
+                    <span class="channel_num hyeon-font">Donate <%= dntl %> ETH</span><span class="channel_num hyeon-font">Post <%= my.rows[0][9] %></span><span class="channel_num hyeon-font">Reply <%= my.rows[0][10] %></span>
                 </div>
             </div><br>
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col">
-                    <select class="sort">
+                    <select class="sort hyeon-select">
                         <option>최신 순</option>
                         <option <% if(sort == '1'){ %>selected<% } %>>오래된 순</option>
                         <% if(list.metaData[1].name == 'HEADLINE'){ %>
@@ -27,7 +27,7 @@
                         <option <% if(sort == '3'){ %>selected<% } %>>후원 총액</option>
                         <% } %>
                     </select>
-                    <input type="text" id="my_search" class="form-control" placeholder="Search">
+                    <input type="text" id="my_search" class="hyeon-input" placeholder="Search">
                 </div>
             </div>
             <ul class="nav nav-hyeon nav-fill container pad-0">
@@ -118,35 +118,37 @@
                     <% } %>
                 </tbody>
             </table>
-            <div class="btn-group mr-2" role="group" id="pagelist">
-                <% for(var i = 0; i < page.rows.length; i++){ %>
-                    <% if(i == 0){ %>
-                <button type="button" class="btn btn-light active pb" nextid="<%= page.rows[i] %>">1</button>
-                    <% } else if(i == 10) { %>
-                <button type="button" class="btn btn-light nb" nextid="<%= page.rows[i] %>">&gt;</button>
-                    <% } else { %>
-                <button type="button" class="btn btn-light pb" nextid="<%= page.rows[i] %>"><%= i + 1 %></button>
+            <div class="dib">
+                <ul class="pagination" id="pagelist">
+                    <% for(var i = 0; i < page.rows.length; i++){ %>
+                        <% if(i == 0){ %>
+                    <li class="page-item active"><a class="page-link pb" nextid="<%= page.rows[i] %>">1</a></li>
+                        <% } else if(i == 10) { %>
+                    <li class="page-item"><a class="page-link nb" nextid="<%= page.rows[i] %>" aria-label="Next">&gt;</a></li>
+                        <% } else { %>
+                    <li class="page-item"><a class="page-link pb" nextid="<%= page.rows[i] %>"><%= i + 1 %></a></li>
+                        <% } %>
                     <% } %>
-                <% } %>
+                </ul>
             </div>
         </div>
         <div id="empty"></div>
         <div id="account_info">
-            <span id="account_address" class="account_num">Account Address</span><span class="account_num"><%= my.rows[0][4] %></span><span class="account_num">Coin <%= coin %> ETH</span>
+            <span id="account_address" class="account_num">Account Address</span><span class="account_num  hyeon-font"><%= my.rows[0][4] %></span><span class="account_num  hyeon-font">Coin <%= coin %> ETH</span>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#buy_view">Buy</button>
             <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
-            <select id="txsc" class="srchandsort">
+            <select id="txsc" class="srchandsort hyeon-select">
                 <option>최신 순</option>
                 <option>오래된 순</option>
             </select>
-            <select id="txio" class="srchandsort">
+            <select id="txio" class="srchandsort hyeon-select">
                 <option>입출금 내역</option>
                 <option>입금 내역</option>
                 <option>출금 내역</option>
             </select>
-            <input type="text" id="slctuser" class="srchandsort" placeholder="Enter Nickname">
-            <input type="text" id="slctcoin" class="srchandsort" placeholder="Enter Coin">
-            <select id="txscope" class="srchandsort">
+            <input type="text" id="slctuser" class="srchandsort hyeon-input" placeholder="Enter Nickname">
+            <input type="text" id="slctcoin" class="srchandsort hyeon-input" placeholder="Enter Coin">
+            <select id="txscope" class="srchandsort hyeon-select">
                 <option>선택</option>
                 <option>초과</option>
                 <option>이상</option>
@@ -205,16 +207,18 @@
                     <% } %>
                 </tbody>
             </table>
-            <div class="btn-group mr-2" role="group" id="txpage">
-                <% for(var i = 0; i < txpage.length; i++){ %>
-                    <% if(i == 0){ %>
-                <button type="button" class="btn btn-light active txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">1</button>
-                    <% } else if(i == 10) { %>
-                <button type="button" class="btn btn-light ntxpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">&gt;</button>
-                    <% } else { %>
-                <button type="button" class="btn btn-light txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>"><%= i + 1 %></button>
+            <div class="dib">
+                <ul class="pagination" id="txpage">
+                    <% for(var i = 0; i < txpage.length; i++){ %>
+                        <% if(i == 0){ %>
+                    <li class="page-item active"><a class="page-link txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>">1</a></li>
+                        <% } else if(i == 10) { %>
+                    <li class="page-item"><a class="page-link ntxpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>" aria-label="Next">&gt;</a></li>
+                        <% } else { %>
+                    <li class="page-item"><a class="page-link txpb" nextbn="<%= txpage[i].bn %>" nextxidx="<%= txpage[i].txidx %>"><%= i + 1 %></a></li>
+                        <% } %>
                     <% } %>
-                <% } %>
+                </ul>
             </div>
         </div>
         <div id="empty"></div>

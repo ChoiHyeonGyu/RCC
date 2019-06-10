@@ -42,8 +42,8 @@ $(function(){
                 console.log(error);
             }
         });
-        $('.pb').removeClass('active');
-        $(this).addClass('active');
+        $('.pb').parent().removeClass('active');
+        $(this).parent().addClass('active');
     });
 
     $(document).on('click', '.nb', function(){
@@ -134,17 +134,17 @@ $(function(){
 
     function pageProcessing(result){
         var page = result.page.rows;
-        $('#pagelist button').remove();
+        $('#pagelist li').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
                 if(result.previd){
-                    $('#pagelist').append("<button type='button' class='btn btn-light preb' nextid='"+result.previd+"'>&lt;</button>");
+                    $('#pagelist').append("<li class='page-item'><a class='page-link preb' nextid='"+result.previd+"'>&lt;</a></li>");
                 }
-                $('#pagelist').append("<button type='button' class='btn btn-light active pb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item active'><a class='page-link pb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</a></li>");
             } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nb' nextid='"+page[i]+"'>&gt;</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link nb' nextid='"+page[i]+"'>&gt;</a></li>");
             } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light pb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link pb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</a></li>");
             }
         }
     }
@@ -208,8 +208,8 @@ $(function(){
                 console.log(error);
             }
         });
-        $('.srchb').removeClass('active');
-        $(this).addClass('active');
+        $('.srchb').parent().removeClass('active');
+        $(this).parent().addClass('active');
     });
 
     $(document).on('click', '.nsrchb', function(){
@@ -256,17 +256,17 @@ $(function(){
 
     function searchPaging(result){
         var page = result.page.rows;
-        $('#pagelist button').remove();
+        $('#pagelist li').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
                 if(result.previd){
-                    $('#pagelist').append("<button type='button' class='btn btn-light presrchb' nextid='"+result.previd+"'>&lt;</button>");
+                    $('#pagelist').append("<li class='page-item'><a class='page-link presrchb' nextid='"+result.previd+"'>&lt;</a></li>");
                 }
-                $('#pagelist').append("<button type='button' class='btn btn-light active srchb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item active'><a class='page-link srchb' nextid='"+page[i]+"'>"+(lastnum + 1)+"</a></li>");
             } else if(i == 10) {
-                $('#pagelist').append("<button type='button' class='btn btn-light nsrchb' nextid='"+page[i]+"'>&gt;</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link nsrchb' nextid='"+page[i]+"'>&gt;</a></li>");
             } else {
-                $('#pagelist').append("<button type='button' class='btn btn-light srchb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</button>");
+                $('#pagelist').append("<li class='page-item'><a class='page-link srchb' nextid='"+page[i]+"'>"+(lastnum + i + 1)+"</a></li>");
             }
         }
     }
@@ -325,8 +325,8 @@ $(function(){
                 console.log(error);
             }
         });
-        $('.txpb').removeClass('active');
-        $(this).addClass('active');
+        $('.txpb').parent().removeClass('active');
+        $(this).parent().addClass('active');
     });
 
     $(document).on('click', '.ntxpb', function(){
@@ -404,17 +404,17 @@ $(function(){
 
     function txpageProcessing(result){
         var page = result.txpage;
-        $('#txpage button').remove();
+        $('#txpage li').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
                 if(result.pfpv){
-                    $('#txpage').append("<button type='button' class='btn btn-light pretxpb' nextbn='"+result.pfpv.bn+"' nextxidx='"+result.pfpv.txidx+"'>&lt;</button>");
+                    $('#txpage').append("<li class='page-item'><a class='page-link pretxpb' nextbn='"+result.pfpv.bn+"' nextxidx='"+result.pfpv.txidx+"'>&lt;</a></li>");
                 }
-                $('#txpage').append("<button type='button' class='btn btn-light active txpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + 1)+"</button>");
+                $('#txpage').append("<li class='page-item active'><a class='page-link txpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + 1)+"</a></li>");
             } else if(i == 10) {
-                $('#txpage').append("<button type='button' class='btn btn-light ntxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>&gt;</button>");
+                $('#txpage').append("<li class='page-item'><a class='page-link ntxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>&gt;</a></li>");
             } else {
-                $('#txpage').append("<button type='button' class='btn btn-light txpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + i + 1)+"</button>");
+                $('#txpage').append("<li class='page-item'><a class='page-link txpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + i + 1)+"</a></li>");
             }
         }
     }
@@ -503,8 +503,8 @@ $(function(){
                 console.log(error);
             }
         });
-        $('.stxpb').removeClass('active');
-        $(this).addClass('active');
+        $('.stxpb').parent().removeClass('active');
+        $(this).parent().addClass('active');
     });
 
     $(document).on('click', '.nstxpb', function(){
@@ -565,17 +565,17 @@ $(function(){
 
     function sasTxpageProcessing(result){
         var page = result.txpage;
-        $('#txpage button').remove();
+        $('#txpage li').remove();
         for(var i = 0; i < page.length; i++){
             if(i == 0){
                 if(result.pfpv){
-                    $('#txpage').append("<button type='button' class='btn btn-light prestxpb' nextbn='"+result.pfpv.bn+"' nextxidx='"+result.pfpv.txidx+"'>&lt;</button>");
+                    $('#txpage').append("<li class='page-item'><a class='page-link prestxpb' nextbn='"+result.pfpv.bn+"' nextxidx='"+result.pfpv.txidx+"'>&lt;</a></li>");
                 }
-                $('#txpage').append("<button type='button' class='btn btn-light active stxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + 1)+"</button>");
+                $('#txpage').append("<li class='page-item active'><a class='page-link stxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + 1)+"</a></li>");
             } else if(i == 10) {
-                $('#txpage').append("<button type='button' class='btn btn-light nstxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>&gt;</button>");
+                $('#txpage').append("<li class='page-item'><a class='page-link nstxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>&gt;</a></li>");
             } else {
-                $('#txpage').append("<button type='button' class='btn btn-light stxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + i + 1)+"</button>");
+                $('#txpage').append("<li class='page-item'><a class='page-link stxpb' nextbn='"+page[i].bn+"' nextxidx='"+page[i].txidx+"'>"+(txpagegroup + i + 1)+"</a></li>");
             }
         }
     }
