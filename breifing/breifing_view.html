@@ -41,7 +41,7 @@
         function checkLogin(){
             var user = '<%=user%>';
             if(user.length==0)alert('로그인을 먼저 해주세요');
-            else location.href='/donate?chnlid=<%=user%>&preURL='+location.href
+            else location.href='/donate?chnlid=<%= postResult.rows[0][1] %>&preURL='+location.href
         }
     </script>
 </head>

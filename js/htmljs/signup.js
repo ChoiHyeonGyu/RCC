@@ -33,26 +33,6 @@ $(document).on("click","#id_check",function(){
 });
 
 function authStart(){
-<<<<<<< HEAD
-    $.ajax({
-        url:'/auth',
-        dataType:'json',
-        type:'POST',
-        data:{'cellphone':$("#cellphone").val()},
-        success:function(result){
-            if(result['result']==true){
-                $('#result').html('인증번호를 입력해 주세요.');
-                $("#result").css("color","blue");
-                $("#auth_num").css("display","inline-block");
-                $("#auth_btn").css("display","inline-block");
-                $("#auth_box").css("display","inline-block");
-            }else if(result['result']==false){
-                $('#result').html('이미 있는 번호 입니다');
-                $("#result").css("color","red");
-                $("#auth_num").css("display","none");
-                $("#auth_btn").css("display","none");
-                $("#auth_box").css("display","none");
-=======
     if($('#cellphone').val().length<8){
         $('#result').html('정확한 번호를 입력해 주세요.');
         $("#result").css("color","purple");
@@ -76,7 +56,6 @@ function authStart(){
                     $("#auth_btn").css("display","none");
                     $("#auth_box").css("display","none");
                 }
->>>>>>> a8c10bd4abafb5d93bbf6aa4bbb3b24e1f32bddf
             }
         });
     }
