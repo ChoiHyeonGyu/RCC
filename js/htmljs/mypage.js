@@ -305,6 +305,11 @@ $(function(){
         $('.rc').text('');
     });
 
+    $('#all').click(function(){
+        $('.coin').val(Number($('#coin').text()) - ($('#coin').text() * 0.00054));
+        $('.coin').keyup();
+    });
+
     $('#modify').submit(function(){
         if(isNaN(Number($('.coin').val()))){
             alert("Please. Enter Number!");
@@ -595,7 +600,7 @@ function checkval(){
     var name = document.getElementById('name');
     var nickname = document.getElementById('nickname');
     var email = document.getElementById('email');
-    var cellphone = document.getElementById('cellphone');
+    var cellphone = document.getElementById('cellphone2');
 
     if(pw.value == "" || pw.value == null){
         alert("비밀번호를 입력해주세요.");
