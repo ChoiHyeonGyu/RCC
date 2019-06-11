@@ -737,11 +737,13 @@ router.post("/donate", function(req, res){
     if(req.session.user_id && !isNaN(Number(req.body.coin))){
         ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
             if(req.body.postNo == "nothing"){
-                res.redirect(req.body.preURL);
+                res.write("<script>alert('Sending Coin!!!');</script>");
+                res.end("<script>location.href = '"+req.body.preURL+"'</script>");
             } else {
                 dbconn.booleanQuery("update commentary set cost="+req.body.coin+" where pid = "+req.body.postNo, function(result){
                     if(result){
-                        res.redirect(req.body.preURL);
+                        res.write("<script>alert('Sending Coin!!!');</script>");
+                        res.end("<script>location.href = '"+req.body.preURL+"'</script>");
                     } else {
                         res.write("<script>alert('Fail!');</script>");
                         res.end("<script>location.href = '"+req.body.currentURL+"'</script>");

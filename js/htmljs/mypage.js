@@ -292,15 +292,17 @@ $(function(){
     });
 
     $('.coin').keyup(function(){
-        $('.won').val(($(this).val() * 100000).toLocaleString());
-        $('#brc').val(Number($(this).val()) + Number($('.rc').attr('save')));
-        $('#src').val(Number($('.rc').attr('save')) - Number($(this).val()));
+        $('.won').text(($(this).val() * 100000).toLocaleString());
+        $('.fee').text($(this).val() * 0.00054);
+        $('#brc').text(Number($(this).val()) + Number($('.rc').attr('save')));
+        $('#src').text(Number($('.rc').attr('save')) - Number($(this).val()));
     });
 
     $('button[data-dismiss]').click(function(){
         $('.coin').val('');
-        $('.won').val('');
-        $('.rc').val('');
+        $('.won').text('');
+        $('.fee').text('');
+        $('.rc').text('');
     });
 
     $('#modify').submit(function(){

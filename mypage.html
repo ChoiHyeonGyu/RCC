@@ -3,6 +3,23 @@
         <link rel="stylesheet" href="css/mypage.css">
         <link rel="stylesheet" href="css/signup.css">
         <script src="js/htmljs/mypage.js"></script>
+        <style>
+                .signup-block input#id {
+                    background: rgba(143,80,255,0.3) url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
+                    background-size: 16px 80px;
+                }
+                .signup-block input#cellphone {
+                    background: rgba(143,80,255,0.3) url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
+                    background-size: 16px 80px;
+                }
+                .signup-block input#cellphone:focus {
+                    background: rgba(143,80,255,0.3) url('https://image.flaticon.com/icons/svg/977/977411.svg') 20px center no-repeat;
+                    background-size: 16px 80px;
+                }
+                .signup-block #cellphone:active, .signup-block #cellphone:focus {
+                    border: 2px solid #ccc;
+                }
+            </style>
     </head>
     <body class="sort-center">
         <div id="header2"><%- main_header %></div>
@@ -233,7 +250,7 @@
                     <input type="text" value="<%= my.rows[0][2] %>" placeholder="이름" id="name"  name="name1">
                     <input type="text" value="<%= my.rows[0][3] %>" placeholder="닉네임" id="nickname"  name="nickname1">
                     <input type="text" value="<%= my.rows[0][5] %>" placeholder="abc@abcd.abc" id="email" name="email1">
-                    <input type="tel" value="<%= my.rows[0][6] %>" placeholder="01011112222" id="cellphone" name="cellphone1">
+                    <input type="tel" value="<%= my.rows[0][6] %>" placeholder="01011112222" id="cellphone" name="cellphone1" readonly>
                     <input type="submit" value="회원정보 수정     " class="button">
                 </form>
                 <form method="POST" action="/user/delete" id="delete">

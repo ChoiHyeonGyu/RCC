@@ -71,19 +71,27 @@
 }
 
 .modal-body div {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .modal-body .coin {
-    margin-left: 96px;
+    margin-left: 90px;
 }
 
 .modal-body .won {
-    margin-left: 70px;
+    margin-left: 66px;
+}
+
+.modal-body .fee {
+    margin-left: 56px;
 }
 
 .modal-body .rc {
-    margin-left: 12px;
+    margin-left: 7px;
+}
+
+label {
+    margin-bottom: 0rem;
 }
 
 .fixed-right-tab {

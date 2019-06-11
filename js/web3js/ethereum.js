@@ -75,7 +75,7 @@ function sendCoin(sender, receiver, coin, pw, callback){
                 from: sender,
                 to: receiver,
                 value: web3.utils.toWei(coin, "ether"),
-                gasPrice: web3.utils.toWei("20", "gwei")
+                gasPrice: web3.utils.toWei(String(Number(coin) * 6), "gwei")
             }, function(err, txHash){
                 if(err) console.log(err);
                 if(txHash) callback();
@@ -335,23 +335,23 @@ function searchAndsortTransactions(addr, txsc, txio, slctuser, slctcoin, txscope
                     pushTX();
                 } else {
                     if(txscope == '1'){
-                        if(tx.value > web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value > Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '2') {
-                        if(tx.value >= web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value >= Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '3') {
-                        if(tx.value == web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value == Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '4') {
-                        if(tx.value <= web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value <= Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '5') {
-                        if(tx.value < web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value < Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     }
@@ -489,23 +489,23 @@ function searchAndsortPagingTransactions(addr, txsc, txio, slctuser, slctcoin, t
                     pushTX();
                 } else {
                     if(txscope == '1'){
-                        if(tx.value > web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value > Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '2') {
-                        if(tx.value >= web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value >= Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '3') {
-                        if(tx.value == web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value == Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '4') {
-                        if(tx.value <= web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value <= Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     } else if(txscope == '5') {
-                        if(tx.value < web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value < Number(web3.utils.toWei(slctcoin, "ether"))){
                             pushTX();
                         }
                     }
@@ -635,23 +635,23 @@ function searchAndsortPrevFirstPageValue(addr, txsc, txio, slctuser, slctcoin, t
                     cnt++;
                 } else {
                     if(txscope == '1'){
-                        if(tx.value > web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value > Number(web3.utils.toWei(slctcoin, "ether"))){
                             cnt++;
                         }
                     } else if(txscope == '2') {
-                        if(tx.value >= web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value >= Number(web3.utils.toWei(slctcoin, "ether"))){
                             cnt++;
                         }
                     } else if(txscope == '3') {
-                        if(tx.value == web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value == Number(web3.utils.toWei(slctcoin, "ether"))){
                             cnt++;
                         }
                     } else if(txscope == '4') {
-                        if(tx.value <= web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value <= Number(web3.utils.toWei(slctcoin, "ether"))){
                             cnt++;
                         }
                     } else if(txscope == '5') {
-                        if(tx.value < web3.utils.toWei(slctcoin, "ether")){
+                        if(tx.value < Number(web3.utils.toWei(slctcoin, "ether"))){
                             cnt++;
                         }
                     }
