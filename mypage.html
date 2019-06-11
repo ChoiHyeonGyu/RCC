@@ -288,7 +288,13 @@
                             <input type="hidden" name="sender" value="<%= my.rows[0][4] %>">
                             <div>
                                 <input type="text" class="coin hyeon-input" name="coin" placeholder="Sell Coin">
-                                <button type="button" id="all" class="btn btn-primary">ALL</button>
+                                <select id="percentage" class="hyeon-select">
+                                    <option>선택</option>
+                                    <option>ALL</option>
+                                    <option>50%</option>
+                                    <option>25%</option>
+                                    <option>10%</option>
+                                </select>
                             </div>
                             <div>￦ : <label class="won"></label> 원</div>
                             <div>Fee : <label class="fee"></label> ETH</div>

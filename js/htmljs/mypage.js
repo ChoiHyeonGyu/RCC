@@ -293,9 +293,9 @@ $(function(){
 
     $('.coin').keyup(function(){
         $('.won').text(($(this).val() * 100000).toLocaleString());
-        $('.fee').text($(this).val() * 0.00054);
-        $('#brc').text(Number($(this).val()) + Number($('.rc').attr('save')));
-        $('#src').text(Number($('.rc').attr('save')) - Number($(this).val()));
+        $('.fee').text(($(this).val() * 0.00054).toFixed(5));
+        $('#brc').text((Number($(this).val()) + Number($('.rc').attr('save'))).toFixed(5));
+        $('#src').text((Number($('.rc').attr('save')) - Number($(this).val())).toFixed(5));
     });
 
     $('button[data-dismiss]').click(function(){
@@ -305,8 +305,21 @@ $(function(){
         $('.rc').text('');
     });
 
-    $('#all').click(function(){
-        $('.coin').val(Number($('#coin').text()) - ($('#coin').text() * 0.00054));
+    $('#percentage').change(function(){
+        if($(this).val() == "ALL"){
+            $('.coin').val((Number($('#coin').text()) - ($('#coin').text() * 0.00054)).toFixed(5));
+        } else if($(this).val() == "50%") {
+            $('.coin').val(((Number($('#coin').text()) / 2) - ((Number($('#coin').text()) / 2) * 0.00054)).toFixed(5));
+        } else if($(this).val() == "25%") {
+            $('.coin').val(((Number($('#coin').text()) / 4) - ((Number($('#coin').text()) / 4) * 0.00054)).toFixed(5));
+        } else if($(this).val() == "10%") {
+            $('.coin').val(((Number($('#coin').text()) / 10) - ((Number($('#coin').text()) / 10) * 0.00054)).toFixed(5));
+        } else {
+            $('.coin').val('');
+            $('.won').text('');
+            $('.fee').text('');
+            $('.rc').text('');
+        }
         $('.coin').keyup();
     });
 
