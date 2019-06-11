@@ -19,8 +19,8 @@
             var activeDetail = '#categoryDetailId' + $.urlParam('detailId');
             $("#mainNavBtn02").addClass("active");
             $(curPage).css('display', 'block');
-            $(activeCate).addClass("active");
-            $(activeDetail).addClass("active");
+            $(activeCate).removeClass("categoryHead").removeClass('cate').addClass('actionNav');
+            $(activeDetail).removeClass("categoryHead").removeClass('childColor').addClass('actionNav');
             $('#sortingBox option:eq(<%= sort-1 %>)').attr('selected','selected');
         }
         var addUrl = "<%if(detailId!=null){%>&detailId=<%=detailId%><%}%><%if(cateId!=null){%>&cateId=<%= cateId%><%}%>";

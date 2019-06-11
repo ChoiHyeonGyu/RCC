@@ -151,8 +151,8 @@
                     <% } %>
                 </div>
             </div>
-            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button><% } %>
-            <button class="btn btn-light" value="Donate" onclick="checkLogin()" >Donate</button>
+            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button>
+            <button class="btn btn-light" value="Donate" onclick="checkLogin()" >Donate</button><% } %>
             <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
             <div class="commentDiv">
                 <div class="commentWrite tar">

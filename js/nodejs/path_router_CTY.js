@@ -41,14 +41,14 @@ function initCategoryNav(callback) {
                 }
                 for (var i = 1; i <= result.rows.length; i++) {
                     if (result.rows[i - 1][0] == 0) continue;
-                    categoryNav += '<div class="contentsSideNavDetail"><a class="nav-link hover-pointer categoryHead" href="/breifing_detail?cateId=' + result.rows[i - 1][0] + '&pageNo=1" id="categoryId' + result.rows[i - 1][0] + '">' + result.rows[i - 1][1] + '</a>' +
+                    categoryNav += '<div class="contentsSideNavDetail"><a class="nav-link hover-pointer categoryHead cate navHover" href="/breifing_detail?cateId=' + result.rows[i - 1][0] + '&pageNo=1" id="categoryId' + result.rows[i - 1][0] + '">' + result.rows[i - 1][1] + '</a>' +
                         '<div class="detailDiv" id=detail' + result.rows[i - 1][0] + '>'; 
                     //현재는 for문을 무식하게 돔
                     //추후 수정해야 할 사항 : 각 i마다 catelist를 불러온다. 모두 불러오면 콜백으로 categoryNav를 채움
                     for (var j = 1; j <= detailresult.rows.length; j++) {
                         if (detailresult.rows[j - 1][0] == 0) continue;
                         if (detailresult.rows[j - 1][1] == result.rows[i - 1][0]) {
-                            categoryNav += '<a class="nav-link hover-pointer" href="/breifing_detail?detailId=' + detailresult.rows[j - 1][0] + '&cateId=' + detailresult.rows[j - 1][1] +
+                            categoryNav += '<a class="nav-link hover-pointer childColor cateChild navHover" href="/breifing_detail?detailId=' + detailresult.rows[j - 1][0] + '&cateId=' + detailresult.rows[j - 1][1] +
                                 '&pageNo=1" id="categoryDetailId' + detailresult.rows[j - 1][0] + '">' + detailresult.rows[j - 1][2] + '</a>';
                         }
                     }
@@ -59,13 +59,13 @@ function initCategoryNav(callback) {
                 categoryNav = "";
                 for (var i = 1; i <= result.rows.length; i++) {
                     if (result.rows[i - 1][0] == 0) continue;
-                    categoryNav += '<div class="contentsSideNavDetail"><a class="nav-link hover-pointer categoryHead" href="/commentary_detail?cateId=' + result.rows[i - 1][0] + '&pageNo=1" id="categoryId' + result.rows[i - 1][0] + '">' + result.rows[i - 1][1] + '</a>' +
+                    categoryNav += '<div class="contentsSideNavDetail"><a class="nav-link hover-pointer categoryHead cate navHover" href="/commentary_detail?cateId=' + result.rows[i - 1][0] + '&pageNo=1" id="categoryId' + result.rows[i - 1][0] + '">' + result.rows[i - 1][1] + '</a>' +
                         '<div class="detailDiv" id=detail' + result.rows[i - 1][0] + '>';
                     //현재는 for문을 무식하게 돔
                     //추후 수정해야 할 사항 : 각 i마다 catelist를 불러온다. 모두 불러오면 콜백으로 categoryNav를 채움
                     for (var j = 1; j <= detailresult.rows.length; j++) {
                         if (detailresult.rows[j - 1][1] == result.rows[i - 1][0]) {
-                            categoryNav += '<a class="nav-link hover-pointer" href="/commentary_detail?detailId=' + detailresult.rows[j - 1][0] + '&cateId=' + detailresult.rows[j - 1][1] +
+                            categoryNav += '<a class="nav-link hover-pointer childColor cateChild navHover" href="/commentary_detail?detailId=' + detailresult.rows[j - 1][0] + '&cateId=' + detailresult.rows[j - 1][1] +
                                 '&pageNo=1" id="categoryDetailId' + detailresult.rows[j - 1][0] + '">' + detailresult.rows[j - 1][2] + '</a>';
                         }
                     }

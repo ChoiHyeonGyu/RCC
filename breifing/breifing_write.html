@@ -4,17 +4,23 @@
     <script src="js/htmljs/breifingWrite.js"></script>
     <link rel="stylesheet" type="text/css" href="css/writeContents.css">
     <script>
-        onload = function(){
+        var ta;
+        onload = function () {
             $("#hiddenURL").val(document.referrer);
+            ta = document.getElementsByClassName("autosize")[0];
+            $(ta).height(ta.scrollHeight-20);
         }
-        function postSubmit(){
+        function postSubmit() {
             document.forms[0].submit();
         }
-        $(function(){
-            $("#selectBox").change(function(){
+        function resizeTa(){
+            $(ta).height($(ta).height()+20 < ta.scrollHeight ? ta.scrollHeight : $(ta).height());
+        }
+        $(function () {
+            $("#selectBox").change(function () {
                 //ajax실행하여 세부 리스트를 가져옴
                 var resultSet;
-                if(this.value==0) {
+                if (this.value == 0) {
                     $("#detailBox").find('option').remove().end().append("<option value='0'>all</option>");
                     return;
                 }
@@ -22,14 +28,14 @@
                     url: '/ajaxDetailResult',                //주소
                     dataType: 'json',                  //데이터 형식
                     type: 'POST',                      //전송 타입
-                    data: {'msg':this.value},      //데이터를 json 형식, 객체형식으로 전송
-                    success: function(result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
-                        if ( result['result'] == true ) {
+                    data: { 'msg': this.value },      //데이터를 json 형식, 객체형식으로 전송
+                    success: function (result) {          //성공했을 때 함수 인자 값으로 결과 값 나옴
+                        if (result['result'] == true) {
                             resultSet = result['msg'];
                         }
-                        var option="<option value=0>all</option>";
-                        for(var i=0; i<resultSet.rows.length; i++){
-                            option+="<option value="+resultSet.rows[i][0]+">"+resultSet.rows[i][2]+"</option>"
+                        var option = "<option value=0>all</option>";
+                        for (var i = 0; i < resultSet.rows.length; i++) {
+                            option += "<option value=" + resultSet.rows[i][0] + ">" + resultSet.rows[i][2] + "</option>"
                         }
                         $("#detailBox").find('option').remove().end().append(option);
                     } //function끝
@@ -38,6 +44,7 @@
         });
     </script>
 </head>
+
 <body>
 
     <% if(postResult==null){ %>
@@ -63,32 +70,34 @@
             </div>
             <div id='writeFormBox'>
                 <div class='formDiv' name="formDiv1" id='formDiv1'>
-                    <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input name='headline1' type='text' placeholder="title">
+                    <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input name='headline1' type='text'
+                            placeholder="title">
                     </div>
-                    <div class='divBox cw65'><span class='titleWord'>URL</span> <input name='url1' type='text' placeholder="url"></div>
+                    <div class='divBox cw65'><span class='titleWord'>URL</span> <input name='url1' type='text'
+                            placeholder="url"></div>
                 </div>
             </div>
-        <div class='optionContainer'>
-            <div class='dib w100'>
-                <input type='button' class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;'
-                    onclick='addPage();' value="+">
-                <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                    onclick='removePage();' value='-'>
+            <div class='optionContainer'>
+                <div class='dib w100'>
+                    <input type='button' class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick='addPage();' value="┿">
+                    <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick='removePage();' value='━'>
+                </div>
+                <br>
+                <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary'
+                        placeholder="summary" class="w80 autosize ofyh" oninput='resizeTa();'></textarea></div>
+                <div class='dib w100'>
+                    <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag'
+                            type='text' placeholder="hashtag"></div>
+                    <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick="postSubmit();" value='Write'>
+                    <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
+                        onclick="location.href=document.referrer;" value='Cancel'>
+                </div>
             </div>
-            <br>
-            <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary' placeholder="summary"
-                    class="w80"></textarea></div>
-            <div class='dib w100'>
-                <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag' type='text'
-                        placeholder="hashtag"></div>
-                <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                    onclick="postSubmit();" value='Write'>
-                <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                    onclick="location.href=document.referrer;" value='Cancel'>
-            </div>
-        </div>
-        
-    </form>
+
+        </form>
     </div>
     <div id="footer"><%- footer %></div>
 
@@ -98,51 +107,54 @@
     <% 
         if(postResult!=null){ 
     %>
-        <div id="header" class="container"><%- logo %></div>
-        <div class="container briefingWrite">
-            <form action="/breifing_write" name="writeForm" method="POST" class='formBox'>
-                <input type='hidden' value='' name='preURL' id='hiddenURL'>
-                <input type='hidden' value='<%= postResult.rows[0][0] %>' name='modify'>
-                <input type='hidden' value='<%= headlineResult.rows.length %>' name="headCount" id='count'>
-                <div class='dropboxDiv'>
-                    <select class='selectBox' name='category' id="selectBox">
-                        <option value='0'>all</option>
-                        <%
+    <div id="header" class="container"><%- logo %></div>
+    <div class="container briefingWrite">
+        <form action="/breifing_write" name="writeForm" method="POST" class='formBox'>
+            <input type='hidden' value='' name='preURL' id='hiddenURL'>
+            <input type='hidden' value='<%= postResult.rows[0][0] %>' name='modify'>
+            <input type='hidden' value='<%= headlineResult.rows.length %>' name="headCount" id='count'>
+            <div class='dropboxDiv'>
+                <select class='selectBox' name='category' id="selectBox">
+                    <option value='0'>all</option>
+                    <%
                             var option = "";
                             for(var i=0;i<categoryList.rows.length;i++){
                                 option+="<option value="+categoryList.rows[i][0]+">"+categoryList.rows[i][1]+"</option>"
                             }
                         %>
-                        <%- option %>
-                    </select>
-                    <select class='selectBox' name='detail' id="detailBox">
-                        <option value='0'>all</option>
-                    </select>
-                </div>
-                <div id='writeFormBox'>
-                    <% 
+                    <%- option %>
+                </select>
+                <select class='selectBox' name='detail' id="detailBox">
+                    <option value='0'>all</option>
+                </select>
+            </div>
+            <div id='writeFormBox'>
+                <% 
                         for(var i=0;i<headlineResult.rows.length;i++){ 
                     %>
-                    <div class='formDiv' name="formDiv<%= i+1 %>" id='formDiv<%= i+1 %>'>
-                        <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input name='headline<%= i+1 %>' type='text' placeholder="title" value="<%= headlineResult.rows[i][2] %>">
-                        </div>
-                        <div class='divBox cw65'><span class='titleWord'>URL</span> <input name='url<%= i+1 %>' type='text' placeholder="url" value="<%= headlineResult.rows[i][3] %>"></div>
+                <div class='formDiv' name="formDiv<%= i+1 %>" id='formDiv<%= i+1 %>'>
+                    <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input name='headline<%= i+1 %>'
+                            type='text' placeholder="title" value="<%= headlineResult.rows[i][2] %>">
                     </div>
-                    <%
+                    <div class='divBox cw65'><span class='titleWord'>URL</span> <input name='url<%= i+1 %>' type='text'
+                            placeholder="url" value="<%= headlineResult.rows[i][3] %>"></div>
+                </div>
+                <%
                         } 
                     %>
-                </div>
+            </div>
 
             <div class='optionContainer'>
                 <div class='dib w100'>
                     <input type='button' class='btn-light btn writeButton r0' style='border: 1px solid #dee2e6;'
-                        onclick='addPage();' value="+">
+                        onclick='addPage();' value="┾">
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                        onclick='removePage();' value='-'>
+                        onclick='removePage();' value='━'>
                 </div>
                 <br>
-                <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary' placeholder="summary"
-                        class="w80"><%- summaryResult.rows[0][2].split("<br>").join("") %></textarea></div>
+                <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary'
+                        placeholder="summary"
+                        class="w80 autosize ofyh" oninput='resizeTa();'><%- summaryResult.rows[0][2].split("<br>").join("") %></textarea></div>
                 <div class='dib w100'>
                     <%  
                         var hashValue = "";
@@ -150,18 +162,18 @@
                             hashValue+="#"+hashResult.rows[i][2]+" ";
                         }
                     %>
-                    <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag' type='text'
-                            placeholder="hashtag" value="<%= hashValue %>"></div>
+                    <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag'
+                            type='text' placeholder="hashtag" value="<%= hashValue %>"></div>
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
                         onclick="postSubmit();" value='Write'>
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
                         onclick="location.href=document.referrer;" value='Cancel'>
                 </div>
             </div>
-            
+
         </form>
-        </div>
-        <div id="footer"><%- footer %></div>
+    </div>
+    <div id="footer"><%- footer %></div>
     <% 
         } 
     %>

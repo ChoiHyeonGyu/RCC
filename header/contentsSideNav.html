@@ -4,3 +4,56 @@
         <%- categoryNav %>
     </nav>
 </div>
+<style>
+    .collapsing{
+        transition: height 0.5 ease;
+    }
+    .collapse li{
+        padding:15px;
+    }
+</style>
+<script>
+    function clickNav(obj){
+        if($(obj).hasClass('in')){ 
+            $(obj).attr('aria-expanded','true').removeClass('in').removeClass('collapse').addClass('collapsing');
+            $(obj).height('205px');
+            $(obj).height('0px');
+            $(obj).attr('aria-expanded','false').removeClass('collapsing').addClass('collapse');
+        }
+        else{ 
+            $(obj).attr('aria-expanded','false').addClass('in').removeClass('collapse').addClass('collapsing');
+            $(obj).height('0px;');
+            $(obj).attr('style','display:block;');
+            $(obj).height('205px');
+            $(obj).attr('aria-expanded','true').removeClass('collapsing').addClass('collapse');
+        }
+    }
+</script>
+<nav class="menu">
+        <ul class="sidebar-menu metismenu" id="sidebar-menu">
+            <li>
+                <a class='hover-pointer' onclick='clickNav(this.nextSibling.nextSibling)'>
+                    <i class="fa fa-desktop"></i> UI Elements
+                    <i class="fa arrow"></i>
+                </a>
+                <ul class="sidebar-nav collapse ofh" aria-expanded="false">
+                    <li>
+                        <a href="buttons.html"> Buttons </a>
+                    </li>
+                    <li>
+                        <a href="cards.html"> Cards </a>
+                    </li>
+                    <li>
+                        <a href="typography.html"> Typography </a>
+                    </li>
+                    <li>
+                        <a href="icons.html"> Icons </a>
+                    </li>
+                    <li>
+                        <a href="grid.html"> Grid </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>

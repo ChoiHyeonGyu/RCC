@@ -5,8 +5,9 @@
         var subStatus = <%= subscribeResult %>;
         onload = function () {
             <% if(search==null){ %>$("#mainNavBtn02").addClass("active");<% } %>
+            
         }
-
+        
         function deleteClick(){
             var result = confirm("정말로 삭제하시겠습니까?");
             var changeURL = (document.referrer).replace("&","<**>");
@@ -73,7 +74,7 @@
                     <%
                         var headline="";
                         for(var i=0; i<headlineResult.rows.length;i++){
-                            headline+= "<a style='dispaly:block;' href='"+ headlineResult.rows[i][3] +"'>"+headlineResult.rows[i][2]+"</a><br>";
+                            headline+= "<a style='dispaly:block;' target='_blank' href='"+ headlineResult.rows[i][3] +"'>"+headlineResult.rows[i][2]+"</a><br>";
                         }
                     %>
                     <%- headline %>
@@ -97,8 +98,8 @@
                     <%- hash %>
                 </div>
             </div>
-            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button><% } %>
-            <button class="btn btn-light" value="Donate" onclick="checkLogin()">Donate</button>
+            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button>
+            <button class="btn btn-light" value="Donate" onclick="checkLogin()">Donate</button><% } %>
             <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
         </div>
     </div>

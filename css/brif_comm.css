@@ -102,11 +102,30 @@
 }
 .contentsSideNavDetail{
     border-radius: 7px;
+    width:120px;
 }
 .categoryHead{
     background-color: #EDEDED;
     border-bottom: 1px solid #DDDDDD;
 }
+.navHover:hover{
+    background-color: rgb(143,80,255);
+    color:white;
+}
+.actionNav{
+    background-color: rgb(143,80,255);
+    color:white;
+}
+.cateChild{
+    opacity: 0.5
+}
+.childColor{
+    color:black;
+}
+.cate{
+    color:gray;
+}
+
 #sortingBox{
     padding:10px;
     border:none;
