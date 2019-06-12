@@ -94,9 +94,9 @@
                     <tr class="selrow">
                         <th scope="row"><%= list.rows[i][0] %></th>
                             <% if(list.metaData[1].name == 'HEADLINE'){ %>
-                        <td class="headline"><%= list.rows[i][1] %></td>
+                        <td class="headline hover-pointer hover-underline"><%= list.rows[i][1] %></td>
                             <% } else { %>
-                        <td class="title"><%= list.rows[i][1] %></td>
+                        <td class="title hover-pointer hover-underline"><%= list.rows[i][1] %></td>
                             <% } %>
                         <td><%= list.rows[i][2] %></td>
                         <td><%= list.rows[i][3] %></td>
@@ -110,7 +110,7 @@
                         <% for(var i = 0; i < list.rows.length; i++){ %>
                     <tr class="selrow">
                         <th scope="row"><%= list.rows[i][3] %></th>
-                        <td class="title"><%= list.rows[i][2] %></td>
+                        <td class="title hover-pointer hover-underline"><%= list.rows[i][2] %></td>
                         <td><%= list.rows[i][0] %></td>
                         <td><%= list.rows[i][1] %></td>
                     </tr>
@@ -157,7 +157,7 @@
                 <option>미만</option>
             </select><br><br>
             <span id="font-30">Transactions</span>
-            <table class="table table-striped container">
+            <table class="table table-striped transactions">
                 <thead>
                     <tr>
                         <th scope="col">BLOCK_NO</th>

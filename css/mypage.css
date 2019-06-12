@@ -50,6 +50,44 @@
     margin-right: 20px;
 }
 
+#account_info .transactions {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media screen and (min-width: 150px) {
+    #account_info .transactions {
+        max-width: 450px;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    #account_info .transactions {
+        max-width: 876px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #account_info .transactions {
+        max-width: 1068px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    #account_info .transactions {
+        max-width: 1292px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    #account_info .transactions {
+        max-width: 1500px;
+    }
+}
+
 #font-30 {
     font-weight: bold;
     font-size: 30px;
@@ -62,7 +100,7 @@
 #side_list {
     width: 200px;
     position: fixed;
-    top: 30%;
+    top: 35%;
     right: 0px;
 }
 
