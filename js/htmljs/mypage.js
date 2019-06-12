@@ -292,15 +292,20 @@ $(function(){
     });
 
     $('.coin').keyup(function(){
-        $('.won').text(($(this).val() * 100000).toLocaleString());
+        $('.won').val(($(this).val() * 100000).toLocaleString());
         $('.fee').text(($(this).val() * 0.00054).toFixed(5));
         $('#brc').text((Number($(this).val()) + Number($('.rc').attr('save'))).toFixed(5));
         $('#src').text((Number($('.rc').attr('save')) - Number($(this).val()) - ($(this).val() * 0.00054)).toFixed(5));
     });
 
+    $('.won').keyup(function(){
+        $('.coin').val($(this).val().replace(/,/g, '') / 100000);
+        $('.coin').keyup();
+    });
+
     $('button[data-dismiss]').click(function(){
         $('.coin').val('');
-        $('.won').text('');
+        $('.won').val('');
         $('.fee').text('');
         $('.rc').text('');
     });
@@ -316,7 +321,7 @@ $(function(){
             $('.coin').val(((Number($('#coin').text()) / 10) - ((Number($('#coin').text()) / 10) * 0.00054)).toFixed(5));
         } else {
             $('.coin').val('');
-            $('.won').text('');
+            $('.won').val('');
             $('.fee').text('');
             $('.rc').text('');
         }
