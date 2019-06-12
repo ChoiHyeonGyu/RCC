@@ -19,6 +19,8 @@ body{
     font-weight: bold;
 }
 
+
+
 .w85{
     width:85%;
 }
@@ -74,6 +76,16 @@ body{
     right:0px;
 }
 
+.mb10{
+    margin-bottom:10px;
+}
+.ti2{
+    font-size: 20px;
+    text-align:left;
+    width:98%;
+    display:inline-block;
+    color:gray;
+}
 .dib{
     display: inline-block;
 }
