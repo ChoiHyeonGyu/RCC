@@ -295,7 +295,7 @@ $(function(){
         $('.won').text(($(this).val() * 100000).toLocaleString());
         $('.fee').text(($(this).val() * 0.00054).toFixed(5));
         $('#brc').text((Number($(this).val()) + Number($('.rc').attr('save'))).toFixed(5));
-        $('#src').text((Number($('.rc').attr('save')) - Number($(this).val())).toFixed(5));
+        $('#src').text((Number($('.rc').attr('save')) - Number($(this).val()) - ($(this).val() * 0.00054)).toFixed(5));
     });
 
     $('button[data-dismiss]').click(function(){
