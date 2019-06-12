@@ -99,7 +99,13 @@ body{
 .mg20{
     margin:20px;
 }
+.mgt20{
+    margin-top:20px;
+}
 
+.mgt40{
+    margin-top:40px;
+}
 .mtg20{
     margin:20px;
 }
@@ -250,4 +256,11 @@ h2{ color: #7f8c8d; font-family: Neucha, Arial, sans serif; font-size:18px; marg
 }
 .db{
     display: block;
+}
+
+.table {
+    color:gray;
+    border-top:none;
+    font-size:14px;
+    padding-top:0px;
 }
