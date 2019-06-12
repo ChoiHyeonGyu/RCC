@@ -107,7 +107,7 @@ $(function(){
     function rowsSubProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='seluser'>"+rows[i][1]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='seluser hover-pointer'>"+rows[i][1]+"</td> </tr>");
         }
     }
 
@@ -116,10 +116,10 @@ $(function(){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
             if(data.metaData[1].name == "HEADLINE"){
-                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='headline'>"+rows[i][1]+"</td> <td>"+rows[i][2]+
+                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='headline hover-pointer hover-underline'>"+rows[i][1]+"</td> <td>"+rows[i][2]+
                 "</td> <td>"+rows[i][3]+"</td> <td>"+rows[i][4]+"</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][6]+"</td> </tr>");
             } else {
-                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='title'>"+rows[i][1]+"</td> <td>"+rows[i][2]+"</td> <td>"+
+                $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][0]+"</th> <td class='title hover-pointer hover-underline'>"+rows[i][1]+"</td> <td>"+rows[i][2]+"</td> <td>"+
                 rows[i][3]+"</td> <td>"+rows[i][4]+"</td> <td>"+rows[i][5]+"</td> <td>"+rows[i][6]+"</td> </tr>");
             }
         }
@@ -128,7 +128,7 @@ $(function(){
     function rowsCmntProcessing(rows){
         $('#boardlist tr').remove();
         for(var i = 0; i < rows.length; i++){
-            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][3]+"</th> <td class='title'>"+rows[i][2]+"</td> <td>"+rows[i][0]+"</td> <td>"+rows[i][1]+"</td> </tr>");
+            $('#boardlist').append("<tr class='selrow'> <th scope='row'>"+rows[i][3]+"</th> <td class='title hover-pointer hover-underline'>"+rows[i][2]+"</td> <td>"+rows[i][0]+"</td> <td>"+rows[i][1]+"</td> </tr>");
         }
     }
 
