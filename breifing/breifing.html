@@ -34,7 +34,7 @@
                 </thead>        
                 <tbody>
                     <%for(var i=0;i<result.rows.length;i++){%>
-                    <tr class='hover-pointer hover-underline'
+                    <tr class='hover-pointer hover-background'
                         onclick='location.href="/breifing_view?postNo=<%= result.rows[i][0] %>"'>
                         <% 
                             result.rows[i][1] = result.rows[i][1].replace("&lt;br&gt;","");

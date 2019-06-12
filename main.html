@@ -48,7 +48,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <%for(var i=0;i<bResult.rows.length;i++){%>
-                                                    <tr class='hover-pointer hover-underline'
+                                                    <tr class='hover-pointer hover-background'
                                                         onclick='location.href="/breifing_view?postNo=<%= bResult.rows[i][0] %>"'>
                                                         <% 
                                                                 bResult.rows[i][1] = bResult.rows[i][1].replace("&lt;br&gt;","");
@@ -75,7 +75,7 @@
                                             </thead>
                                                 <tbody>
                                                     <%for(var i=0;i<cResult.rows.length;i++){%>
-                                                    <tr class="hover-pointer hover-underline"
+                                                    <tr class="hover-pointer hover-background"
                                                         onclick="location.href='/commentary_view?postNo=<%= cResult.rows[i][0] %>'">
                                                         <th scope="row"><%= cResult.rows[i][5] %>
                                                             <% if(cResult.rows[i][7]!=null){ %><%= "["+cResult.rows[i][7]+"]" %><% } %>
@@ -103,7 +103,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <%for(var i=0;i<uResult.rows.length;i++){%>
-                                                    <tr class="hover-pointer hover-underline"
+                                                    <tr class="hover-pointer hover-background"
                                                         onclick="location.href='/channel?chnlid=<%=uResult.rows[i][1]%>'">
                                                         <th class='w40 tac' scope='row'><%=uResult.rows[i][1]%></th>
                                                         <td class='tac'><%=uResult.rows[i][2]%></td>

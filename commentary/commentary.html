@@ -39,7 +39,7 @@
                         var string="";
                         for(var i=0;i<result.rows.length;i++){
                     %>
-                    <tr class="hover-pointer hover-underline"
+                    <tr class="hover-pointer hover-background"
                         onclick="location.href='/commentary_view?postNo=<%= result.rows[i][0] %>'">
                         <th scope="row"><%= result.rows[i][5] %>
                             <% if(result.rows[i][7]!=null){ %><%= "["+result.rows[i][7]+"]" %><% } %></th>
