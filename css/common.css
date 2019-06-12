@@ -87,7 +87,9 @@ body{
     text-align:left;
     width:98%;
     display:inline-block;
-    color:gray;
+    
+    color:black;
+    
 }
 .dib{
     display: inline-block;
