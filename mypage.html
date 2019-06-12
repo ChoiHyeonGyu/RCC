@@ -263,7 +263,7 @@
                             <div><input type="text" class="coin hyeon-input" name="coin" placeholder="Buy Coin"></div>
                             <div>￦ : <label class="won"></label> 원</div>
                             <div>Fee : <label class="fee"></label> ETH</div>
-                            <div>Current Coin : <%= coin %> ETH</div>
+                            <div>Current Coin : <%= Number(coin).toFixed(5) %> ETH</div>
                             <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> ETH</div>
                     </div>
                     <div class="modal-footer">
@@ -298,7 +298,7 @@
                             </div>
                             <div>￦ : <label class="won"></label> 원</div>
                             <div>Fee : <label class="fee"></label> ETH</div>
-                            <div>Current Coin : <label id="coin"><%= coin %></label> ETH</div>
+                            <div>Current Coin : <label id="coin"><%= Number(coin).toFixed(5) %></label> ETH</div>
                             <div>Result Coin : <label id="src" class="rc" save="<%= coin %>"></label> ETH</div>
                     </div>
                     <div class="modal-footer">
