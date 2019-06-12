@@ -1,59 +1,65 @@
 <link rel="stylesheet" type="text/css" href="css/brif_comm.css">
+<style>
+        .collapsing{
+            transition: height 0.5 ease;
+        }
+        .cateChild li{
+            padding:0px;
+        }
+        .cateChild li a,.leftNav nav ul span{
+            padding:10px 0px;
+        }
+        *{
+            list-style: none;
+        }
+        .leftNav nav ul, .leftNav nav ul li ul{
+            margin:0px;
+            padding:0px;
+        }
+        .fl{
+            margin-left:10px;
+        }
+    </style>
+    <script>
+        addLoadEvent(function(){
+            $('.dbnh0').attr('style','display:block;height:0px;');
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results == null) {
+                    return null;
+                }
+                else {
+                    return results[1] || 0;
+                }
+            }
+
+            var activeCate = '#categoryId' + $.urlParam('cateId');
+            var activePanel = $(activeCate).siblings();
+            var size = $(activePanel).children('li').length*37;
+            $(activePanel).removeClass('collapse').height(size).addClass('in');
+        });
+        function openNav(id){
+            console.log(id);
+            console.log($(id))
+        }
+        function clickNav(obj){
+            var size = $(obj).children('li').length*37;
+            if($(obj).hasClass('in')){ 
+                $(obj).attr('aria-expanded','true').removeClass('in').removeClass('collapse').addClass('collapsing');
+                $(obj).height(size);
+                $(obj).height('0px');
+                $(obj).attr('aria-expanded','false').removeClass('collapsing').addClass('collapse');
+            }
+            else{ 
+                $(obj).attr('aria-expanded','false').addClass('in').removeClass('collapse').addClass('collapsing');
+                $(obj).height('0px;');
+                $(obj).height(size);
+                $(obj).attr('aria-expanded','true').removeClass('collapsing').addClass('collapse');
+            }
+        }
+    </script>
 <div class="nav briefingCategory leftNav bgw mgt30 tyshadow">
     <nav class="flex-column" id="categoryNav">
         <%- categoryNav %>
-    </nav>
-</div>
-<style>
-    .collapsing{
-        transition: height 0.5 ease;
-    }
-    .collapse li{
-        padding:15px;
-    }
-</style>
-<script>
-    function clickNav(obj){
-        if($(obj).hasClass('in')){ 
-            $(obj).attr('aria-expanded','true').removeClass('in').removeClass('collapse').addClass('collapsing');
-            $(obj).height('205px');
-            $(obj).height('0px');
-            $(obj).attr('aria-expanded','false').removeClass('collapsing').addClass('collapse');
-        }
-        else{ 
-            $(obj).attr('aria-expanded','false').addClass('in').removeClass('collapse').addClass('collapsing');
-            $(obj).height('0px;');
-            $(obj).attr('style','display:block;');
-            $(obj).height('205px');
-            $(obj).attr('aria-expanded','true').removeClass('collapsing').addClass('collapse');
-        }
-    }
-</script>
-<nav class="menu">
-        <ul class="sidebar-menu metismenu" id="sidebar-menu">
-            <li>
-                <a class='hover-pointer' onclick='clickNav(this.nextSibling.nextSibling)'>
-                    <i class="fa fa-desktop"></i> UI Elements
-                    <i class="fa arrow"></i>
-                </a>
-                <ul class="sidebar-nav collapse ofh" aria-expanded="false">
-                    <li>
-                        <a href="buttons.html"> Buttons </a>
-                    </li>
-                    <li>
-                        <a href="cards.html"> Cards </a>
-                    </li>
-                    <li>
-                        <a href="typography.html"> Typography </a>
-                    </li>
-                    <li>
-                        <a href="icons.html"> Icons </a>
-                    </li>
-                    <li>
-                        <a href="grid.html"> Grid </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
     </nav>
 </div>

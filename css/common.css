@@ -30,6 +30,9 @@ body{
 .fr{
     float:right;
 }
+.fl{
+    float: left;
+}
 
 .w10{
     width:10%;
@@ -244,4 +247,7 @@ h2{ color: #7f8c8d; font-family: Neucha, Arial, sans serif; font-size:18px; marg
 }
 .ofh{
     overflow: hidden;
+}
+.db{
+    display: block;
 }
