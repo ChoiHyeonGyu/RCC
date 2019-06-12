@@ -12,7 +12,7 @@ body{
 }
 
 .hover-underline:hover{
-    text-decoration: underline;
+    background:#f3f3f3;
 }
 
 .hover-bold:hover{
