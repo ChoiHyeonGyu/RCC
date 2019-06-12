@@ -369,9 +369,14 @@ router.post("/buy", function(req, res){
 router.post("/sell", function(req, res){
     if(req.session.user_id && !isNaN(Number(req.body.coin))){
         dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
-            ether.sendCoin(req.body.sender, result.rows[0][0], req.body.coin, req.session.user_id, function(){
-                res.write("<script>alert('Sell Coin!!!');</script>");
-                res.end("<script>location.href = '/my'</script>");
+            ether.sendCoin(req.body.sender, result.rows[0][0], req.body.coin, req.session.user_id, function(n){
+                if(n == 0){
+                    res.write("<script>alert('Not Enough Fee!!!');</script>");
+                    res.end("<script>location.href = '/my'</script>");
+                } else {
+                    res.write("<script>alert('Sell Coin!!!');</script>");
+                    res.end("<script>location.href = '/my'</script>");
+                }
             });
         });
     }
@@ -735,8 +740,11 @@ router.get("/donate", function(req, res){
 
 router.post("/donate", function(req, res){
     if(req.session.user_id && !isNaN(Number(req.body.coin))){
-        ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(){
-            if(req.body.postNo == "nothing"){
+        ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(n){
+            if(n == 0){
+                res.write("<script>alert('Not Enough Fee!!!');</script>");
+                res.end("<script>location.href = '/my'</script>");
+            } else if(req.body.postNo == "nothing"){
                 res.write("<script>alert('Sending Coin!!!');</script>");
                 res.end("<script>location.href = '"+req.body.preURL+"'</script>");
             } else {
