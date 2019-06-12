@@ -16,11 +16,11 @@
         onload = function () {
             var curPage = '#detail' + $.urlParam('cateId');
             var activeCate = '#categoryId' + $.urlParam('cateId');
-            var activeDetail = '#categoryDetailId' + $.urlParam('detailId');
+            var activeDetail = $.urlParam('detailId') != 0 ? '#categoryDetailId' + $.urlParam('detailId') : '#categoryDetailId'+$.urlParam('cateId')+"00";
             $("#mainNavBtn03").addClass("active");
             $(curPage).css('display', 'block');
-            $(activeCate).addClass("active");
-            $(activeDetail).addClass("active");
+            $(activeCate).removeClass("categoryHead").removeClass('cate').addClass('actionNav');
+            $(activeDetail).removeClass("categoryHead").removeClass('childColor').addClass('actionNav');
             $('#sortingBox option:eq(<%= sort-1 %>)').attr('selected', 'selected');
         }
         var addUrl = "<%if(detailId!=null){%>&detailId=<%=detailId%><%}%><%if(cateId!=null){%>&cateId=<%= cateId%><%}%>";
@@ -43,14 +43,22 @@
                 <option value='3'>가격 순</option>
             </select>
             <table class="table hashTable">
+                
+                    <thead>
+                            <th class='tac' scope="row">제목</th>
+                            <th class='tac'>카테고리</th>
+                            <th class='tac'>작성자</th>
+                            <th class='tac'>가치</th>
+                        </thead>
+                        <tbody>
                 <% for(var i=0;i<result.rows.length;i++){ %>
                 <tr class="hover-pointer hover-underline"
                     onclick="location.href='/commentary_view?postNo=<%= result.rows[i][0] %>'">
                     <th scope="row"><%= result.rows[i][5] %>
                         <% if(result.rows[i][7]!=null){ %><%= "["+result.rows[i][7]+"]" %><% } %></th>
-                    <td calss='w10' rowspan="2"><%= result.rows[i][9] %></td>
-                    <td class='w10' rowspan="2"><%= result.rows[i][2] %></td>
-                    <td class='w10' rowspan="2"><%= (result.rows[i][6]).toFixed(2) %>c</td>
+                    <td calss='w10 tac' rowspan="2"><%= result.rows[i][9] %></td>
+                    <td class='w10 tac' rowspan="2"><%= result.rows[i][2] %></td>
+                    <td class='w10 tac' rowspan="2"><%= (result.rows[i][6]).toFixed(2) %>c</td>
                 </tr>
                 <tr>
                     <td class='commentaryHash'>

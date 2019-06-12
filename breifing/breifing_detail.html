@@ -16,7 +16,8 @@
         onload = function () {
             var curPage = '#detail' + $.urlParam('cateId');
             var activeCate = '#categoryId' + $.urlParam('cateId');
-            var activeDetail = '#categoryDetailId' + $.urlParam('detailId');
+            var activeDetail = $.urlParam('detailId') != 0 ? '#categoryDetailId' + $.urlParam('detailId') : '#categoryDetailId'+$.urlParam('cateId')+"00";
+            console.log(activeDetail);
             $("#mainNavBtn02").addClass("active");
             $(curPage).css('display', 'block');
             $(activeCate).removeClass("categoryHead").removeClass('cate').addClass('actionNav');
@@ -55,7 +56,7 @@
                             result.rows[i][1] = result.rows[i][1].split("&gt;").join(">");
                         %>
                         <th scope='row'><%- result.rows[i][1] %></th>
-                        <td rowspan="2"><%= result.rows[i][2] %></td>
+                        <td rowspan="2" class='tac'><%= result.rows[i][2] %></td>
                     </tr>
                     <tr>
                         <td class='commentaryHash'><% for(var j=0;j<hashResult.rows.length;j++){if(hashResult.rows[j][0]==result.rows[i][0]){ %>#<%= hashResult.rows[j][1] %> <% }} %></td>
