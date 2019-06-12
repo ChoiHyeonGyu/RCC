@@ -44,9 +44,9 @@ function initCategoryNav(callback) {
                     categoryNav += "<ul class=''>";
                     categoryNav += "<li class=''>";
                     categoryNav += "<span class='nav-link hover-pointer categoryHead cate navHover ' id='categoryId" + result.rows[i - 1][0] + "' onclick='clickNav(this.nextSibling)'>";
-                    categoryNav += result.rows[i - 1][1];
+                    categoryNav += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+result.rows[i - 1][1];
+                    categoryNav += "<span style='float:right;font-weight:bold;padding:0px;transition:none;transition:transform 0.28s ease'>&nbsp;&nbsp;〉&nbsp;&nbsp;</span>";
                     categoryNav += "</span>";
-                    categoryNav += "<span class='' style='transition:none'>〉</span>";
                     categoryNav += "<ul class='collapse ofh dbnh0' id='detail" + result.rows[i - 1][0] + "' aria-expanded='false'>";
                     for (var j = 1; j <= detailresult.rows.length; j++) {
                         if (detailresult.rows[j - 1][0] == 0) continue;
@@ -69,8 +69,8 @@ function initCategoryNav(callback) {
                     categoryNav += "<ul class=''>";
                     categoryNav += "<li class=''>";
                     categoryNav += "<span class='nav-link hover-pointer categoryHead cate navHover ' id='categoryId" + result.rows[i - 1][0] + "' onclick='clickNav(this.nextSibling)'>";
-                    categoryNav += result.rows[i - 1][1];
-                    categoryNav += "<span class='fr'>〉</span>";
+                    categoryNav += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+result.rows[i - 1][1];
+                    categoryNav += "<span style='float:right;font-weight:bold;padding:0px;transition:none;transition:transform 0.28s ease'>&nbsp;&nbsp;〉&nbsp;&nbsp;</span>";
                     categoryNav += "</span>";
                     categoryNav += "<ul class='collapse ofh dbnh0' id='detail" + result.rows[i - 1][0] + "' aria-expanded='false'>";
                     for (var j = 1; j <= detailresult.rows.length; j++) {

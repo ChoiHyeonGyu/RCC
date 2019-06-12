@@ -34,7 +34,9 @@
             }
 
             var activeCate = '#categoryId' + $.urlParam('cateId');
-            var activePanel = $(activeCate).siblings();
+            var activePanel = $(activeCate).siblings()[0];
+            var rotateSpan = $(activeCate).children('span');
+            $(rotateSpan).css('transform','rotate(90deg)');
             var size = $(activePanel).children('li').length*37;
             $(activePanel).removeClass('collapse').height(size).addClass('in');
         });
@@ -43,16 +45,19 @@
             console.log($(id))
         }
         function clickNav(obj){
+            var rotateSpan = $(obj.previousSibling).children('span');
             var size = $(obj).children('li').length*37;
             if($(obj).hasClass('in')){ 
                 $(obj).attr('aria-expanded','true').removeClass('in').removeClass('collapse').addClass('collapsing');
                 $(obj).height(size);
+                $(rotateSpan).css('transform','rotate(0deg)');
                 $(obj).height('0px');
                 $(obj).attr('aria-expanded','false').removeClass('collapsing').addClass('collapse');
             }
             else{ 
                 $(obj).attr('aria-expanded','false').addClass('in').removeClass('collapse').addClass('collapsing');
                 $(obj).height('0px;');
+                $(rotateSpan).css('transform','rotate(90deg)');
                 $(obj).height(size);
                 $(obj).attr('aria-expanded','true').removeClass('collapsing').addClass('collapse');
             }
