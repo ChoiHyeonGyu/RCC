@@ -48,6 +48,10 @@ function initCategoryNav(callback) {
                     categoryNav += "<span style='float:right;font-weight:bold;padding:0px;transition:none;transition:transform 0.28s ease'>&nbsp;&nbsp;〉&nbsp;&nbsp;</span>";
                     categoryNav += "</span>";
                     categoryNav += "<ul class='collapse ofh dbnh0' id='detail" + result.rows[i - 1][0] + "' aria-expanded='false'>";
+                    categoryNav += "<li class=''>";
+                    categoryNav += '<a class="nav-link childColor cateChild navHover hover-pointer" href="/breifing_detail?detailId=0&cateId=' + result.rows[i - 1][0] +
+                    '&pageNo=1" id="categoryDetailId'+result.rows[i - 1][0]+'00">전체</a>';
+                    categoryNav += "</li>";
                     for (var j = 1; j <= detailresult.rows.length; j++) {
                         if (detailresult.rows[j - 1][0] == 0) continue;
                         if (detailresult.rows[j - 1][1] == result.rows[i - 1][0]) {
@@ -73,6 +77,10 @@ function initCategoryNav(callback) {
                     categoryNav += "<span style='float:right;font-weight:bold;padding:0px;transition:none;transition:transform 0.28s ease'>&nbsp;&nbsp;〉&nbsp;&nbsp;</span>";
                     categoryNav += "</span>";
                     categoryNav += "<ul class='collapse ofh dbnh0' id='detail" + result.rows[i - 1][0] + "' aria-expanded='false'>";
+                    categoryNav += "<li class=''>";
+                    categoryNav += '<a class="nav-link childColor cateChild navHover hover-pointer" href="/commentary_detail?detailId=0&cateId=' + result.rows[i - 1][0] +
+                    '&pageNo=1" id="categoryDetailId'+result.rows[i - 1][0]+'00">전체</a>';
+                    categoryNav += "</li>";
                     for (var j = 1; j <= detailresult.rows.length; j++) {
                         if (detailresult.rows[j - 1][0] == 0) continue;
                         if (detailresult.rows[j - 1][1] == result.rows[i - 1][0]) {
@@ -590,8 +598,10 @@ router.get("/breifing_detail", function (req, res) {
             });
     }
     else {
-        paging(("select pid from post where briefing=1 and cate=" + cateId + " and catedetail=" + detailId),
-            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 and cate=" + cateId + " and catedetail=" + detailId + " order by pdate "+order+")) where row2>=" + startPost + " and row2<=" + endPost,
+        var tempId = detailId;
+        if(tempId == 0 )tempId='catedetail';
+        paging(("select pid from post where briefing=1 and cate=" + cateId + " and catedetail=" + tempId),
+            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate "+order+")) where row2>=" + startPost + " and row2<=" + endPost,
             page_size, page_list_size, currPage, function (pageResult, pageList) {
                 var pageListString;
                 if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
@@ -784,12 +794,14 @@ router.get("/commentary_detail", function (req, res) {
             });
     }
     else {
-        var sort1="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + detailId + " order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
-        var sort2="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + detailId + " order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
-        var sort3="select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and cate=" + cateId + " and catedetail=" + detailId + " and commentary.pid=post.pid order by commentary.cost desc)) where row2>="+startPost+" and row2<="+endPost;
+        var tempId = detailId;
+        if(tempId == 0 )tempId='catedetail';
+        var sort1="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
+        var sort2="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
+        var sort3="select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " and commentary.pid=post.pid order by commentary.cost desc)) where row2>="+startPost+" and row2<="+endPost;
         var order;
         order =  sort==1 ? sort1 : sort==2 ? sort2 : sort3;
-        paging(("select pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + detailId),
+        paging(("select pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId),
             order,
             page_size, page_list_size, currPage, function (pageResult, pageList) {
                 var pageListString;
