@@ -8,10 +8,10 @@
 }
 .mainContents{
     display:inline-block;
-    width:77%;
+    width:87%;
     margin-top:30px;
     border-radius: 7px;
-    padding:10px;
+    padding:30px 70px 10px 70px;
 }
 .sideContents{
     text-align: center;  

@@ -19,6 +19,42 @@
         <div class="hotBriefing mainContents card">
             <h2>[ <%= search %> ]검색 결과 - <%= pagingResult.pageCount %>개</h2>
             <table class="table mainTable">
+                <%
+                    if(type==1){
+                %>
+                <thead>
+                        <th class='tac' scope="row">헤드라인</th>
+                        <th class='tac'>카테고리</th>
+                    </thead>    
+                <%}%>
+                <%
+                    if(type==2){
+                %>
+                <thead>
+                        <th class='tac' scope="row">제목</th>
+                        <th class='tac'>카테고리</th>
+                        <th class='tac'>작성자</th>
+                        <th class='tac'>가치</th>
+                    </thead>    
+                <%}%>
+                <%
+                    if(type==3){
+                %>
+                <thead>
+                        <th class='tac' scope="row">유저</th>
+                        <th class='tac'>게시글 수</th>
+                        <th class='tac'>구독자 수</th>
+                    </thead>     
+                <%}%>
+                <%
+                    if(type==0){
+                %>
+                <thead>
+                        <th class='tac' scope="row">구분</th>
+                        <th class='tac'>제목</th>
+                        <th colspan="3" class='tac'>정보</th>
+                    </thead>    
+                <%}%>
                 <tbody>
                     <% if(type==1){ %>
                     <%for(var i=0;i<result.rows.length;i++){%>
@@ -30,7 +66,7 @@
                     <tr class='hover-pointer hover-underline'
                         onclick="location.href='/breifing_view?search=<%=search%>&type=<%=type%>&postNo=<%= result.rows[i][0] %>'">
                         <th scope='row'><%- result.rows[i][1] %></th>
-                        <td><%= result.rows[i][2] %></td>
+                        <td class=' tac'><%= result.rows[i][2] %></td>
                     </tr>
                     <tr>
                         <td class='commentaryHash'><%= result.rows[i][4] %></td>
@@ -42,9 +78,9 @@
                     <tr class="hover-pointer hover-underline"
                         onclick="location.href='/commentary_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
                         <th scope='rows'><%= result.rows[i][6] %> <%if(result.rows[i][8]!=null){%>[<%= result.rows[i][8] %>]<%}%></th>                    
-                                <td class='' rowspan="2"><%= result.rows[i][10] %></td>
-                        <td class='w10' rowspan="2"><%= result.rows[i][9] %></td>
-                        <td class='w10' rowspan="2"><%= result.rows[i][7] %>$</td>
+                                <td class=' tac' rowspan="2"><%= result.rows[i][10] %></td>
+                        <td class='w10 tac' rowspan="2"><%= result.rows[i][9] %></td>
+                        <td class='w10 tac' rowspan="2"><%= result.rows[i][7] %>$</td>
                     </tr>
                     <tr>
                         <td class='commentaryHash'><%= result.rows[i][3] %></td>
@@ -52,19 +88,14 @@
                     <%}%>
                     <%}%>
                     <% if(type==3){ %>
-                    <tr>
-                        <th>채널유저</th>
-                        <th>게시글 수</th>
-                        <th>구독자 수</th>
-                    </tr>
                     <%
                             for(var i=0;i<result.rows.length;i++){
                         %>
                     <tr class="hover-pointer hover-underline"
                         onclick="location.href='/channel?chnlid=<%= result.rows[i][0] %>'">
-                        <td><%= result.rows[i][0] %></td>
-                        <td><%= result.rows[i][1] %></td>
-                        <td><%= result.rows[i][2] %></td>
+                        <td class='tac'><%= result.rows[i][0] %></td>
+                        <td class='tac'><%= result.rows[i][1] %></td>
+                        <td class='tac'><%= result.rows[i][2] %></td>
                     </tr>
                     <% } %>
                     <% } %>
@@ -79,9 +110,9 @@
                                 %>
                     <tr class="hover-pointer hover-underline"
                         onclick="location.href='/breifing_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
-                        <td class='' rowspan="2">브리핑</td>
+                        <td class=' tac' rowspan="2">브리핑</td>
                         <th scope='rows' colspan="3"><%- result.rows[i][2] %></th>
-                        <td class='' rowspan="2"><%= result.rows[i][7] %></td>
+                        <td class=' tac' rowspan="2"><%= result.rows[i][7] %></td>
                     </tr>
                     <tr>
                         <td class='commentaryHash'><%= result.rows[i][1] %></td>
@@ -91,11 +122,11 @@
                     <tr class="hover-pointer hover-underline"
                         onclick="location.href='/commentary_view?search=<%= search %>&type=<%= type %>&postNo=<%= result.rows[i][0] %>'">
 
-                        <td class='w10' rowspan="2">논평</td>
+                        <td class='w10 tac' rowspan="2">논평</td>
                         <th scope='rows'><%= result.rows[i][2] %> <%if(result.rows[i][6]!=null){%>[<%= result.rows[i][6] %>]<%}%></th>                    
                                     <td class='' rowspan="2"><%= result.rows[i][7] %></td>
-                        <td class='w10' rowspan="2"><%= result.rows[i][4] %></td>
-                        <td class='w10' rowspan="2"><%= result.rows[i][5] %>$</td>
+                        <td class='w10 tac' rowspan="2"><%= result.rows[i][4] %></td>
+                        <td class='w10 tac' rowspan="2"><%= result.rows[i][5] %>$</td>
                     </tr>
                     <tr>
                         <td class='commentaryHash'><%= result.rows[i][1] %></td>
