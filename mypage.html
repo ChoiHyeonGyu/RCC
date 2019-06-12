@@ -261,7 +261,7 @@
                     <div class="modal-body tal">
                             <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
                             <div><input type="text" class="coin hyeon-input" name="coin" placeholder="Buy Coin"></div>
-                            <div>￦ : <label class="won"></label> 원</div>
+                            <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
                             <div>Fee : <label class="fee"></label> ETH</div>
                             <div>Current Coin : <%= Number(coin).toFixed(5) %> ETH</div>
                             <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> ETH</div>
@@ -296,7 +296,7 @@
                                     <option>10%</option>
                                 </select>
                             </div>
-                            <div>￦ : <label class="won"></label> 원</div>
+                            <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
                             <div>Fee : <label class="fee"></label> ETH</div>
                             <div>Current Coin : <label id="coin"><%= Number(coin).toFixed(5) %></label> ETH</div>
                             <div>Result Coin : <label id="src" class="rc" save="<%= coin %>"></label> ETH</div>
