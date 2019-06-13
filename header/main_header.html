@@ -3,17 +3,17 @@
         location.href = '/logout?preURL=' + location.pathname + location.search;
     }
     addLoadEvent(function(){
-        $("#navbarDropdownMenuLink").get(0).click();
+        if(document.getElementById("#navbarDropdownMenuLink")!=null)$("#navbarDropdownMenuLink").get(0).click();
     });
 </script>
 <div class="mainHeader container">
     <ul class="nav justify-content-end r0">
         <% if(user == null){ %>
         <li class="nav-item">
-            <a class="fs14 fwb pds10" href="/login">Login</a>
+            <a class="fs14 fwb pd10 lh2" href="/login">로그인</a>
         </li>
         <li class="nav-item">
-            <a class="fs14 fwb" href="/signup">Signup</a>
+            <a class="fs14 fwb pd10 lh2" href="/signup">회원가입</a>
         </li>
         <% } else { %>
         <li class="nav-item dropdown hover-pointer">
@@ -22,10 +22,10 @@
                 <%= user %>   
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
-                <a class="dropdown-item" href="/channel?chnlid=<%= user %>">channel</a>
-                <a class="dropdown-item" href="/my">mypage</a>
+                <a class="dropdown-item" href="/channel?chnlid=<%= user %>">마이채널</a>
+                <a class="dropdown-item" href="/my">마이페이지</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" onclick="logoutButton();">logout</a>
+                <a class="dropdown-item" onclick="logoutButton();">로그아웃</a>
             </div>
         </li>
         <!--

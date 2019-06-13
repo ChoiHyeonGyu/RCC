@@ -474,6 +474,9 @@ router.post("/user/delete", function(req, res){
     if(req.session.user_id){
         dbconn.booleanQuery("delete users where id = '"+req.session.user_id+"'", function(result){
             if(result){
+                req.session.destroy(function(err){
+                    if(err) console.log(err);
+                });
                 res.write("<script>alert('Delete Completed!');</script>");
                 res.end("<script>location.href = '/'</script>");
             } else {
