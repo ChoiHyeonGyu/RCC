@@ -274,3 +274,9 @@ h2{ color: #7f8c8d; font-family: Neucha, Arial, sans serif; font-size:18px; marg
 .db{
     display: block;
 }
+.lh2{
+    line-height: 2rem;
+}
+.pd10{
+    padding: 10px;
+}
