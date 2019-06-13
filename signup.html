@@ -15,7 +15,7 @@
         <div id="header" style="font-family:Noto Sans KR, sans-serif" class="container"><%- logo %></div>
         <div class="signup container" >
             <div class="signup-block" style="background:#eeeeee33;">
-                <form action="/signup" method="post" onsubmit="return checkval();">
+                <form action="/signup" method="post">
                     <div id="text">회원가입</div>
                     <input type="text" value="" placeholder="아이디" id="id" name="id1"/>
                     <br>
@@ -34,7 +34,7 @@
                         <input type="button" value="인증" class='button' id="auth_btn" style='display:none;margin:5px;width:45%;'>
                     </div>
                     <div id="result" style="color:#9e9e9e17;">1</div>
-                    <input type="submit" value="회원가입" class="button"/>
+                    <input type="button" value="회원가입" class="button" onclick="checkval()"/>
                     <input type="button" value="취소" class="button" onclick="history.back()"/>
                 </form>
             </div>
