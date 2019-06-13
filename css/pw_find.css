@@ -37,8 +37,28 @@
     outline: none
 }
 
+#result{
+    margin:10px;
+    font-family:'Noto Sans KR', sans-serif;
+}
+#auth_box{
+    width: 90%;
+    text-align:center;
+    background:#FFF;
+    margin:10px;
+    padding:10px;
+}
 
+#auth_box img {
+    width: 100%;
 
+}
+#phone_click{
+    margin-bottom:0px;
+}
+#auth_num{
+    padding:20px;
+}
 
 .pw-find input#id {
     background: #fff url('https://image.flaticon.com/icons/svg/747/747376.svg') 20px center no-repeat;
@@ -137,3 +157,35 @@ input[type=text]:active,input[type=text]:focus {
     background: #8f50ff;
 }
 
+.effect8
+{
+      position:relative;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+.effect8:before, .effect8:after
+{
+    content:"";
+    position:absolute;
+    z-index:-1;
+    -webkit-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    -moz-box-shadow:0 0 20px rgba(0,0,0,0.8);
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    top:10px;
+    bottom:10px;
+    left:0;
+    right:0;
+    -moz-border-radius:100px / 10px;
+    border-radius:100px / 10px;
+}
+.effect8:after
+{
+    right:10px;
+    left:auto;
+    -webkit-transform:skew(8deg) rotate(3deg);
+       -moz-transform:skew(8deg) rotate(3deg);
+        -ms-transform:skew(8deg) rotate(3deg);
+         -o-transform:skew(8deg) rotate(3deg);
+            transform:skew(8deg) rotate(3deg);
+}
