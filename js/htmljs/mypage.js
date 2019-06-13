@@ -173,6 +173,7 @@ $(function(){
         if(event.keyCode == 13){
             var s = pageSelecting();
 
+            startLoading();
             $.ajax({
                 url: '/my/search',
                 data: {
@@ -186,6 +187,9 @@ $(function(){
                 },
                 error: function(error){
                     console.log(error);
+                },
+                complete: function(){
+                    finishLoading();
                 }
             });
         }
@@ -194,6 +198,7 @@ $(function(){
     $(document).on('click', '.srchb', function(){
         var s = pageSelecting();
 
+        startLoading();
         $.ajax({
             url: '/my/search/pagelist',
             data: {
@@ -206,6 +211,9 @@ $(function(){
             },
             error: function(error){
                 console.log(error);
+            },
+            complete: function(){
+                finishLoading();
             }
         });
         $('.srchb').parent().removeClass('active');
@@ -215,6 +223,7 @@ $(function(){
     $(document).on('click', '.nsrchb', function(){
         var s = pageSelecting();
 
+        startLoading();
         $.ajax({
             url: '/my/search/pagelist',
             data: {
@@ -229,6 +238,9 @@ $(function(){
             },
             error: function(error){
                 console.log(error);
+            },
+            complete: function(){
+                finishLoading();
             }
         });
     });
@@ -236,6 +248,7 @@ $(function(){
     $(document).on('click', '.presrchb', function(){
         var s = pageSelecting();
 
+        startLoading();
         $.ajax({
             url: '/my/search/pagelist',
             data: {
@@ -250,6 +263,9 @@ $(function(){
             },
             error: function(error){
                 console.log(error);
+            },
+            complete: function(){
+                finishLoading();
             }
         });
     });

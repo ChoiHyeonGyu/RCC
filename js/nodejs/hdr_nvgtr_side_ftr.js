@@ -7,6 +7,7 @@ var main_header = '';
 var navigator = '';
 var navigator_side = '';
 var footer = '';
+var loading = '';
 var contentsSideNav = '';
 
 fs.readFile("header/import_default.html", "utf-8", function(error, data) {
@@ -26,6 +27,9 @@ fs.readFile("header/navigator_side.html", "utf-8", function(error, data) {
 });
 fs.readFile("footer.html", "utf-8", function(error, data) {
     footer = data;
+});
+fs.readFile("header/loading.html", "utf-8", function(error, data) {
+    loading = data;
 });
 fs.readFile("header/contentsSideNav.html", "utf-8", function(error, data) {
     contentsSideNav = data;
@@ -49,6 +53,9 @@ function getNavigator_side(){
 function getFooter(){
     return footer;
 }
+function getLoading(){
+    return loading;
+}
 function getContentsSideNav(){
     return contentsSideNav;
 }
@@ -60,5 +67,6 @@ module.exports = {
     navigator: getNavigator,
     navigator_side: getNavigator_side,
     footer: getFooter,
+    loading: getLoading,
     contentsSideNav: getContentsSideNav
 };

@@ -182,6 +182,7 @@ $(function(){
 
     $(document).on('keydown', '#search_input', function(){
         if(event.keyCode == 13){
+            startLoading();
             $.ajax({
                 url: '/channel/search',
                 data: {
@@ -196,16 +197,23 @@ $(function(){
                 },
                 error: function(error){
                     console.log(error);
+                },
+                complete: function(){
+                    finishLoading();
                 }
             });
         }
     });
 
     $(document).on('click', '.srchb', function(){
+        var s = pageSelecting();
+
+        startLoading();
         $.ajax({
             url: '/channel/search/pagelist',
             data: {
                 chnlid: $('input[type=hidden]').val(),
+                s: s,
                 txt: $('#search_input').val(),
                 id: $(this).attr('nextid')
             },
@@ -214,6 +222,9 @@ $(function(){
             },
             error: function(error){
                 console.log(error);
+            },
+            complete: function(){
+                finishLoading();
             }
         });
         $('.srchb').parent().removeClass('active');
@@ -221,10 +232,14 @@ $(function(){
     });
 
     $(document).on('click', '.nsrchb', function(){
+        var s = pageSelecting();
+
+        startLoading();
         $.ajax({
             url: '/channel/search/pagelist',
             data: {
                 chnlid: $('input[type=hidden]').val(),
+                s: s,
                 txt: $('#search_input').val(),
                 id: $(this).attr('nextid')
             },
@@ -235,15 +250,22 @@ $(function(){
             },
             error: function(error){
                 console.log(error);
+            },
+            complete: function(){
+                finishLoading();
             }
         });
     });
 
     $(document).on('click', '.presrchb', function(){
+        var s = pageSelecting();
+
+        startLoading();
         $.ajax({
             url: '/channel/search/pagelist',
             data: {
                 chnlid: $('input[type=hidden]').val(),
+                s: s,
                 txt: $('#search_input').val(),
                 id: $(this).attr('nextid')
             },
@@ -254,6 +276,9 @@ $(function(){
             },
             error: function(error){
                 console.log(error);
+            },
+            complete: function(){
+                finishLoading();
             }
         });
     });

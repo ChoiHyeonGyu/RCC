@@ -250,41 +250,41 @@
         </div>
         <div class="modal fade" id="buy_view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Buy</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Buy</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="/buy">
+                        <div class="modal-body tal">
+                                <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
+                                <div><input type="text" class="coin hyeon-input" name="coin" placeholder="Buy Coin"></div>
+                                <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
+                                <div>Fee : <label class="fee"></label> ETH</div>
+                                <div>Current Coin : <%= Number(coin).toFixed(5) %> ETH</div>
+                                <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> ETH</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Buy</button>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" action="/buy">
-                    <div class="modal-body tal">
-                            <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
-                            <div><input type="text" class="coin hyeon-input" name="coin" placeholder="Buy Coin"></div>
-                            <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
-                            <div>Fee : <label class="fee"></label> ETH</div>
-                            <div>Current Coin : <%= Number(coin).toFixed(5) %> ETH</div>
-                            <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> ETH</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Buy</button>
-                    </div>
-                </form>
-              </div>
             </div>
-          </div>
-          <div class="modal fade" id="sell_view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        </div>
+        <div class="modal fade" id="sell_view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Sell</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <form method="POST" action="/sell">
-                    <div class="modal-body tal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sell</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="/sell">
+                        <div class="modal-body tal">
                             <input type="hidden" name="sender" value="<%= my.rows[0][4] %>">
                             <div>
                                 <input type="text" class="coin hyeon-input" name="coin" placeholder="Sell Coin">
@@ -300,14 +300,15 @@
                             <div>Fee : <label class="fee"></label> ETH</div>
                             <div>Current Coin : <label id="coin"><%= Number(coin).toFixed(5) %></label> ETH</div>
                             <div>Result Coin : <label id="src" class="rc" save="<%= coin %>"></label> ETH</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Sell</button>
-                    </div>
-                </form>
-              </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Sell</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
+        </div>
+        <div><%- loading %></div>
     </body>
 </html>

@@ -1,68 +1,68 @@
 <style>
-        #loadingSpan{
-            position: fixed;
-            width:100%;
-            height:100%;
-            z-index: 100;
-            font-size: 30px;
-            font-weight: bold;
-            user-select: none;
-            background-color: #33333340;
-            display: none;
-
+    #loadingSpan{
+        position: fixed;
+        width:100%;
+        height:100%;
+        left: 0px;
+        top: 0px;
+        z-index: 100;
+        font-size: 30px;
+        font-weight: bold;
+        user-select: none;
+        background-color: #33333340;
+        display: none;
+    }
+    #loadingSpan img{
+        width:100px;
+        height:100px;
+    }
+    .tsc1{
+        transition: color 1s ease;
+    }
+    .lodingText{
+        position: relative;
+        top: 50%;
+    }
+</style>
+<script>
+    var text='LOADING...';
+    var target;
+    var index = 0;
+    var paint = true;
+    var loadingInterval;
+    function changeColor(){
+        var temp = target.getElementsByTagName('span')[index++];
+        if(paint){
+            temp.style.color = "#8f50ff";
         }
-        #loadingSpan img{
-            width:100px;
-            height:100px;
+        else{
+            temp.style.color = "#f96332";
         }
-        .tsc1{
-            transition: color 1s ease;
+        if(index==text.length){
+            index=0;
+            paint=!paint;
         }
-        .lodingText{
-            position: relative;
-            left: 50%;
-            top: 50%;
+    }
+    addLoadEvent(function(){
+        target = document.getElementById('loadingSpan');
+        for(var i=0;i<text.length;i++){
+            var inText = document.createTextNode(text.charAt(i));
+            var span = document.createElement('span');
+            span.style.color='#f96332';
+            span.appendChild(inText);
+            target.appendChild(span);
+            $('#loadingSpan').children(span).addClass('tsc1').addClass('lodingText');
         }
-    </style>
-    <script>
-        var text='LOADING...';
-        var target;
-        var index = 0;
-        var paint = true;
-        var loadingInterval;
-        function changeColor(){
-            var temp = target.getElementsByTagName('span')[index++];
-            if(paint){
-                temp.style.color = "#8f50ff";
-            }
-            else{
-                temp.style.color = "#f96332";
-            }
-            if(index==text.length){
-                index=0;
-                paint=!paint;
-            }
-        }
-        addLoadEvent(function(){
-            target = document.getElementById('loadingSpan');
-            for(var i=0;i<text.length;i++){
-                var inText = document.createTextNode(text.charAt(i));
-                var span = document.createElement('span');
-                span.style.color='#f96332';
-                span.appendChild(inText);
-                target.appendChild(span);
-                $('#loadingSpan').children(span).addClass('tsc1').addClass('lodingText');
-            }
-        });
-        function startLoading(){
-            $('#loadingSpan').css('display','initial');
-            $('html').css('cursor','wait');
-            loadingInterval = setInterval(changeColor,100);
-        }
-        function finishLoading(){
-            $('#loadingSpan').css('display','none');
-            $('html').css('cursor','default');
-            clearInterval(loadingInterval);
-        }
-    </script>
+    });
+    function startLoading(){
+        $('#loadingSpan').css('display','initial');
+        $('html').css('cursor','wait');
+        loadingInterval = setInterval(changeColor,100);
+    }
+    function finishLoading(){
+        $('#loadingSpan').css('display','none');
+        $('html').css('cursor','default');
+        clearInterval(loadingInterval);
+    }
+</script>
 <span id='loadingSpan'></span>

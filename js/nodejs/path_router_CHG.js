@@ -100,8 +100,10 @@ router.get("/my", function(req, res){
 
             function dbEtherConn(result2, result3, dntl, coin, txlist, txpage, idx, arr){
                 dbconn.resultQuery("select nickname, coinaddress from users where coinaddress = '"+txlist[idx].from+"' or coinaddress = '"+txlist[idx].to+"'", function(result){
-                    arr.push(result.rows[0]);
-                    arr.push(result.rows[1]);
+                    if(result.rows[1] != null){
+                        arr.push(result.rows[0]);
+                        arr.push(result.rows[1]);
+                    }
 
                     if(txlist.length - 1 == idx){
                         listing(result2, result3, dntl, coin, txlist, txpage, arr);
@@ -117,6 +119,7 @@ router.get("/my", function(req, res){
                     res.send(ejs.render(include.import_default() + data, {
                         logo: include.logo(),
                         main_header: include.main_header(req.session.user_id),
+                        loading: include.loading(),
                         my: result,
                         list: result2,
                         page: result3,
@@ -398,8 +401,10 @@ router.get("/txpaging", function(req, res){
 
         function dbEtherConn(txlist, txpage, pfpv, idx, arr){
             dbconn.resultQuery("select nickname, coinaddress from users where coinaddress = '"+txlist[idx].from+"' or coinaddress = '"+txlist[idx].to+"'", function(result){
-                arr.push(result.rows[0]);
-                arr.push(result.rows[1]);
+                if(result.rows[1] != null){
+                    arr.push(result.rows[0]);
+                    arr.push(result.rows[1]);
+                }
 
                 if(txlist.length - 1 == idx){
                     res.send({txlist: txlist, txpage: txpage, pfpv: pfpv, converter: arr});
@@ -430,8 +435,10 @@ router.get("/tx/searchandsort", function(req, res){
 
         function dbEtherConn(txlist, txpage, pfpv, idx, arr){
             dbconn.resultQuery("select nickname, coinaddress from users where coinaddress = '"+txlist[idx].from+"' or coinaddress = '"+txlist[idx].to+"'", function(result){
-                arr.push(result.rows[0]);
-                arr.push(result.rows[1]);
+                if(result.rows[1] != null){
+                    arr.push(result.rows[0]);
+                    arr.push(result.rows[1]);
+                }
 
                 if(txlist.length - 1 == idx){
                     res.send({txlist: txlist, txpage: txpage, pfpv: pfpv, converter: arr});
@@ -546,6 +553,7 @@ router.get("/channel", function(req, res){
                 res.send(ejs.render(include.import_default() + data, {
                     logo: include.logo(),
                     main_header: include.main_header(req.session.user_id),
+                    loading: include.loading(),
                     my: result,
                     list: result2,
                     page: result3,

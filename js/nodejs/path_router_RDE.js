@@ -215,9 +215,7 @@ router.post("/login", function (req, res) {
     var id = req.body.id1;
     var pw = req.body.pw1;
     var preURL = req.body.preURL;
-    console.log(1, req.session);
     delete req.session.vn;
-    console.log(2, req.session);
     dbconn.resultQuery("select name, nickname, email, cellphone from users where id='" + id + "'", function (result) {
         if (result.rows.length == 0) {
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
