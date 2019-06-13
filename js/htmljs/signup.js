@@ -110,16 +110,6 @@ $(document).on("click","#auth_btn",function(){
         }
     });
 });  //휴대폰 번호 본인인증 부분.
-var back=0;
-$(window).on("beforeunload",function(){
-    $.ajax({
-        url:'/unload',
-        dataType:'json',
-        type:'POST',
-    });
-    back=1;
-    return '나가시겠습니까?';
-}); 
 
 
 
