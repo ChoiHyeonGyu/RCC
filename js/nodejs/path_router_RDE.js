@@ -141,7 +141,7 @@ router.post("/signup", function(req, res){
                 } else {
                     res.writeHead(200 ,{'Content-Type' : 'text/html; charset=utf-8'} );
                     res.write("<script>alert('signup!');</script>")
-                    res.end('<script>history.go(-2);</script>')
+                    res.end('<script>location.href="/"</script>')
                 }
             });
         });

@@ -191,6 +191,7 @@ function checkval(){
         alert("휴대폰 인증을 해주세요!");
         return false;
     }*/
+    document.forms[0].submit();
 }
 
 
