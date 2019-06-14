@@ -166,8 +166,8 @@
                             <% for(var i=0;i<commentsResult.rows.length;i++){ %>
                                 <% deleteBtn=""; if(user==commentsResult.rows[i][4]){ deleteBtn+='<button class="btn btn-light fr mg-10n0" onclick=deleteCommentsClick('+commentsResult.rows[i][0]+');>x</button>' } %>
                                 <%
-                                    if(commentsResult.rows[i][4]=='admin')commentsResult.rows[i][4]="<span style='color:#ef7c7c;font-weight:bold;'>"+commentsResult.rows[i][4]+"</span>";
-                                    else if(commentsResult.rows[i][4]==postResult.rows[0][1])commentsResult.rows[i][4]="<span style='font-weight:bold;'>"+commentsResult.rows[i][4]+"</span>";
+                                    if(commentsResult.rows[i][4]=='admin')commentsResult.rows[i][4]="<span style='color:#ef7c7c;font-weight:bold;' onclick=location.href='/channel?chnlid="+commentsResult.rows[i][4]+"'>"+commentsResult.rows[i][4]+"</span>";
+                                    else if(commentsResult.rows[i][4]==postResult.rows[0][1])commentsResult.rows[i][4]="<span style='font-weight:bold;' onclick=location.href='/channel?chnlid="+commentsResult.rows[i][4]+"'>"+commentsResult.rows[i][4]+"</span>";
                                 %>
                             <tr>
                                 <td class='commentInfo'><span class='hover-pointer' onclick="location.href='/channel?chnlid=<%= commentsResult.rows[i][4] %>'"><%- commentsResult.rows[i][4] %></span> <%= commentsResult.rows[i][3] %></td>

@@ -14,8 +14,8 @@ var cateNav = false;
 var categoryNav = "";
 var BFcateNavPage = "";
 var CMcateNavPage = "";
-var categoryList={'rows':[]};
-var categoryDetailList={'rows':[]};
+var categoryList = { 'rows': [] };
+var categoryDetailList = { 'rows': [] };
 
 
 router.get("*", function (req, res, next) {
@@ -33,31 +33,31 @@ function initCategoryNav(callback) {
             cateDetailList(function (detailresult) {
                 for (var i = 0; i < result.rows.length; i++) {
                     if (result.rows[i][0] == 0) continue;
-                    categoryList.rows.push([result.rows[i][0],result.rows[i][1]]);
+                    categoryList.rows.push([result.rows[i][0], result.rows[i][1]]);
                 }
                 for (var j = 0; j < detailresult.rows.length; j++) {
                     if (detailresult.rows[j][0] == 0) continue;
-                    categoryDetailList.rows.push([detailresult.rows[j][0],detailresult.rows[j][1],detailresult.rows[j][2]]);
+                    categoryDetailList.rows.push([detailresult.rows[j][0], detailresult.rows[j][1], detailresult.rows[j][2]]);
                 }
                 for (var i = 1; i <= result.rows.length; i++) {
                     if (result.rows[i - 1][0] == 0) continue;
                     categoryNav += "<ul class=''>";
                     categoryNav += "<li class=''>";
                     categoryNav += "<span class='nav-link hover-pointer categoryHead cate navHover ' id='categoryId" + result.rows[i - 1][0] + "' onclick='clickNav(this.nextSibling)'>";
-                    categoryNav += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+result.rows[i - 1][1];
+                    categoryNav += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + result.rows[i - 1][1];
                     categoryNav += "<span style='float:right;font-weight:bold;padding:0px;transition:none;transition:transform 0.28s ease'>&nbsp;&nbsp;〉&nbsp;&nbsp;</span>";
                     categoryNav += "</span>";
                     categoryNav += "<ul class='collapse ofh dbnh0' id='detail" + result.rows[i - 1][0] + "' aria-expanded='false'>";
                     categoryNav += "<li class=''>";
                     categoryNav += '<a class="nav-link childColor cateChild navHover hover-pointer" href="/breifing_detail?detailId=0&cateId=' + result.rows[i - 1][0] +
-                    '&pageNo=1" id="categoryDetailId'+result.rows[i - 1][0]+'00">전체</a>';
+                        '&pageNo=1" id="categoryDetailId' + result.rows[i - 1][0] + '00">전체</a>';
                     categoryNav += "</li>";
                     for (var j = 1; j <= detailresult.rows.length; j++) {
                         if (detailresult.rows[j - 1][0] == 0) continue;
                         if (detailresult.rows[j - 1][1] == result.rows[i - 1][0]) {
                             categoryNav += "<li class=''>";
                             categoryNav += '<a class="nav-link childColor cateChild navHover hover-pointer" href="/breifing_detail?detailId=' + detailresult.rows[j - 1][0] + '&cateId=' + detailresult.rows[j - 1][1] +
-                            '&pageNo=1" id="categoryDetailId' + detailresult.rows[j - 1][0] + '">' + detailresult.rows[j - 1][2] + '</a>';
+                                '&pageNo=1" id="categoryDetailId' + detailresult.rows[j - 1][0] + '">' + detailresult.rows[j - 1][2] + '</a>';
                             categoryNav += "</li>";
                         }
                     }
@@ -73,20 +73,20 @@ function initCategoryNav(callback) {
                     categoryNav += "<ul class=''>";
                     categoryNav += "<li class=''>";
                     categoryNav += "<span class='nav-link hover-pointer categoryHead cate navHover ' id='categoryId" + result.rows[i - 1][0] + "' onclick='clickNav(this.nextSibling)'>";
-                    categoryNav += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+result.rows[i - 1][1];
+                    categoryNav += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + result.rows[i - 1][1];
                     categoryNav += "<span style='float:right;font-weight:bold;padding:0px;transition:none;transition:transform 0.28s ease'>&nbsp;&nbsp;〉&nbsp;&nbsp;</span>";
                     categoryNav += "</span>";
                     categoryNav += "<ul class='collapse ofh dbnh0' id='detail" + result.rows[i - 1][0] + "' aria-expanded='false'>";
                     categoryNav += "<li class=''>";
                     categoryNav += '<a class="nav-link childColor cateChild navHover hover-pointer" href="/commentary_detail?detailId=0&cateId=' + result.rows[i - 1][0] +
-                    '&pageNo=1" id="categoryDetailId'+result.rows[i - 1][0]+'00">전체</a>';
+                        '&pageNo=1" id="categoryDetailId' + result.rows[i - 1][0] + '00">전체</a>';
                     categoryNav += "</li>";
                     for (var j = 1; j <= detailresult.rows.length; j++) {
                         if (detailresult.rows[j - 1][0] == 0) continue;
                         if (detailresult.rows[j - 1][1] == result.rows[i - 1][0]) {
                             categoryNav += "<li class=''>";
                             categoryNav += '<a class="nav-link childColor cateChild navHover hover-pointer" href="/commentary_detail?detailId=' + detailresult.rows[j - 1][0] + '&cateId=' + detailresult.rows[j - 1][1] +
-                            '&pageNo=1" id="categoryDetailId' + detailresult.rows[j - 1][0] + '">' + detailresult.rows[j - 1][2] + '</a>';
+                                '&pageNo=1" id="categoryDetailId' + detailresult.rows[j - 1][0] + '">' + detailresult.rows[j - 1][2] + '</a>';
                             categoryNav += "</li>";
                         }
                     }
@@ -131,7 +131,7 @@ function paging(str, detailstr, page_size, page_list_size, currPage, callback) {
         //1 1~6 2 7~12
         startPage = parseInt((currPage - 1) / 10) * 10 + 1;
         endPage = parseInt((currPage - 1) / 10) * 10 + page_list_size;
-        if (parseInt(totalCount / page_size) < endPage) endPage = parseInt(totalCount / page_size)==(totalCount / page_size) ? parseInt(totalCount / page_size) : parseInt(totalCount / page_size)+1;
+        if (parseInt(totalCount / page_size) < endPage) endPage = parseInt(totalCount / page_size) == (totalCount / page_size) ? parseInt(totalCount / page_size) : parseInt(totalCount / page_size) + 1;
         if (parseInt((currPage - 1) / 10) == 0) preBtn = 0;
         if (parseInt(totalCount / page_size) <= endPage) nextBtn = 0;
         var pageResult = {
@@ -140,7 +140,7 @@ function paging(str, detailstr, page_size, page_list_size, currPage, callback) {
             nextBtn: nextBtn,
             preBtn: preBtn,
             curPage: currPage,
-            pageCount:pageCount
+            pageCount: pageCount
         };
 
         var pageQuery = detailstr;
@@ -162,35 +162,35 @@ function hashTag(pageList, callback) {
     });
 }
 
-function getMainBreifing(callback){
-    dbconn.resultQuery("select h.*,cate.cate from (select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline)).EXTRACT('//text()').GETSTRINGVAL(),2) headline "+
-    "from (select b.pid,nvl(h.headline,substr((select headline from briefingdetail where bid=b.bid),0,47)||'...') as headline from"+
-    "(select pid,bid from briefingdetail where pid in (select c.pid from ("+
-    "select pid from (select rownum row1, c.* from (select post.pid from post where briefing=1 order by pdate desc) c) where row1>=1 and row1<=4) c)) b left join (select bid,headline from briefingdetail) h on b.bid=h.bid and length(h.headline)<50) group by pid) h,"+
-    "(select post.pid,category.CATEGORYNAME ||' - '||catedetail.DETAILNAME as cate from (select * from (select * from (select rownum row1, c.* from (select * from post where briefing=1 order by pdate desc) c) where row1>=1 and row1<=6) c where row1>=1 and row1<=5) post,category,catedetail where post.cate=category.CATEGORYID and post.CATEDETAIL = catedetail.DETAILID) cate where h.pid=cate.pid"
-    ,function(result){
-        callback(result);
-    });
+function getMainBreifing(callback) {
+    dbconn.resultQuery("select h.*,cate.cate from (select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline)).EXTRACT('//text()').GETSTRINGVAL(),2) headline " +
+        "from (select b.pid,nvl(h.headline,substr((select headline from briefingdetail where bid=b.bid),0,47)||'...') as headline from" +
+        "(select pid,bid from briefingdetail where pid in (select c.pid from (" +
+        "select pid from (select rownum row1, c.* from (select post.pid from post where briefing=1 order by pdate desc) c) where row1>=1 and row1<=4) c)) b left join (select bid,headline from briefingdetail) h on b.bid=h.bid and length(h.headline)<50) group by pid) h," +
+        "(select post.pid,category.CATEGORYNAME ||' - '||catedetail.DETAILNAME as cate from (select * from (select * from (select rownum row1, c.* from (select * from post where briefing=1 order by pdate desc) c) where row1>=1 and row1<=6) c where row1>=1 and row1<=5) post,category,catedetail where post.cate=category.CATEGORYID and post.CATEDETAIL = catedetail.DETAILID) cate where h.pid=cate.pid"
+        , function (result) {
+            callback(result);
+        });
 }
-function getMainCommentary(callback){
+function getMainCommentary(callback) {
     dbconn.resultQuery("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 and pid in (select pid from (select rownum row1,c.pid from (select pid from post where briefing=0 order by pdate desc) c) where row1>=1 and row1<=12)) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc"
-    ,function(result){
-        callback(result);
-    });
+        , function (result) {
+            callback(result);
+        });
 }
-function getMainUsers(callback){
+function getMainUsers(callback) {
     dbconn.resultQuery("select users.*,nvl(cntp.cnt,0) cntc,nvl(cntp.vcnt,0) cost from (select users.*,nvl(cntp.cntb,0),nvl(cntp.vcnt,0) from (select * from (select rownum row1, u.* from (select channeluser,count(*) cnt from subscribe group by channeluser order by cnt desc) u) where row1>=1 and row1<=12) users left join (select userid,count(*) cntb,sum(viewcount) vcnt from post where briefing=1 group by userid) cntp on cntp.userid = users.channeluser) users left join (select post.userid,count(*) cnt ,sum(cost) vcnt from commentary, post where post.pid=commentary.pid and post.briefing=0 group by post.userid) cntp on users.channeluser=cntp.userid"
-    ,function(result){
-        callback(result);
-    });
+        , function (result) {
+            callback(result);
+        });
 }
 
 router.get("/", function (req, res) {
     //main에 가기전 게시판에 띄울 정보 로드
     //추가로 가능하다면 ajax로 글 등록시 다시 로드
-    getMainBreifing(function(bResult){
-        getMainCommentary(function(cResult){
-            getMainUsers(function(uResult){
+    getMainBreifing(function (bResult) {
+        getMainCommentary(function (cResult) {
+            getMainUsers(function (uResult) {
                 //console.log(1,bResult)
                 //console.log(2,cResult)
                 //console.log(3,uResult)
@@ -201,9 +201,9 @@ router.get("/", function (req, res) {
                         navigator: include.navigator(),
                         navigator_side: include.navigator_side(),
                         footer: include.footer(),
-                        bResult:bResult,
-                        cResult:cResult,
-                        uResult:uResult
+                        bResult: bResult,
+                        cResult: cResult,
+                        uResult: uResult
                     }));
                 });
             });
@@ -211,26 +211,26 @@ router.get("/", function (req, res) {
     });
 });
 
-function getBreifingResult(pageListString, sort, callback){
-    var sort1=("select post.pid,h.hl,c.cate,post.pdate from post,"+
-    "(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,pdate from( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, pdate asc) b group by b.pid) h,"+
-    "(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c"+
-    " where post.pid = h.pid and post.pid = c.pid "+pageListString+" order by post.pdate desc");
-    var sort2=("select post.pid,h.hl,c.cate,post.pdate from post,"+
-    "(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,pdate from( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, pdate asc) b group by b.pid) h,"+
-    "(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c"+
-    " where post.pid = h.pid and post.pid = c.pid "+pageListString+" order by post.pdate asc");
+function getBreifingResult(pageListString, sort, callback) {
+    var sort1 = ("select post.pid,h.hl,c.cate,post.pdate from post," +
+        "(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,pdate from( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, pdate asc) b group by b.pid) h," +
+        "(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c" +
+        " where post.pid = h.pid and post.pid = c.pid " + pageListString + " order by post.pdate desc");
+    var sort2 = ("select post.pid,h.hl,c.cate,post.pdate from post," +
+        "(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,pdate from( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, pdate asc) b group by b.pid) h," +
+        "(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c" +
+        " where post.pid = h.pid and post.pid = c.pid " + pageListString + " order by post.pdate asc");
     var orderQuery;
-    orderQuery =  sort==1 ? sort1 : sort2;
+    orderQuery = sort == 1 ? sort1 : sort2;
     callback(orderQuery);
 }
 
-function getCommentaryResult(pageListString, sort, callback){
-    var sort1="select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc";
-    var sort2="select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate asc";
-    var sort3="select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 "+pageListString+") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by c.cost desc";
+function getCommentaryResult(pageListString, sort, callback) {
+    var sort1 = "select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 " + pageListString + ") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc";
+    var sort2 = "select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 " + pageListString + ") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate asc";
+    var sort3 = "select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select pid,pdate,userid from post where briefing=0 " + pageListString + ") p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by c.cost desc";
     var orderQuery;
-    orderQuery =  sort==1 ? sort1 : sort==2 ? sort2 : sort3;
+    orderQuery = sort == 1 ? sort1 : sort == 2 ? sort2 : sort3;
     callback(orderQuery);
 }
 
@@ -240,9 +240,9 @@ router.get("/breifing", function (req, res) {
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
     var sort = req.param('sort');
-    if(sort == undefined)sort=1;
-    var order = sort==1 ? "desc" : "asc";
-    paging("select pid from post where briefing=1", "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 order by pdate "+order+")) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
+    if (sort == undefined) sort = 1;
+    var order = sort == 1 ? "desc" : "asc";
+    paging("select pid from post where briefing=1", "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 order by pdate " + order + ")) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
         var pageListString;
         if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
         else {
@@ -252,7 +252,7 @@ router.get("/breifing", function (req, res) {
             }
             pageListString += ")";
         }
-        getBreifingResult(pageListString,sort,function(orderQuery){
+        getBreifingResult(pageListString, sort, function (orderQuery) {
             query(orderQuery,
                 function (result) {
                     fs.readFile("breifing/breifing.html", "utf-8", function (error, data) {
@@ -265,7 +265,7 @@ router.get("/breifing", function (req, res) {
                             contentsSideNav: BFcateNavPage,
                             result: result,
                             pagingResult: pageResult,
-                            sort:sort
+                            sort: sort
                         }));
                     });
                 });
@@ -312,8 +312,8 @@ function subscribeCheck(writer, viewer, callback) {
     });
 }
 
-function updateViewCount(postNo){
-    dbconn.booleanQuery("update post set viewCount = (select viewcount+1 from post where pid="+postNo+") where pid="+postNo,function(result){
+function updateViewCount(postNo) {
+    dbconn.booleanQuery("update post set viewCount = (select viewcount+1 from post where pid=" + postNo + ") where pid=" + postNo, function (result) {
 
     });
 }
@@ -444,12 +444,13 @@ function createHashTag(pid, hashTag) {
     });
 }
 
-function modifyPost(postId, callback) {
+function modifyPost(postId, category, detail, callback) {
     //글 정보가서 수정함.
     //기존 헤드라인 삭제 후 재생성
     //해시태그도 삭제후 재생성
     //summary의 경우 수정
-    dbconn.booleanQuery("update post set pdate=sysdate where pid=" + postId, function (result) {
+    //카테고리 수정된 것 반영할 것
+    dbconn.booleanQuery("update post set cate=" + category + ",catedetail=" + detail + ",pdate=sysdate where pid=" + postId, function (result) {
         callback(result);
     });
 }
@@ -477,10 +478,9 @@ function updateSummary(postId, summary, callback) {
     });
 }
 router.post("/breifing_write", function (req, res) {
-    var preURL = req.body['preURL'];
     if (req.param('modify') != null) {
         var postId = req.param('modify');
-        modifyPost(postId, function (postResult) {
+        modifyPost(postId, req.body.category, req.body.detail, function (postResult) {
             if (postResult) {
                 deleteHeadLine(postId, function (dhlresult) {
                     var head = "headline";
@@ -500,49 +500,51 @@ router.post("/breifing_write", function (req, res) {
                         }
                         updateSummary(postId, req.body['summary'], function (result) {
                             res.write("<script>alert('Modified');</script>");
-                            res.end('<script>location.href="' + preURL + '"</script>')
+                            res.end('<script>location.href="/breifing?pageNo=1";</script>')
                         });
                     });
                 });
             }
             else {
                 res.write("<script>alert('ERROR');</script>");
-                res.end('<script>location.href="' + preURL + '"</script>')
+                res.end('<script>history.back();</script>')
             }
         });
         return;
     }
-    createPost(req.session.user_id, req.body.category, req.body.detail, 1, function (postId) {
-        if (postId == false) {
-            res.write("<script>alert('Write Failed');</script>");
-            res.end('<script>location.href="' + preURL + '"</script>')
-        }
-        else {
-            var head = "headline";
-            var headUrl = 'url';
-            for (var i = 1; i <= req.body.headCount; i++) {
-                var headLine = req.body[(head + i).toString()];
-                var url = req.body[(headUrl + i).toString()];
-                if (headLine.length == 0 || url.length == 0) continue;
-                createBreifingDetail(postId, headLine, url);
+    else {
+        createPost(req.session.user_id, req.body.category, req.body.detail, 1, function (postId) {
+            if (postId == false) {
+                res.write("<script>alert('Write Failed');</script>");
+                res.end('<script>history.back();</script>')
             }
-            createBreifingSummary(postId, req.body['summary']);
-            var hashTag = req.body['hashTag'].split("#");
-            for (var i = 1; i < hashTag.length; i++) {
-                var hash = hashTag[i].trim();
-                if (hash.length == 0) continue;
-                createHashTag(postId, hash);
+            else {
+                var head = "headline";
+                var headUrl = 'url';
+                for (var i = 1; i <= req.body.headCount; i++) {
+                    var headLine = req.body[(head + i).toString()];
+                    var url = req.body[(headUrl + i).toString()];
+                    if (headLine.length == 0 || url.length == 0) continue;
+                    createBreifingDetail(postId, headLine, url);
+                }
+                createBreifingSummary(postId, req.body['summary']);
+                var hashTag = req.body['hashTag'].split("#");
+                for (var i = 1; i < hashTag.length; i++) {
+                    var hash = hashTag[i].trim();
+                    if (hash.length == 0) continue;
+                    createHashTag(postId, hash);
+                }
             }
-        }
-    });
-    //1. 유저 정보로 포스트를 생성한다.
-    //2. 작성한 헤드라인 만큼 쿼리를 보낸다.
-    //3. 글의 세부정보를 보낸다.
-    //4. 작성완료
-    //err. 
-    res.writeHead(302, { "Location": preURL });
-    res.write("<script>alert('Write Success');</script>");
-    res.end();
+        });
+        //1. 유저 정보로 포스트를 생성한다.
+        //2. 작성한 헤드라인 만큼 쿼리를 보낸다.
+        //3. 글의 세부정보를 보낸다.
+        //4. 작성완료
+        //err. 
+        res.writeHead(302, { "Location": "/breifing?pageNo=1" });
+        res.write("<script>alert('Write Success');</script>");
+        res.end();
+    }
 });
 
 router.get("/breifing_detail", function (req, res) {
@@ -554,13 +556,13 @@ router.get("/breifing_detail", function (req, res) {
     var cateId = req.param('cateId');
     var detailId = req.param('detailId');
     var sort = req.param('sort');
-    if(sort == undefined)sort=1;
-    var order = sort==1 ? "desc" : "asc";
+    if (sort == undefined) sort = 1;
+    var order = sort == 1 ? "desc" : "asc";
 
     if (detailId == undefined) {
         detailId = null;
         paging(("select pid from post where briefing=1 and cate=" + cateId),
-            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 and cate=" + cateId + " order by pdate "+order+")) where row2>=" + startPost + " and row2<=" + endPost,
+            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 and cate=" + cateId + " order by pdate " + order + ")) where row2>=" + startPost + " and row2<=" + endPost,
             page_size, page_list_size, currPage, function (pageResult, pageList) {
                 var pageListString;
                 if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
@@ -571,7 +573,7 @@ router.get("/breifing_detail", function (req, res) {
                     }
                     pageListString += ")";
                 }
-                getBreifingResult(pageListString,sort,function(orderQuery){
+                getBreifingResult(pageListString, sort, function (orderQuery) {
                     query(orderQuery,
                         function (result) {
                             //hashResult가 필요하다
@@ -589,7 +591,7 @@ router.get("/breifing_detail", function (req, res) {
                                         hashResult, hashResult,
                                         cateId: cateId,
                                         detailId: detailId,
-                                        sort:sort
+                                        sort: sort
                                     }));
                                 });
                             });
@@ -599,9 +601,9 @@ router.get("/breifing_detail", function (req, res) {
     }
     else {
         var tempId = detailId;
-        if(tempId == 0 )tempId='catedetail';
+        if (tempId == 0) tempId = 'catedetail';
         paging(("select pid from post where briefing=1 and cate=" + cateId + " and catedetail=" + tempId),
-            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate "+order+")) where row2>=" + startPost + " and row2<=" + endPost,
+            "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate " + order + ")) where row2>=" + startPost + " and row2<=" + endPost,
             page_size, page_list_size, currPage, function (pageResult, pageList) {
                 var pageListString;
                 if (pageList.rows.length == 0) pageListString = "and (post.pid=-1)";
@@ -613,7 +615,7 @@ router.get("/breifing_detail", function (req, res) {
                     pageListString += ")";
                 }
 
-                getBreifingResult(pageListString,sort,function(orderQuery){
+                getBreifingResult(pageListString, sort, function (orderQuery) {
                     query(orderQuery,
                         function (result) {
                             //hashResult가 필요하다
@@ -631,7 +633,7 @@ router.get("/breifing_detail", function (req, res) {
                                         hashResult, hashResult,
                                         cateId: cateId,
                                         detailId: detailId,
-                                        sort:sort
+                                        sort: sort
                                     }));
                                 });
                             });
@@ -646,14 +648,14 @@ router.get("/commentary", function (req, res) {
     var currPage = req.param('pageNo');
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
-    
+
     var sort = req.param('sort');
-    if(sort == undefined)sort=1;
-    var sort1="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
-    var sort2="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
-    var sort3="select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and commentary.pid=post.pid order by commentary.cost desc)) where row2>="+startPost+" and row2<="+endPost;
+    if (sort == undefined) sort = 1;
+    var sort1 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
+    var sort2 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
+    var sort3 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and commentary.pid=post.pid order by commentary.cost desc)) where row2>=" + startPost + " and row2<=" + endPost;
     var order;
-    order =  sort==1 ? sort1 : sort==2 ? sort2 : sort3;
+    order = sort == 1 ? sort1 : sort == 2 ? sort2 : sort3;
 
     paging("select pid from post where briefing=0",
         order, page_size, 10, currPage, function (pageResult, pageList) {
@@ -666,30 +668,30 @@ router.get("/commentary", function (req, res) {
                 }
                 pageListString += ")";
             }
-            getCommentaryResult(pageListString,sort,function(orderQuery){
+            getCommentaryResult(pageListString, sort, function (orderQuery) {
                 query(orderQuery,
-                function (result) {
-                    fs.readFile("commentary/commentary.html", "utf-8", function (error, data) {
-                        res.send(ejs.render(include.import_default() + data, {
-                            logo: include.logo(),
-                            main_header: include.main_header(req.session.user_id),
-                            navigator: include.navigator(),
-                            navigator_side: include.navigator_side(),
-                            footer: include.footer(),
-                            contentsSideNav: CMcateNavPage,
-                            result: result,
-                            pagingResult: pageResult,
-                            sort:sort
-                        }));
+                    function (result) {
+                        fs.readFile("commentary/commentary.html", "utf-8", function (error, data) {
+                            res.send(ejs.render(include.import_default() + data, {
+                                logo: include.logo(),
+                                main_header: include.main_header(req.session.user_id),
+                                navigator: include.navigator(),
+                                navigator_side: include.navigator_side(),
+                                footer: include.footer(),
+                                contentsSideNav: CMcateNavPage,
+                                result: result,
+                                pagingResult: pageResult,
+                                sort: sort
+                            }));
+                        });
                     });
-                });
             })
         });
 });
 
 function getCommentBycommentNo(commId, callback) {
-    dbconn.resultQuery("select * from comments where cid=" + commId+" order by cdate", function (result) {
-        for(var i=0;i<result.rows.length;i++){
+    dbconn.resultQuery("select * from comments where cid=" + commId + " order by cdate", function (result) {
+        for (var i = 0; i < result.rows.length; i++) {
             result.rows[i][3] = moment(result.rows[i][3]).format("YY.MM.DD HH:mm:ss");
         }
         callback(result);
@@ -746,15 +748,15 @@ router.get("/commentary_detail", function (req, res) {
     var cateId = req.param('cateId');
     var detailId = req.param('detailId');
     var sort = req.param('sort');
-    if(sort == undefined)sort=1;
+    if (sort == undefined) sort = 1;
     if (detailId == undefined) {
         detailId = null;
-        
-        var sort1="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
-        var sort2="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
-        var sort3="select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and cate=" + cateId + " and commentary.pid=post.pid order by commentary.cost desc)) where row2>="+startPost+" and row2<="+endPost;
+
+        var sort1 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
+        var sort2 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
+        var sort3 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and cate=" + cateId + " and commentary.pid=post.pid order by commentary.cost desc)) where row2>=" + startPost + " and row2<=" + endPost;
         var order;
-        order =  sort==1 ? sort1 : sort==2 ? sort2 : sort3;
+        order = sort == 1 ? sort1 : sort == 2 ? sort2 : sort3;
         paging(("select pid from post where briefing=0 and cate=" + cateId),
             order,
             page_size, page_list_size, currPage, function (pageResult, pageList) {
@@ -767,40 +769,40 @@ router.get("/commentary_detail", function (req, res) {
                     }
                     pageListString += ")";
                 }
-                getCommentaryResult(pageListString,sort,function(orderQuery){
+                getCommentaryResult(pageListString, sort, function (orderQuery) {
                     query(orderQuery,
-                    function (result) {
-                        //hashResult가 필요하다
-                        hashTag(pageList, function (hashResult) {
-                            fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
-                                res.send(ejs.render(include.import_default() + data, {
-                                    logo: include.logo(),
-                                    main_header: include.main_header(req.session.user_id),
-                                    navigator: include.navigator(),
-                                    navigator_side: include.navigator_side(),
-                                    footer: include.footer(),
-                                    contentsSideNav: CMcateNavPage,
-                                    result: result,
-                                    pagingResult: pageResult,
-                                    hashResult, hashResult,
-                                    cateId: cateId,
-                                    detailId: detailId,
-                                    sort:sort
-                                }));
+                        function (result) {
+                            //hashResult가 필요하다
+                            hashTag(pageList, function (hashResult) {
+                                fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
+                                    res.send(ejs.render(include.import_default() + data, {
+                                        logo: include.logo(),
+                                        main_header: include.main_header(req.session.user_id),
+                                        navigator: include.navigator(),
+                                        navigator_side: include.navigator_side(),
+                                        footer: include.footer(),
+                                        contentsSideNav: CMcateNavPage,
+                                        result: result,
+                                        pagingResult: pageResult,
+                                        hashResult, hashResult,
+                                        cateId: cateId,
+                                        detailId: detailId,
+                                        sort: sort
+                                    }));
+                                });
                             });
                         });
-                    });
                 });
             });
     }
     else {
         var tempId = detailId;
-        if(tempId == 0 )tempId='catedetail';
-        var sort1="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
-        var sort2="select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
-        var sort3="select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " and commentary.pid=post.pid order by commentary.cost desc)) where row2>="+startPost+" and row2<="+endPost;
+        if (tempId == 0) tempId = 'catedetail';
+        var sort1 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
+        var sort2 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
+        var sort3 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, post.pid from post,commentary where briefing=0 and cate=" + cateId + " and catedetail=" + tempId + " and commentary.pid=post.pid order by commentary.cost desc)) where row2>=" + startPost + " and row2<=" + endPost;
         var order;
-        order =  sort==1 ? sort1 : sort==2 ? sort2 : sort3;
+        order = sort == 1 ? sort1 : sort == 2 ? sort2 : sort3;
         paging(("select pid from post where briefing=0 and cate=" + cateId + " and catedetail=" + tempId),
             order,
             page_size, page_list_size, currPage, function (pageResult, pageList) {
@@ -813,29 +815,29 @@ router.get("/commentary_detail", function (req, res) {
                     }
                     pageListString += ")";
                 }
-                getCommentaryResult(pageListString,sort,function(orderQuery){
+                getCommentaryResult(pageListString, sort, function (orderQuery) {
                     query(orderQuery,
-                    function (result) {
-                        //hashResult가 필요하다
-                        hashTag(pageList, function (hashResult) {
-                            fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
-                                res.send(ejs.render(include.import_default() + data, {
-                                    logo: include.logo(),
-                                    main_header: include.main_header(req.session.user_id),
-                                    navigator: include.navigator(),
-                                    navigator_side: include.navigator_side(),
-                                    footer: include.footer(),
-                                    contentsSideNav: CMcateNavPage,
-                                    result: result,
-                                    pagingResult: pageResult,
-                                    hashResult, hashResult,
-                                    cateId: cateId,
-                                    detailId: detailId,
-                                    sort:sort
-                                }));
+                        function (result) {
+                            //hashResult가 필요하다
+                            hashTag(pageList, function (hashResult) {
+                                fs.readFile("commentary/commentary_detail.html", "utf-8", function (error, data) {
+                                    res.send(ejs.render(include.import_default() + data, {
+                                        logo: include.logo(),
+                                        main_header: include.main_header(req.session.user_id),
+                                        navigator: include.navigator(),
+                                        navigator_side: include.navigator_side(),
+                                        footer: include.footer(),
+                                        contentsSideNav: CMcateNavPage,
+                                        result: result,
+                                        pagingResult: pageResult,
+                                        hashResult, hashResult,
+                                        cateId: cateId,
+                                        detailId: detailId,
+                                        sort: sort
+                                    }));
+                                });
                             });
                         });
-                    }); 
                 });
             });
     }
@@ -868,8 +870,8 @@ function searching(req, res, search, type, callback) {
                     }
                     pageListString2 += ")";
                 }
-                query("select h.*,ht.hashtag from (select post.pid,h.hl,c.cate,post.pdate from post,(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,pdate from( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, pdate desc) b group by b.pid) h,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c where post.pid = h.pid and post.pid = c.pid "+pageListString+" order by post.pdate desc) h,"+
-                "(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag where "+pageListString2+" group by hashtag.PID) ht where h.pid=ht.pid",
+                query("select h.*,ht.hashtag from (select post.pid,h.hl,c.cate,post.pdate from post,(select PID,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', b.headline)).EXTRACT('//text()').GETSTRINGVAL(),2) hl from (select pid,headline,pdate from( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid) where rn <=3 order by pid desc, pdate desc) b group by b.pid) h,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) c where post.pid = h.pid and post.pid = c.pid " + pageListString + " order by post.pdate desc) h," +
+                    "(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag where " + pageListString2 + " group by hashtag.PID) ht where h.pid=ht.pid",
                     function (result) {
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
@@ -905,8 +907,8 @@ function searching(req, res, search, type, callback) {
                     }
                     pageListString += ")";
                 }
-                query("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select post.pid,post.pdate,post.userid,ht.hashtag from post,(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag "+
-                "where "+pageListString+" group by hashtag.PID) ht where post.briefing=0 and post.pid=ht.pid) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc",
+                query("select p.*,c.*,u.id,cate.cate from (select c.cid,c.pid,c.title,c.cost,cm.cnt from commentary c full outer join (select cid, count(*) as cnt from comments group by cid) cm on c.cid=cm.cid) c,(select post.pid,post.pdate,post.userid,ht.hashtag from post,(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag " +
+                    "where " + pageListString + " group by hashtag.PID) ht where post.briefing=0 and post.pid=ht.pid) p, users u,(select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where p.pid=c.pid and p.userid=u.id and cate.pid=p.pid order by p.pdate desc",
                     function (result) {
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
@@ -918,8 +920,8 @@ function searching(req, res, search, type, callback) {
                                 contentsSideNav: CMcateNavPage,
                                 result: result,
                                 pagingResult: pageResult,
-                                search:search,
-                                type:type
+                                search: search,
+                                type: type
                             }));
                         });
                     });
@@ -936,13 +938,13 @@ function searching(req, res, search, type, callback) {
                 var pageListString;
                 if (pageList.rows.length == 0) pageListString = "(u.id='-1')";
                 else {
-                    pageListString = "(u.id='" + pageList.rows[0][0]+"'";
+                    pageListString = "(u.id='" + pageList.rows[0][0] + "'";
                     for (var i = 1; i < pageList.rows.length; i++) {
-                        pageListString += " or u.id='" + pageList.rows[i][0]+"'";
+                        pageListString += " or u.id='" + pageList.rows[i][0] + "'";
                     }
                     pageListString += ")";
                 }
-                query("select u.id,u.pcnt,nvl(c.scnt,0) as scnt from (select users.*,NVL(u.pcnt,0) as pcnt from users left outer join (select userid as id,count(*) as pcnt from post group by userid) u on u.id=users.id) u left outer join (select channeluser,count(*) as scnt from subscribe group by channeluser) c on c.channeluser=u.id where "+pageListString,
+                query("select u.id,u.pcnt,nvl(c.scnt,0) as scnt from (select users.*,NVL(u.pcnt,0) as pcnt from users left outer join (select userid as id,count(*) as pcnt from post group by userid) u on u.id=users.id) u left outer join (select channeluser,count(*) as scnt from subscribe group by channeluser) c on c.channeluser=u.id where " + pageListString,
                     function (result) {
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
@@ -954,8 +956,8 @@ function searching(req, res, search, type, callback) {
                                 contentsSideNav: CMcateNavPage,
                                 result: result,
                                 pagingResult: pageResult,
-                                search:search,
-                                type:type
+                                search: search,
+                                type: type
                             }));
                         });
                     });
@@ -983,20 +985,20 @@ function searching(req, res, search, type, callback) {
                     pageListString += ")";
                 }
 
-                query("select h.*,cate.cate from (select h.*,c.cnt from "+
-                    "(select h.*,c.cost from "+
-                    "(select h.*,p.briefing,p.userid from "+
-                    "(select h.pid,h.hashtag,nvl(p.title,"+
-                    "(select title from commentary where pid=h.pid)) from "+
-                    "(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag where "+pageListString+" group by hashtag.PID) h "+
-                    "left outer join "+
-                    "(SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.pdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM "+
-                    "(select pid,headline,pdate from"+
-                    "( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid)"+
-                    "where rn <=3 order by pid desc, pdate desc) p GROUP BY p.pid"+
-                    ") p on p.pid=h.pid) h,post p where p.pid=h.pid) h "+
-                    "left join commentary c on h.pid=c.pid) h left join "+
-                    "(select commentary.pid,c.* from commentary,"+ 
+                query("select h.*,cate.cate from (select h.*,c.cnt from " +
+                    "(select h.*,c.cost from " +
+                    "(select h.*,p.briefing,p.userid from " +
+                    "(select h.pid,h.hashtag,nvl(p.title," +
+                    "(select title from commentary where pid=h.pid)) from " +
+                    "(select hashtag.pid ,SUBSTR(XMLAGG(XMLELEMENT(COL ,' #', keyword)).EXTRACT('//text()').GETSTRINGVAL(),2) hashtag from hashtag where " + pageListString + " group by hashtag.PID) h " +
+                    "left outer join " +
+                    "(SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.pdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM " +
+                    "(select pid,headline,pdate from" +
+                    "( select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid)" +
+                    "where rn <=3 order by pid desc, pdate desc) p GROUP BY p.pid" +
+                    ") p on p.pid=h.pid) h,post p where p.pid=h.pid) h " +
+                    "left join commentary c on h.pid=c.pid) h left join " +
+                    "(select commentary.pid,c.* from commentary," +
                     "(select cid, count(*) as cnt from comments group by cid) c where c.cid=commentary.cid) c on c.pid = h.pid) h, (select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID) cate where h.pid=cate.pid",
                     function (result) {
                         fs.readFile("search_result.html", "utf-8", function (error, data) {
@@ -1009,8 +1011,8 @@ function searching(req, res, search, type, callback) {
                                 contentsSideNav: CMcateNavPage,
                                 result: result,
                                 pagingResult: pageResult,
-                                search:search,
-                                type:type
+                                search: search,
+                                type: type
                             }));
                         });
                     });
@@ -1055,12 +1057,31 @@ function createCommentary(postId, title, contents, callback) {
     });
 }
 
+function updateCommentary(postNo, title, contents,callback){
+    title = title.split("\"").join("“");
+    title = title.split("\'").join("‘");
+    title = title.split("<").join("");
+    title = title.split(">").join("");
+    title = title.split("$(").join("");
+    contents = contents.split("\"").join("“");
+    contents = contents.split("\'").join("‘");
+    contents = contents.split("<").join("");
+    contents = contents.split(">").join("");
+    contents = contents.split("$(").join("");
+    contents = contents.split(" ").join("&nbsp;");
+    contents = contents.split("\n").join("<br>");
+    dbconn.booleanQuery("update commentary set content='"+contents+"', title='"+title+"' where pid="+postNo,function(){
+        callback();
+    });
+}
+
 router.post("/commentary_write", function (req, res) {
-    var preURL = req.body['preURL'];
     if (req.param('modify') != null) {
         var postId = req.param('modify');
-        modifyPost(postId, function (postResult) {
+        console.log(postId)
+        modifyPost(postId, req.body.category, req.body.detail, function (postResult) {
             if (postResult) {
+                console.log(postId)
                 deleteHeadLine(postId, function (dhlresult) {
                     var head = "headline";
                     var headUrl = 'url';
@@ -1070,6 +1091,7 @@ router.post("/commentary_write", function (req, res) {
                         if (headLine.length == 0 || url.length == 0) continue;
                         createBreifingDetail(postId, headLine, url);
                     }
+                    console.log(postId)
                     deleteHashTag(postId, function (dhtresult) {
                         var hashTag = req.body['hashTag'].split("#");
                         for (var i = 1; i < hashTag.length; i++) {
@@ -1077,42 +1099,47 @@ router.post("/commentary_write", function (req, res) {
                             if (hash.length == 0) continue;
                             createHashTag(postId, hash);
                         }
-                        updateSummary(postId, req.body['summary'], function (result) {
+                        console.log(postId)
+                        var title = req.body['commtitle'];
+                        var contents = req.body['commta'];
+                        updateCommentary(postId,title, contents,function(){
                             res.write("<script>alert('Modified');</script>");
-                            res.end('<script>location.href="' + preURL + '"</script>')
+                            res.end('<script>location.href="/commentary?pageNo=1";</script>')
                         });
                     });
                 });
             }
             else {
                 res.write("<script>alert('ERROR');</script>");
-                res.end('<script>location.href="' + preURL + '"</script>')
+                res.end('<script>history.back();</script>')
             }
         });
         return;
     }
-    createPost(req.session.user_id, req.body.category, req.body.detail, 0, function (postId) {
-        if (postId == false) {
-            res.write("<script>alert('Write Failed');</script>");
-            res.end('<script>location.href="' + preURL + '"</script>')
-        }
-        else {
-            var title = req.body['commtitle'];
-            var contents = req.body['commta'];
-            createCommentary(postId, title, contents, function (result) {
-
-            });
-            var hashTag = req.body['hashTag'].split("#");
-            for (var i = 1; i < hashTag.length; i++) {
-                var hash = hashTag[i].trim();
-                if (hash.length == 0) continue;
-                createHashTag(postId, hash);
+    else {
+        createPost(req.session.user_id, req.body.category, req.body.detail, 0, function (postId) {
+            if (postId == false) {
+                res.write("<script>alert('Write Failed');</script>");
+                res.end('<script>history.back();</script>')
             }
-        }
-    });
-    res.writeHead(302, { "Location": preURL });
-    res.write("<script>alert('Write Success');</script>");
-    res.end();
+            else {
+                var title = req.body['commtitle'];
+                var contents = req.body['commta'];
+                createCommentary(postId, title, contents, function (result) {
+
+                });
+                var hashTag = req.body['hashTag'].split("#");
+                for (var i = 1; i < hashTag.length; i++) {
+                    var hash = hashTag[i].trim();
+                    if (hash.length == 0) continue;
+                    createHashTag(postId, hash);
+                }
+            }
+        });
+        res.writeHead(302, { "Location": "/commentary?pageNo=1" });
+        res.write("<script>alert('Write Success');</script>");
+        res.end();
+    }
 });
 
 router.get("/commentary_write", function (req, res) {
@@ -1203,16 +1230,16 @@ router.post("/subscribe", function (req, res) {
     else res.send({ result: false });
 });
 
-function createComments(cid, comments, userId, callback){
+function createComments(cid, comments, userId, callback) {
     comments = comments.split("\"").join("“");
     comments = comments.split("\'").join("‘");
     comments = comments.split("<").join("");
     comments = comments.split(">").join("");
     comments = comments.split("$(").join("");
-    dbconn.booleanQuery("insert into comments values (comments_sequence.nextval,"+cid+",'"+comments+"',sysdate,'"+userId+"')",function(result){
-        if(result){
+    dbconn.booleanQuery("insert into comments values (comments_sequence.nextval," + cid + ",'" + comments + "',sysdate,'" + userId + "')", function (result) {
+        if (result) {
             //댓글리스트를 다시 불러와서 줌
-            getCommentBycommentNo(cid,function(result){
+            getCommentBycommentNo(cid, function (result) {
                 callback(result);
             });
         }
@@ -1225,8 +1252,8 @@ router.post("/comments", function (req, res) {
     var cid = req.body.cid;
     if (req.session.user_id != null) {
         createComments(cid, comments, req.session.user_id, function (result) {
-            if (result==false) res.send({ result: 'error' });
-            else res.send({ result: true,commentslist:result });
+            if (result == false) res.send({ result: 'error' });
+            else res.send({ result: true, commentslist: result });
         });
     }
     //에러메세지 출력
@@ -1249,14 +1276,14 @@ router.get("/delete", function (req, res) {
 });
 
 router.post("/getNavSubscribe", function (req, res) {
-    if(req.session.user_id==null) {
-        res.send({result:true});
+    if (req.session.user_id == null) {
+        res.send({ result: true });
         return;
     }
     //(navSize)*(currPage-1)+1
     //(navSize*currPage)
-    dbconn.resultQuery("select * from (select rownum row1, s.*,c.cnt from subscribe s,(select subscriber,count(*) as cnt from subscribe where subscriber='"+req.session.user_id+"' group by subscriber) c where c.subscriber=s.subscriber)",function(result){
-        res.send({result:true,list:result});
+    dbconn.resultQuery("select * from (select rownum row1, s.*,c.cnt from subscribe s,(select subscriber,count(*) as cnt from subscribe where subscriber='" + req.session.user_id + "' group by subscriber) c where c.subscriber=s.subscriber)", function (result) {
+        res.send({ result: true, list: result });
     });
     //최대 다섯명까지 출력. 다섯명이 넘으면 다음 버튼 생성. 다음 버튼 클릭시 이전 버튼 생성
 });
@@ -1264,9 +1291,9 @@ router.post("/delete_comments", function (req, res) {
     var cmid = req.body.cmid;
     var cid = req.body.cid;
     dbconn.booleanQuery("delete from comments where cmntid=" + cmid, function (result) {
-        if(result){
-            getCommentBycommentNo(cid,function(result){
-                res.send({ result: true,commentslist:result });
+        if (result) {
+            getCommentBycommentNo(cid, function (result) {
+                res.send({ result: true, commentslist: result });
             });
         }
         else res.send({ result: 'error' });
