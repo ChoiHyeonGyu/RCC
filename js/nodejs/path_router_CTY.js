@@ -6,6 +6,7 @@ var moment = require('moment');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
+const {sample, CF, evaluation} = require('nodeml');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -185,26 +186,49 @@ function getMainUsers(callback) {
         });
 }
 
+function collavorativeFiltering(userid,callback){
+    if(userid==null){
+        callback();
+        return;
+    }
+    callback();
+    return;
+    const movie = sample.movie(); // 영화 데이터셋 {movie_id: no, user_id: no, rating: num, like: num}
+    
+    let train = [], test = [];
+    for (let i = 0; i < movie.length; i++) {
+        if (Math.random() > 0.9) test.push(movie[i]);
+        else train.push(movie[i]);
+    }
+    
+    const cf = new CF();
+    cf.train(train, 'user_id', 'movie_id', 'rating');
+    console.log(cf.recommendToUser(12321,10))
+    callback();
+}
+
 router.get("/", function (req, res) {
     //main에 가기전 게시판에 띄울 정보 로드
     //추가로 가능하다면 ajax로 글 등록시 다시 로드
-    getMainBreifing(function (bResult) {
-        getMainCommentary(function (cResult) {
-            getMainUsers(function (uResult) {
-                //console.log(1,bResult)
-                //console.log(2,cResult)
-                //console.log(3,uResult)
-                fs.readFile("main.html", "utf-8", function (error, data) {
-                    res.send(ejs.render(include.import_default() + data, {
-                        logo: include.logo(),
-                        main_header: include.main_header(req.session.user_id),
-                        navigator: include.navigator(),
-                        navigator_side: include.navigator_side(),
-                        footer: include.footer(),
-                        bResult: bResult,
-                        cResult: cResult,
-                        uResult: uResult
-                    }));
+    collavorativeFiltering(req.session.user_id,function(){
+        getMainBreifing(function (bResult) {
+            getMainCommentary(function (cResult) {
+                getMainUsers(function (uResult) {
+                    //console.log(1,bResult)
+                    //console.log(2,cResult)
+                    //console.log(3,uResult)
+                    fs.readFile("main.html", "utf-8", function (error, data) {
+                        res.send(ejs.render(include.import_default() + data, {
+                            logo: include.logo(),
+                            main_header: include.main_header(req.session.user_id),
+                            navigator: include.navigator(),
+                            navigator_side: include.navigator_side(),
+                            footer: include.footer(),
+                            bResult: bResult,
+                            cResult: cResult,
+                            uResult: uResult
+                        }));
+                    });
                 });
             });
         });
@@ -317,7 +341,15 @@ function updateViewCount(postNo) {
 
     });
 }
-
+function updateViewInfo(postNo, userid, callback) {
+    console.log(postNo, userid)
+    if (userid == null) callback();
+    else {
+        dbconn.booleanQuery("insert into viewinfo (select viewinfo_sequence.nextval,'" + userid + "'," + postNo + ",1 from dual where not exists (select * from viewinfo where pid=" + postNo + " and userid='" + userid + "'))", function () {
+            callback();
+        });
+    }
+}
 router.get("/breifing_view", function (req, res) {
     var postNo = req.param('postNo');
     getPost(postNo, function (postResult) {
@@ -325,34 +357,37 @@ router.get("/breifing_view", function (req, res) {
             getHeadlineByPostNo(postNo, function (headlineResult) {
                 getHashTagByPostNo(postNo, function (hashtagResult) {
                     getCategoryNameByPostNo(postNo, function (categoryResult) {
-                        //req.session
-                        updateViewCount(postNo);
-                        subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
-                            for (var i = 0; i < postResult.rows.length; i++) {
-                                postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YY.MM.DD HH:mm:ss");
-                                postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YY.MM.DD HH:mm:ss");
-                            }
-                            var userId = req.session.user_id;
-                            fs.readFile("breifing/breifing_view.html", "utf-8", function (error, data) {
-                                res.send(ejs.render(include.import_default() + data, {
-                                    logo: include.logo(),
-                                    main_header: include.main_header(req.session.user_id),
-                                    navigator: include.navigator(),
-                                    navigator_side: include.navigator_side(),
-                                    footer: include.footer(),
-                                    contentsSideNav: BFcateNavPage,
-                                    postResult: postResult,
-                                    summaryResult: summaryResult,
-                                    headlineResult: headlineResult,
-                                    hashtagResult: hashtagResult,
-                                    categoryResult: categoryResult,
-                                    user: userId,
-                                    subscribeResult: subscribeResult,
-                                    search: req.param('search')
-                                }));
-                            });
-                            //조회수 증가
+                        updateViewInfo(postNo, req.session.user_id, function () {
 
+                            //req.session
+                            updateViewCount(postNo);
+                            subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
+                                for (var i = 0; i < postResult.rows.length; i++) {
+                                    postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YY.MM.DD HH:mm:ss");
+                                    postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YY.MM.DD HH:mm:ss");
+                                }
+                                var userId = req.session.user_id;
+                                fs.readFile("breifing/breifing_view.html", "utf-8", function (error, data) {
+                                    res.send(ejs.render(include.import_default() + data, {
+                                        logo: include.logo(),
+                                        main_header: include.main_header(req.session.user_id),
+                                        navigator: include.navigator(),
+                                        navigator_side: include.navigator_side(),
+                                        footer: include.footer(),
+                                        contentsSideNav: BFcateNavPage,
+                                        postResult: postResult,
+                                        summaryResult: summaryResult,
+                                        headlineResult: headlineResult,
+                                        hashtagResult: hashtagResult,
+                                        categoryResult: categoryResult,
+                                        user: userId,
+                                        subscribeResult: subscribeResult,
+                                        search: req.param('search')
+                                    }));
+                                });
+                                //조회수 증가
+
+                            });
                         });
                     })
                 });
@@ -705,31 +740,33 @@ router.get("/commentary_view", function (req, res) {
             getHashTagByPostNo(postNo, function (hashtagResult) {
                 getCategoryNameByPostNo(postNo, function (categoryResult) {
                     getCommentBycommentNo(commentResult.rows[0][0], function (commentsResult) {//페이징
-                        //req.session
-                        updateViewCount(postNo);
-                        subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
-                            for (var i = 0; i < postResult.rows.length; i++) {
-                                postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YY.MM.DD HH:mm:ss");
-                                postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YY.MM.DD HH:mm:ss");
-                            }
-                            var userId = req.session.user_id;
-                            fs.readFile("commentary/commentary_view.html", "utf-8", function (error, data) {
-                                res.send(ejs.render(include.import_default() + data, {
-                                    logo: include.logo(),
-                                    main_header: include.main_header(req.session.user_id),
-                                    navigator: include.navigator(),
-                                    navigator_side: include.navigator_side(),
-                                    footer: include.footer(),
-                                    contentsSideNav: CMcateNavPage,
-                                    postResult: postResult,
-                                    hashtagResult: hashtagResult,
-                                    commentResult: commentResult,
-                                    commentsResult: commentsResult,
-                                    categoryResult: categoryResult,
-                                    user: userId,
-                                    subscribeResult: subscribeResult,
-                                    search: req.param('search')
-                                }));
+                        updateViewInfo(postNo, req.session.user_id, function () {
+                            //req.session
+                            updateViewCount(postNo);
+                            subscribeCheck(postResult.rows[0][1], req.session.user_id, function (subscribeResult) {
+                                for (var i = 0; i < postResult.rows.length; i++) {
+                                    postResult.rows[i][3] = moment(postResult.rows[i][3]).format("YY.MM.DD HH:mm:ss");
+                                    postResult.rows[i][5] = moment(postResult.rows[i][5]).format("YY.MM.DD HH:mm:ss");
+                                }
+                                var userId = req.session.user_id;
+                                fs.readFile("commentary/commentary_view.html", "utf-8", function (error, data) {
+                                    res.send(ejs.render(include.import_default() + data, {
+                                        logo: include.logo(),
+                                        main_header: include.main_header(req.session.user_id),
+                                        navigator: include.navigator(),
+                                        navigator_side: include.navigator_side(),
+                                        footer: include.footer(),
+                                        contentsSideNav: CMcateNavPage,
+                                        postResult: postResult,
+                                        hashtagResult: hashtagResult,
+                                        commentResult: commentResult,
+                                        commentsResult: commentsResult,
+                                        categoryResult: categoryResult,
+                                        user: userId,
+                                        subscribeResult: subscribeResult,
+                                        search: req.param('search')
+                                    }));
+                                });
                             });
                         });
                     });
@@ -1057,7 +1094,7 @@ function createCommentary(postId, title, contents, callback) {
     });
 }
 
-function updateCommentary(postNo, title, contents,callback){
+function updateCommentary(postNo, title, contents, callback) {
     title = title.split("\"").join("“");
     title = title.split("\'").join("‘");
     title = title.split("<").join("");
@@ -1070,7 +1107,7 @@ function updateCommentary(postNo, title, contents,callback){
     contents = contents.split("$(").join("");
     contents = contents.split(" ").join("&nbsp;");
     contents = contents.split("\n").join("<br>");
-    dbconn.booleanQuery("update commentary set content='"+contents+"', title='"+title+"' where pid="+postNo,function(){
+    dbconn.booleanQuery("update commentary set content='" + contents + "', title='" + title + "' where pid=" + postNo, function () {
         callback();
     });
 }
@@ -1102,7 +1139,7 @@ router.post("/commentary_write", function (req, res) {
                         console.log(postId)
                         var title = req.body['commtitle'];
                         var contents = req.body['commta'];
-                        updateCommentary(postId,title, contents,function(){
+                        updateCommentary(postId, title, contents, function () {
                             res.write("<script>alert('Modified');</script>");
                             res.end('<script>location.href="/commentary?pageNo=1";</script>')
                         });
