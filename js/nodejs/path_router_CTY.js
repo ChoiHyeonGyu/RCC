@@ -6,7 +6,7 @@ var moment = require('moment');
 var bodyParser = require('body-parser');
 var include = require('./hdr_nvgtr_side_ftr.js');
 var dbconn = require('./oracledb_connect.js');
-const {sample, CF, evaluation} = require('nodeml');
+const {CF} = require('nodeml');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -191,26 +191,44 @@ function collavorativeFiltering(userid,callback){
         callback();
         return;
     }
-    callback();
-    return;
-    const movie = sample.movie(); // 영화 데이터셋 {movie_id: no, user_id: no, rating: num, like: num}
-    
-    let train = [], test = [];
-    for (let i = 0; i < movie.length; i++) {
-        if (Math.random() > 0.9) test.push(movie[i]);
-        else train.push(movie[i]);
-    }
-    
-    const cf = new CF();
-    cf.train(train, 'user_id', 'movie_id', 'rating');
-    console.log(cf.recommendToUser(12321,10))
-    callback();
+    let train = [];
+    dbconn.resultQuery("select userid,pid,weight from viewinfo",function(infoResult){
+        for (let i = 0; i < infoResult.rows.length; i++) {
+            var temp = new Object();
+            temp.userid = infoResult.rows[i][0];
+            temp.pid = infoResult.rows[i][1];
+            temp.weight = infoResult.rows[i][2];
+            train.push(temp);
+        }
+        const cf = new CF();
+        cf.train(train, 'userid', 'pid', 'weight');
+        var cfresult = cf.recommendToUser(userid,10);
+        var query = "where (pid=-1";
+        for(var i=0; i<cfresult.length;i++){
+            query+= " or pid="+cfresult[i].itemId;
+        }
+        query+=")"
+        console.log("select p.*,c.briefing,c.userid,c.cost,c.cnt from ( "+
+        "select p.pid,p.title,c.cate from (select p.pid,nvl(c.title,(select title from commentary where pid=p.pid)) as title from (select pid from post "+query+") p left join (SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.pdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM "+
+        "(select pid,headline,pdate from (select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid and post.pid in (select pid from post "+query+")) where rn <=3)"+
+        " p GROUP BY p.pid) c on c.pid = p.pid) p left join ( select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID "+query+") c"+
+        " on p.pid=c.pid) p left join (select p.*,c.cost,c.cnt from (select pid,briefing,userid from post "+query+") p left join (select commentary.pid,commentary.cost,c.cnt from commentary, (select cid,count(*) as cnt from comments group by cid) c where commentary.cid=c.cid) c on c.pid=p.pid) c on c.pid=p.pid");
+        if(cfresult.length==0)query="";
+        dbconn.resultQuery("select p.*,c.briefing,c.userid,c.cost,c.cnt from ( "+
+            "select p.pid,p.title,c.cate from (select p.pid,nvl(c.title,(select title from commentary where pid=p.pid)) as title from (select pid from post "+query+") p left join (SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.pdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM "+
+            "(select pid,headline,pdate from (select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid and post.pid in (select pid from post "+query+")) where rn <=3)"+
+            " p GROUP BY p.pid) c on c.pid = p.pid) p left join ( select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID "+query+") c"+
+            " on p.pid=c.pid) p left join (select p.*,c.cost,c.cnt from (select pid,briefing,userid from post "+query+") p left join (select commentary.pid,commentary.cost,c.cnt from commentary left join (select cid,count(*) as cnt from comments group by cid) c on c.cid=commentary.cid) c on c.pid=p.pid) c on c.pid=p.pid"
+            ,function(result){
+            callback(result);
+        });
+    });
 }
 
 router.get("/", function (req, res) {
     //main에 가기전 게시판에 띄울 정보 로드
     //추가로 가능하다면 ajax로 글 등록시 다시 로드
-    collavorativeFiltering(req.session.user_id,function(){
+    collavorativeFiltering(req.session.user_id,function(cfResult){
         getMainBreifing(function (bResult) {
             getMainCommentary(function (cResult) {
                 getMainUsers(function (uResult) {
@@ -226,7 +244,8 @@ router.get("/", function (req, res) {
                             footer: include.footer(),
                             bResult: bResult,
                             cResult: cResult,
-                            uResult: uResult
+                            uResult: uResult,
+                            cfResult:cfResult
                         }));
                     });
                 });
