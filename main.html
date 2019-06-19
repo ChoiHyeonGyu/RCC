@@ -157,7 +157,7 @@
                                                             <th scope='rows'><%= cfResult.rows[i][1] %> <%if(cfResult.rows[i][6]!=null){%>[<%= cfResult.rows[i][6] %>]<%}%></th>                    
                                                                         <td class=''><%= cfResult.rows[i][2] %></td>
                                                             <td class='w10 tac'><%= cfResult.rows[i][4] %></td>
-                                                            <td class='w10 tac'><%= cfResult.rows[i][5] %>C</td>
+                                                            <td class='w10 tac'><%= cfResult.rows[i][5].toFixed(2) %>C</td>
                                                         </tr>
                                                         <% } %>
                                                         <% } %>

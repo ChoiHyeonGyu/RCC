@@ -208,11 +208,6 @@ function collavorativeFiltering(userid,callback){
             query+= " or pid="+cfresult[i].itemId;
         }
         query+=")"
-        console.log("select p.*,c.briefing,c.userid,c.cost,c.cnt from ( "+
-        "select p.pid,p.title,c.cate from (select p.pid,nvl(c.title,(select title from commentary where pid=p.pid)) as title from (select pid from post "+query+") p left join (SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.pdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM "+
-        "(select pid,headline,pdate from (select post.pid, briefingdetail.headline,post.pdate, row_number() over(partition by post.pid order by briefingdetail.bid) rn from post,briefingdetail where post.pid = briefingdetail.pid and post.pid in (select pid from post "+query+")) where rn <=3)"+
-        " p GROUP BY p.pid) c on c.pid = p.pid) p left join ( select post.pid,category.CATEGORYNAME ||'  - '|| catedetail.DETAILNAME as cate from post right join category on post.CATE = category.CATEGORYID right join catedetail on post.CATEDETAIL=catedetail.DETAILID "+query+") c"+
-        " on p.pid=c.pid) p left join (select p.*,c.cost,c.cnt from (select pid,briefing,userid from post "+query+") p left join (select commentary.pid,commentary.cost,c.cnt from commentary, (select cid,count(*) as cnt from comments group by cid) c where commentary.cid=c.cid) c on c.pid=p.pid) c on c.pid=p.pid");
         if(cfresult.length==0)query="";
         dbconn.resultQuery("select p.*,c.briefing,c.userid,c.cost,c.cnt from ( "+
             "select p.pid,p.title,c.cate from (select p.pid,nvl(c.title,(select title from commentary where pid=p.pid)) as title from (select pid from post "+query+") p left join (SELECT p.pid,SUBSTR(XMLAGG(XMLELEMENT(COL ,' <br>', headline) ORDER BY p.pdate).EXTRACT('//text()').GETSTRINGVAL(),2) title FROM "+
