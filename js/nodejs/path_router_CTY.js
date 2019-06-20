@@ -271,10 +271,10 @@ function getCommentaryResult(pageListString, sort, callback) {
 
 router.get("/breifing", function (req, res) {
     var page_size = 6;
-    var currPage = req.param('pageNo');
+    var currPage = req.query.pageNo;
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
-    var sort = req.param('sort');
+    var sort = req.query.sort;
     if (sort == undefined) sort = 1;
     var order = sort == 1 ? "desc" : "asc";
     paging("select pid from post where briefing=1", "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=1 order by pdate " + order + ")) where row2>=" + startPost + " and row2<=" + endPost, page_size, 10, currPage, function (pageResult, pageList) {
@@ -361,7 +361,7 @@ function updateViewInfo(postNo, userid, callback) {
     }
 }
 router.get("/breifing_view", function (req, res) {
-    var postNo = req.param('postNo');
+    var postNo = req.query.postNo;
     getPost(postNo, function (postResult) {
         getSummaryByPostNo(postNo, function (summaryResult) {
             getHeadlineByPostNo(postNo, function (headlineResult) {
@@ -392,7 +392,7 @@ router.get("/breifing_view", function (req, res) {
                                         categoryResult: categoryResult,
                                         user: userId,
                                         subscribeResult: subscribeResult,
-                                        search: req.param('search')
+                                        search: req.query.search
                                     }));
                                 });
                                 //조회수 증가
@@ -412,11 +412,11 @@ router.get("/breifing_write", function (req, res) {//
         res.end('<script>history.back()</script>');
         return;
     }
-    if (req.param('postNo') != null) {
-        getHeadlineByPostNo(req.param('postNo'), function (headlineResult) {
-            getSummaryByPostNo(req.param('postNo'), function (summaryResult) {
-                getHashTagByPostNo(req.param('postNo'), function (hashResult) {
-                    getPost(req.param('postNo'), function (postResult) {
+    if (req.query.postNo != null) {
+        getHeadlineByPostNo(req.query.postNo, function (headlineResult) {
+            getSummaryByPostNo(req.query.postNo, function (summaryResult) {
+                getHashTagByPostNo(req.query.postNo, function (hashResult) {
+                    getPost(req.query.postNo, function (postResult) {
                         fs.readFile("breifing/breifing_write.html", "utf-8", function (error, data) {
                             res.send(ejs.render(include.import_default() + data, {
                                 logo: include.logo(),
@@ -523,8 +523,8 @@ function updateSummary(postId, summary, callback) {
     });
 }
 router.post("/breifing_write", function (req, res) {
-    if (req.param('modify') != null) {
-        var postId = req.param('modify');
+    if (req.query.modify != null) {
+        var postId = req.query.modify;
         modifyPost(postId, req.body.category, req.body.detail, function (postResult) {
             if (postResult) {
                 deleteHeadLine(postId, function (dhlresult) {
@@ -595,12 +595,12 @@ router.post("/breifing_write", function (req, res) {
 router.get("/breifing_detail", function (req, res) {
     var page_size = 6;
     var page_list_size = 10;
-    var currPage = req.param('pageNo');
+    var currPage = req.query.pageNo;
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
-    var cateId = req.param('cateId');
-    var detailId = req.param('detailId');
-    var sort = req.param('sort');
+    var cateId = req.query.cateId;
+    var detailId = req.query.detailId;
+    var sort = req.query.sort;
     if (sort == undefined) sort = 1;
     var order = sort == 1 ? "desc" : "asc";
 
@@ -690,11 +690,11 @@ router.get("/breifing_detail", function (req, res) {
 
 router.get("/commentary", function (req, res) {
     var page_size = 10;
-    var currPage = req.param('pageNo');
+    var currPage = req.query.pageNo;
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
 
-    var sort = req.param('sort');
+    var sort = req.query.sort;
     if (sort == undefined) sort = 1;
     var sort1 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pdate desc)) where row2>=" + startPost + " and row2<=" + endPost;
     var sort2 = "select pid from (select rownum row2, pid, row1 from (select rownum row1, pid from post where briefing=0 order by pdate asc)) where row2>=" + startPost + " and row2<=" + endPost;
@@ -744,7 +744,7 @@ function getCommentBycommentNo(commId, callback) {
 }
 
 router.get("/commentary_view", function (req, res) {
-    var postNo = req.param('postNo');
+    var postNo = req.query.postNo;
     getPost(postNo, function (postResult) {
         getCommentaryById(postNo, function (commentResult) {
             getHashTagByPostNo(postNo, function (hashtagResult) {
@@ -774,7 +774,7 @@ router.get("/commentary_view", function (req, res) {
                                         categoryResult: categoryResult,
                                         user: userId,
                                         subscribeResult: subscribeResult,
-                                        search: req.param('search')
+                                        search: req.query.search
                                     }));
                                 });
                             });
@@ -789,12 +789,12 @@ router.get("/commentary_view", function (req, res) {
 router.get("/commentary_detail", function (req, res) {
     var page_size = 10;
     var page_list_size = 10;
-    var currPage = req.param('pageNo');
+    var currPage = req.query.pageNo;
     var startPost = (currPage - 1) * page_size + 1;
     var endPost = currPage * page_size;
-    var cateId = req.param('cateId');
-    var detailId = req.param('detailId');
-    var sort = req.param('sort');
+    var cateId = req.query.cateId;
+    var detailId = req.query.detailId;
+    var sort = req.query.sort;
     if (sort == undefined) sort = 1;
     if (detailId == undefined) {
         detailId = null;
@@ -894,7 +894,7 @@ function searching(req, res, search, type, callback) {
     if (type == 1) {
         //breifing
         var page_size = 6;
-        var currPage = req.param('pageNo');
+        var currPage = req.query.pageNo;
         var startPost = (currPage - 1) * page_size + 1;
         var endPost = currPage * page_size;
         paging("select pid from post where pid in (select pid from briefingdetail where headline like '%" + search + "%' or burl like '%" + search + "%')",
@@ -940,7 +940,7 @@ function searching(req, res, search, type, callback) {
     else if (type == 2) {
         //commentary
         var page_size = 10;
-        var currPage = req.param('pageNo');
+        var currPage = req.query.pageNo;
         var startPost = (currPage - 1) * page_size + 1;
         var endPost = currPage * page_size;
         paging("select pid from post where briefing=0 and pid in (select pid from commentary where content like '%" + search + "%' or title like '%" + search + "%')",
@@ -977,7 +977,7 @@ function searching(req, res, search, type, callback) {
     else if (type == 3) {
         //channel
         var page_size = 10;
-        var currPage = req.param('pageNo');
+        var currPage = req.query.pageNo;
         var startPost = (currPage - 1) * page_size + 1;
         var endPost = currPage * page_size;
         paging("select id from users where id like '%" + search + "%'",
@@ -1017,7 +1017,7 @@ function searching(req, res, search, type, callback) {
         //3. 가져올 때 헤드라인을 묶어서 가져올 수 있어야한다.
         //channel
         var page_size = 8;
-        var currPage = req.param('pageNo');
+        var currPage = req.query.pageNo;
         var startPost = (currPage - 1) * page_size + 1;
         var endPost = currPage * page_size;
         paging("select pid from hashtag where keyword like '%" + search + "%' group by pid",
@@ -1073,8 +1073,8 @@ function searching(req, res, search, type, callback) {
 }
 
 router.get("/search_result", function (req, res) {
-    var search = req.param('search');
-    var type = req.param('type');
+    var search = req.query.search;
+    var type = req.query.type;
     searching(req, res, search, type, function (result) {
 
     });
@@ -1123,8 +1123,8 @@ function updateCommentary(postNo, title, contents, callback) {
 }
 
 router.post("/commentary_write", function (req, res) {
-    if (req.param('modify') != null) {
-        var postId = req.param('modify');
+    if (req.query.modify != null) {
+        var postId = req.query.modify;
         modifyPost(postId, req.body.category, req.body.detail, function (postResult) {
             if (postResult) {
                 deleteHeadLine(postId, function (dhlresult) {
@@ -1191,10 +1191,10 @@ router.get("/commentary_write", function (req, res) {
         res.end('<script>history.back()</script>');
         return;
     }
-    if (req.param('postNo') != null) {
-        getCommentaryById(req.param('postNo'), function (commentaryResult) {
-            getHashTagByPostNo(req.param('postNo'), function (hashResult) {
-                getPost(req.param('postNo'), function (postResult) {
+    if (req.query.postNo != null) {
+        getCommentaryById(req.query.postNo, function (commentaryResult) {
+            getHashTagByPostNo(req.query.postNo, function (hashResult) {
+                getPost(req.query.postNo, function (postResult) {
                     fs.readFile("commentary/commentary_write.html", "utf-8", function (error, data) {
                         res.send(ejs.render(include.import_default() + data, {
                             logo: include.logo(),
@@ -1304,8 +1304,8 @@ router.post("/comments", function (req, res) {
 });
 
 router.get("/delete", function (req, res) {
-    var preURL = req.param('preURL').replace("<**>", "&");
-    var postNo = req.param('postNo');
+    var preURL = req.query.preURL.replace("<**>", "&");
+    var postNo = req.query.postNo;
     dbconn.booleanQuery("delete from post where pid=" + postNo, function (result) {
         if (result) {
             res.write('<script>alert("삭제되었습니다!");</script>')

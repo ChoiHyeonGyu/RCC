@@ -54,7 +54,7 @@ router.get("/pw_find", function (req, res) {
 
 
 router.get("/pw_change", function (req, res) {
-    var id = req.param('id');
+    var id = req.query.id;
     fs.readFile("pw_change.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
@@ -73,7 +73,7 @@ router.get("/pw_change", function (req, res) {
 
 
 router.get("/logout", function (req, res) {
-    var preURL = req.param('preURL');
+    var preURL = req.query.preURL;
     if (req.session.user_id) {
         req.session.destroy(function (err) {
             if (err) {
