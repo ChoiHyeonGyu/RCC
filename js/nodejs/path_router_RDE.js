@@ -265,6 +265,7 @@ router.post("/auth", function (req, res) {
                     'countryCode': "82",
                 }
             });
+            console.log(req.session.vn);
             return res.json({ result: true });
         } else {
             return res.json({ result: false });
@@ -339,6 +340,7 @@ router.post("/pw_find/auth", function (req, res) {
                     'countryCode': "82",
                 }
             });
+            console.log(req.session.vn);
             return res.json({ result: 1 });
         }
     });
