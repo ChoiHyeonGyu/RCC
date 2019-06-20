@@ -97,10 +97,12 @@ function sendCoin(sender, receiver, coin, pw, callback){
                 value: web3.utils.toWei(coin, "ether"),
                 gasPrice: web3.utils.toWei(String(Number(coin) * 600), "gwei")
             }, function(err, txHash){
-                if(err.message.match("-32000")){
-                    callback(0);
-                } else if(err) {
-                    console.log(err);
+                if(err){
+                    if(err.message.match("-32000")){
+                        callback(0);
+                    } else {
+                        console.log(err);
+                    }
                 }
                 if(txHash) callback();
             });
