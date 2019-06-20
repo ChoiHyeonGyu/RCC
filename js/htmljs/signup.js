@@ -177,10 +177,10 @@ function checkval(){
         alert("전화번호를 입력해주세요.");
         return false;
     }
-    /*if(count2==0){
+    if(count2==0){
         alert("휴대폰 인증을 해주세요!");
         return false;
-    }*/
+    }
     document.forms[0].submit();
 }
 
@@ -201,7 +201,7 @@ function pw2(){
     }
     else{
         div.innerHTML="1";
-        div.style.color='white';
+        div.style.color='#9e9e9e17';
         if((pwcheck.value!="" && pwcheck.value!=null) && (pw.value!="" && pw.value!=null)){
             if(pw.value != pwcheck.value){
                 div.style.color="red";
@@ -213,7 +213,7 @@ function pw2(){
             
             if((pwcheck.value=="" || pwcheck.value==null) && (pw.value=="" || pw.value==null)){
                 div.innerHTML="1";
-                div.style.color='white';
+                div.style.color='#9e9e9e17';
             }
     }
         
