@@ -195,11 +195,14 @@ router.post("/pw_change", function (req, res) {
                 if (err) console.log(err);
                 dbconn.booleanQuery("update users set pw='" + key.toString("base64") + "' where id='" + id + "'", function (result) {
                     if (result == false) {//false
+                        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+                        res.write("<script>alert('비밀번호 변경 실패했습니다!');</script>");
+                        res.end("<script>history.back()</script>");
                         console.log("실패실패시래패실패실패실패시랲시래");
                     } else {
                         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
                         res.write("<script>alert('변경되었습니다.!');</script>");
-                        res.end("<script>location.href='/login'</script>")
+                        res.end("<script>location.href='/login'</script>");
                     }
                 });
             });
