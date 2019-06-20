@@ -754,7 +754,7 @@ router.post("/donate", function(req, res){
         ether.sendCoin(req.body.sender, req.body.receiver, req.body.coin, req.session.user_id, function(n){
             if(n == 0){
                 res.write("<script>alert('Not Enough Fee!!!');</script>");
-                res.end("<script>location.href = '/my'</script>");
+                res.end("<script>history.back();</script>");
             } else if(req.body.postNo == "nothing"){
                 res.write("<script>alert('Sending Coin!!!');</script>");
                 res.end("<script>location.href = '"+req.body.preURL+"'</script>");

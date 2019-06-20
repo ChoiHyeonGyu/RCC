@@ -55,7 +55,6 @@ router.get("/pw_find", function (req, res) {
 
 router.get("/pw_change", function (req, res) {
     var id = req.param('id');
-    console.log(id);
     fs.readFile("pw_change.html", "utf-8", function (error, data) {
         res.send(ejs.render(include.import_default() + data, {
             logo: include.logo(),
@@ -83,7 +82,6 @@ router.get("/logout", function (req, res) {
             res.redirect(preURL);
         });
     } else {
-        console.log("로그인 안되 있음.");
         res.redirect(preURL);
     }
 });
@@ -187,7 +185,6 @@ router.post("/pw_change", function (req, res) {
                         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
                         res.write("<script>alert('비밀번호 변경 실패했습니다!');</script>");
                         res.end("<script>history.back()</script>");
-                        console.log("실패실패시래패실패실패실패시랲시래");
                     } else {
                         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
                         res.write("<script>alert('변경되었습니다.!');</script>");
@@ -268,7 +265,6 @@ router.post("/auth", function (req, res) {
                     'countryCode': "82",
                 }
             });
-            console.log(var_num);
             return res.json({ result: true });
         } else {
             return res.json({ result: false });
@@ -280,10 +276,7 @@ var count = 1;
 
 router.post("/authnum", function (req, res) {
     var authnum = req.body.auth_num;
-    console.log(req.session.vn);
-    console.log(authnum);
     if (authnum == req.session.vn) {
-        console.log("111111")
         req.session.destroy(function (err) {
             if (err) {
                 return;
@@ -293,11 +286,9 @@ router.post("/authnum", function (req, res) {
     } else if (req.session.vn != undefined && authnum != req.session.vn) {
         if (count <= 3) {
             count += 1;
-            console.log("2222222");
             return res.json({ result: 2 });
         } else {
             count = 1;
-            console.log("333333");
             req.session.destroy(function (err) {
                 if (err) {
                     return;
@@ -307,7 +298,6 @@ router.post("/authnum", function (req, res) {
         }
     } else {
         count = 1;
-        console.log("333333");
         req.session.destroy(function (err) {
             if (err) {
                 return;
@@ -349,7 +339,6 @@ router.post("/pw_find/auth", function (req, res) {
                     'countryCode': "82",
                 }
             });
-            console.log(var_num);
             return res.json({ result: 1 });
         }
     });
@@ -357,10 +346,7 @@ router.post("/pw_find/auth", function (req, res) {
 
 router.post("/pw_find/authnum", function (req, res) {
     var authnum = req.body.auth_num;
-    console.log(req.session.vn);
-    console.log(authnum);
     if (authnum == req.session.vn) {
-        console.log("111111")
         req.session.destroy(function (err) {
             if (err) {
                 return;
@@ -370,11 +356,9 @@ router.post("/pw_find/authnum", function (req, res) {
     } else if (req.session.vn != undefined && authnum != req.session.vn) {
         if (count <= 3) {
             count += 1;
-            console.log("2222222");
             return res.json({ result: 2 });
         } else {
             count = 1;
-            console.log("333333");
             req.session.destroy(function (err) {
                 if (err) {
                     return;
@@ -384,7 +368,6 @@ router.post("/pw_find/authnum", function (req, res) {
         }
     } else {
         count = 1;
-        console.log("333333");
         req.session.destroy(function (err) {
             if (err) {
                 return;
@@ -409,15 +392,10 @@ router.post("/unload", function (req, res) {
 
 router.post("/idcheck", function (req, res) {
     var id = req.body.id;
-    console.log('post방식으로 호출.');
     dbconn.resultQuery("select id from users where id='" + id + "'", function (result) {
-        console.log(result);
         if (result.rows.length == 0) {
-            console.log(1)
             return res.json({ id_msg: true });
         } else {
-            console.log(result.rows[0][0]);
-            console.log(2);
             return res.json({ id_msg: false });
         }
     });
