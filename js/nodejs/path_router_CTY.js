@@ -227,9 +227,6 @@ router.get("/", function (req, res) {
         getMainBreifing(function (bResult) {
             getMainCommentary(function (cResult) {
                 getMainUsers(function (uResult) {
-                    //console.log(1,bResult)
-                    //console.log(2,cResult)
-                    //console.log(3,uResult)
                     fs.readFile("main.html", "utf-8", function (error, data) {
                         res.send(ejs.render(include.import_default() + data, {
                             logo: include.logo(),
@@ -356,7 +353,6 @@ function updateViewCount(postNo) {
     });
 }
 function updateViewInfo(postNo, userid, callback) {
-    console.log(postNo, userid)
     if (userid == null) callback();
     else {
         dbconn.booleanQuery("insert into viewinfo (select viewinfo_sequence.nextval,'" + userid + "'," + postNo + ",1 from dual where not exists (select * from viewinfo where pid=" + postNo + " and userid='" + userid + "'))", function () {
@@ -1129,10 +1125,8 @@ function updateCommentary(postNo, title, contents, callback) {
 router.post("/commentary_write", function (req, res) {
     if (req.param('modify') != null) {
         var postId = req.param('modify');
-        console.log(postId)
         modifyPost(postId, req.body.category, req.body.detail, function (postResult) {
             if (postResult) {
-                console.log(postId)
                 deleteHeadLine(postId, function (dhlresult) {
                     var head = "headline";
                     var headUrl = 'url';
@@ -1142,7 +1136,6 @@ router.post("/commentary_write", function (req, res) {
                         if (headLine.length == 0 || url.length == 0) continue;
                         createBreifingDetail(postId, headLine, url);
                     }
-                    console.log(postId)
                     deleteHashTag(postId, function (dhtresult) {
                         var hashTag = req.body['hashTag'].split("#");
                         for (var i = 1; i < hashTag.length; i++) {
@@ -1150,7 +1143,6 @@ router.post("/commentary_write", function (req, res) {
                             if (hash.length == 0) continue;
                             createHashTag(postId, hash);
                         }
-                        console.log(postId)
                         var title = req.body['commtitle'];
                         var contents = req.body['commta'];
                         updateCommentary(postId, title, contents, function () {
