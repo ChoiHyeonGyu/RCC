@@ -126,8 +126,8 @@
                 <% 
                 var writer="";
                 if(user == postResult.rows[0][1]){
-                    writer+="<button class='btn btn-light fr' value='Delete' onclick='deleteClick();''>Delete</button>";
-                    writer+="<button class='btn btn-light fr' value='Modify' onclick=location.href='/commentary_write?preURL=document.referrer&postNo="+postResult.rows[0][0]+"'>Modify</button>";
+                    writer+="<button class='btn btn-light fr' value='Delete' onclick='deleteClick();''>삭제</button>";
+                    writer+="<button class='btn btn-light fr' value='Modify' onclick=location.href='/commentary_write?preURL=document.referrer&postNo="+postResult.rows[0][0]+"'>수정</button>";
                 }
                 %>
                 <%- writer %>
@@ -144,20 +144,20 @@
             </div>
 
             <div class="showHash showallContents">
-                <span class="showspan">HashTag</span>
+                <span class="showspan">해시태그</span>
                 <div class="hashDiv dib">
                     <% for(var i=0;i<hashtagResult.rows.length;i++){ %>
                         <span id="hash<%= i %>">#<%= hashtagResult.rows[i][2] %> </span>
                     <% } %>
                 </div>
             </div>
-            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button>
-            <button class="btn btn-light" value="Donate" onclick="checkLogin()" >Donate</button><% } %>
-            <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
+            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">구독</button>
+            <button class="btn btn-light" value="Donate" onclick="checkLogin()" >후원</button><% } %>
+            <button class="btn btn-light" onclick="location.href=document.referrer;">뒤로가기</button>
             <div class="commentDiv">
                 <div class="commentWrite tar">
                     <input type="text" placeholder="Comment" id="commentText" name="comment" onkeypress="if(event.keyCode==13)createComments();">
-                    <button class="btn btn-light" onclick="createComments();">Comment</button>
+                    <button class="btn btn-light" onclick="createComments();">내용</button>
                 </div>
                 <div class="commentList">
                     <table class="table mainTable commTable">

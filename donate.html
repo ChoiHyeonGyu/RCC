@@ -35,12 +35,12 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
         <div id="donate_input" class="container">
             <div class="row">
                 <div class="col who hyeon-font2">
-                    Sender : <%= my.rows[0][0] %><br><br>
-                    Account Address : <%= my.rows[0][1] %>
+                    후원자 : <%= my.rows[0][0] %><br><br>
+                    계정 주소 : <%= my.rows[0][1] %>
                 </div>
                 <div class="col who hyeon-font2">
-                    Receiver : <%= my.rows[0][2] %><br><br>
-                    Account Address : <%= my.rows[0][3] %>
+                    편집자 : <%= my.rows[0][2] %><br><br>
+                    계정 주소 : <%= my.rows[0][3] %>
                 </div>
             </div>
             <form method="POST" action="/donate">
@@ -51,11 +51,11 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
                 <input type="hidden" name="postNo" value="<%= postNo %>">
                 <div class="row">
                     <div class="col hyeon-font2">
-                        MyCoin : <%= coin %> C<br><br>
-                        <input type="text" id="sending_coin" name="coin" class="hyeon-input" placeholder="Sending Coin">
+                        보유 코인 : <%= coin %> C<br><br>
+                        <input type="text" id="sending_coin" name="coin" class="hyeon-input" placeholder="코인 입력">
                     </div>
                     <div class="col hyeon-font2">
-                        <div>Fee : <label id="fee"></label> C</div>
+                        <div>수수료 : <label id="fee"></label> C</div>
                     </div>
                 </div>
                 <button id="send_btn" class="btn btn-primary">Send</button><button type="button" id="cancel_btn" class="btn btn-primary">Cancel</button>

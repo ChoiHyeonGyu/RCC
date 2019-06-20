@@ -10,20 +10,20 @@
             <input type="hidden" value="<%= my.rows[0][0] %>">
             <div class="row">
                 <div class="col-9">
-                    <span id="channel_name" class="channel_num"><%= my.rows[0][1] %></span><span class="channel_num hyeon-font">Subscriber <%= my.rows[0][2] %></span>
-                    <span class="channel_num hyeon-font">Donate <%= dntl %> C</span><span class="channel_num hyeon-font">Post <%= my.rows[0][3] %></span>
+                    <span id="channel_name" class="channel_num"><%= my.rows[0][1] %></span><span class="channel_num hyeon-font">구독자 <%= my.rows[0][2] %></span>
+                    <span class="channel_num hyeon-font">후원 <%= dntl %> C</span><span class="channel_num hyeon-font">글 <%= my.rows[0][3] %></span>
                 </div>
                 <% if(my.rows[0][0] != userid){ %>
                 <div class="col-3">
-                    <button id="channel_sub_btn" class="btn <% if(my.rows[0][4]){ %>btn-success<% }else{ %>btn-light<% } %>">Subscribe</button>
-                    <button id="channel_do_btn" class="btn btn-primary">Donate</button>
+                    <button id="channel_sub_btn" class="btn <% if(my.rows[0][4]){ %>btn-success<% }else{ %>btn-light<% } %>">구독</button>
+                    <button id="channel_do_btn" class="btn btn-primary">후원</button>
                 </div>
                 <% } %>
             </div><br>
             <div class="row">
                 <div class="col"></div>
                 <div class="col-4">
-                    <span id="font-30">Post List</span>
+                    <span id="font-30">게시글</span>
                 </div>
                 <div class="col-4">
                     <select class="sort hyeon-select">
@@ -36,15 +36,15 @@
                         <option <% if(sort == '3'){ %>selected<% } %>>후원 총액</option>
                         <% } %>
                     </select>
-                    <input id="search_input" type="text" class="hyeon-input" placeholder="Search">
+                    <input id="search_input" type="text" class="hyeon-input" placeholder="검색">
                 </div>
             </div>
             <ul class="nav nav-hyeon nav-fill container pad-0">
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'HEADLINE'){ %>active<% } %>" href="/channel?chnlid=<%= my.rows[0][0] %>">Briefing List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'HEADLINE'){ %>active<% } %>" href="/channel?chnlid=<%= my.rows[0][0] %>">브리핑</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'TITLE'){ %>active<% } %>" href="/channel?chnlid=<%= my.rows[0][0] %>&s=1">Commentary List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'TITLE'){ %>active<% } %>" href="/channel?chnlid=<%= my.rows[0][0] %>&s=1">논평</a>
                 </li>
             </ul>
             <table class="table table-striped container">

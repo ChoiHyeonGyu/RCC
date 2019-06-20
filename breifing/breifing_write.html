@@ -36,7 +36,7 @@
                         if (result['result'] == true) {
                             resultSet = result['msg'];
                         }
-                        var option = "<option value=0>all</option>";
+                        var option = "<option value=0>전체</option>";
                         for (var i = 0; i < resultSet.rows.length; i++) {
                             option += "<option value=" + resultSet.rows[i][0] + ">" + resultSet.rows[i][2] + "</option>"
                         }
@@ -50,7 +50,7 @@
                 //ajax실행하여 세부 리스트를 가져옴
                 var resultSet;
                 if (this.value == 0) {
-                    $("#detailBox").find('option').remove().end().append("<option value='0'>all</option>");
+                    $("#detailBox").find('option').remove().end().append("<option value='0'>전체</option>");
                     return;
                 }
                 $.ajax({
@@ -62,7 +62,7 @@
                         if (result['result'] == true) {
                             resultSet = result['msg'];
                         }
-                        var option = "<option value=0>all</option>";
+                        var option = "<option value=0>전체</option>";
                         for (var i = 0; i < resultSet.rows.length; i++) {
                             option += "<option value=" + resultSet.rows[i][0] + ">" + resultSet.rows[i][2] + "</option>"
                         }
@@ -84,7 +84,7 @@
             <input type='hidden' value='1' name="headCount" id='count'>
             <div class='dropboxDiv'>
                 <select class='selectBox' name='category' id="selectBox" onchange="">
-                    <option value='0'>all</option>
+                    <option value='0'>전체</option>
                     <%
                         var option = "";
                         for(var i=0;i<categoryList.rows.length;i++){
@@ -94,13 +94,13 @@
                     <%- option %>
                 </select>
                 <select class='selectBox' name='detail' id="detailBox">
-                    <option value='0'>all</option>
+                    <option value='0'>전체</option>
                 </select>
             </div>
             <div id='writeFormBox'>
                 <div class='formDiv' name="formDiv1" id='formDiv1'>
-                    <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input name='headline1' type='text'
-                            placeholder="title">
+                    <div class='divBox cw65'><span class='titleWord'>헤드라인</span> <input name='headline1' type='text'
+                            placeholder="헤드라인">
                     </div>
                     <div class='divBox cw65'><span class='titleWord'>URL</span> <input name='url1' type='text'
                             placeholder="url"></div>
@@ -114,15 +114,15 @@
                         onclick='removePage();' value='━'>
                 </div>
                 <br>
-                <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary'
-                        placeholder="summary" class="w80 autosize ofyh" oninput='resizeTa();'></textarea></div>
+                <div class='divBox'><span class='titleWord w15'>요약</span> <textarea name='summary'
+                        placeholder="요약" class="w80 autosize ofyh" oninput='resizeTa();'></textarea></div>
                 <div class='dib w100'>
                     <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag'
-                            type='text' placeholder="hashtag"></div>
+                            type='text' placeholder="해시태그"></div>
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                        onclick="postSubmit();" value='Write'>
+                        onclick="postSubmit();" value='작성'>
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                        onclick="location.href=document.referrer;" value='Cancel'>
+                        onclick="location.href=document.referrer;" value='취소'>
                 </div>
             </div>
 
@@ -144,7 +144,7 @@
             <input type='hidden' value='<%= headlineResult.rows.length %>' name="headCount" id='count'>
             <div class='dropboxDiv'>
                 <select class='selectBox' name='category' id="selectBox">
-                    <option value='0'>all</option>
+                    <option value='0'>전체</option>
                     <%
                             var option = "";
                             for(var i=0;i<categoryList.rows.length;i++){
@@ -154,7 +154,7 @@
                     <%- option %>
                 </select>
                 <select class='selectBox' name='detail' id="detailBox">
-                    <option value='0'>all</option>
+                    <option value='0'>전체</option>
                 </select>
             </div>
             <div id='writeFormBox'>
@@ -162,8 +162,8 @@
                         for(var i=0;i<headlineResult.rows.length;i++){ 
                     %>
                 <div class='formDiv' name="formDiv<%= i+1 %>" id='formDiv<%= i+1 %>'>
-                    <div class='divBox cw65'><span class='titleWord'>HeadLine</span> <input name='headline<%= i+1 %>'
-                            type='text' placeholder="title" value="<%= headlineResult.rows[i][2] %>">
+                    <div class='divBox cw65'><span class='titleWord'>헤드라인</span> <input name='headline<%= i+1 %>'
+                            type='text' placeholder="헤드라인" value="<%= headlineResult.rows[i][2] %>">
                     </div>
                     <div class='divBox cw65'><span class='titleWord'>URL</span> <input name='url<%= i+1 %>' type='text'
                             placeholder="url" value="<%= headlineResult.rows[i][3] %>"></div>
@@ -181,8 +181,8 @@
                         onclick='removePage();' value='━'>
                 </div>
                 <br>
-                <div class='divBox'><span class='titleWord w15'>Summary</span> <textarea name='summary'
-                        placeholder="summary"
+                <div class='divBox'><span class='titleWord w15'>요약</span> <textarea name='summary'
+                        placeholder="요약"
                         class="w80 autosize ofyh" oninput='resizeTa();'><%- summaryResult.rows[0][2].split("<br>").join("") %></textarea></div>
                 <div class='dib w100'>
                     <%  
@@ -192,11 +192,11 @@
                         }
                     %>
                     <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag'
-                            type='text' placeholder="hashtag" value="<%= hashValue %>"></div>
+                            type='text' placeholder="해시태그" value="<%= hashValue %>"></div>
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                        onclick="postSubmit();" value='Write'>
+                        onclick="postSubmit();" value='수정'>
                     <input type='button' class='btn btn-light writeButton r0' style='border: 1px solid #dee2e6;'
-                        onclick="location.href=document.referrer;" value='Cancel'>
+                        onclick="location.href=document.referrer;" value='완료'>
                 </div>
             </div>
 

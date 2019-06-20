@@ -10,8 +10,8 @@
         <div id="channel_info" class="container">
             <div class="row">
                 <div class="col">
-                    <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num hyeon-font">Subscriber <%= my.rows[0][8] %></span>
-                    <span class="channel_num hyeon-font">Donate <%= dntl %> C</span><span class="channel_num hyeon-font">Post <%= my.rows[0][9] %></span><span class="channel_num hyeon-font">Reply <%= my.rows[0][10] %></span>
+                    <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num hyeon-font">구독자 <%= my.rows[0][8] %></span>
+                    <span class="channel_num hyeon-font">후원 <%= dntl %> C</span><span class="channel_num hyeon-font">글 <%= my.rows[0][9] %></span><span class="channel_num hyeon-font">댓글 <%= my.rows[0][10] %></span>
                 </div>
             </div><br>
             <div class="row">
@@ -27,24 +27,24 @@
                         <option <% if(sort == '3'){ %>selected<% } %>>후원 총액</option>
                         <% } %>
                     </select>
-                    <input type="text" id="my_search" class="hyeon-input" placeholder="Search">
+                    <input type="text" id="my_search" class="hyeon-input" placeholder="검색">
                 </div>
             </div>
             <ul class="nav nav-hyeon nav-fill container pad-0">
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'SUBSCRIBER'){ %>active<% } %>" href="/my">Subscriber List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'SUBSCRIBER'){ %>active<% } %>" href="/my">구독자</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'CHANNELUSER'){ %>active<% } %>" href="/my?s=1">Channel List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'CHANNELUSER'){ %>active<% } %>" href="/my?s=1">구독한 채널</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'HEADLINE'){ %>active<% } %>" href="/my?s=2">Briefing List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'HEADLINE'){ %>active<% } %>" href="/my?s=2">브리핑</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'TITLE'){ %>active<% } %>" href="/my?s=3">Commentary List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[1].name == 'TITLE'){ %>active<% } %>" href="/my?s=3">논평</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn-light <% if(list.metaData[0].name == 'COMMENTS'){ %>active<% } %>" href="/my?s=4">Reply List</a>
+                    <a class="nav-link btn-light <% if(list.metaData[0].name == 'COMMENTS'){ %>active<% } %>" href="/my?s=4">댓글</a>
                 </li>
             </ul>
             <table class="table table-striped container">
@@ -134,9 +134,9 @@
         </div>
         <div id="empty"></div>
         <div id="account_info">
-            <span id="account_address" class="account_num">Account Address</span><span class="account_num  hyeon-font"><%= my.rows[0][4] %></span><span class="account_num  hyeon-font">Coin <%= coin %> C</span>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buy_view">Buy</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
+            <span id="account_address" class="account_num">계정 주소</span><span class="account_num  hyeon-font"><%= my.rows[0][4] %></span><span class="account_num  hyeon-font">코인 <%= coin %> C</span>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buy_view">구매</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sell_view">판매</button><br><br>
             <select id="txsc" class="srchandsort hyeon-select">
                 <option>최신 순</option>
                 <option>오래된 순</option>
@@ -146,8 +146,8 @@
                 <option>입금 내역</option>
                 <option>출금 내역</option>
             </select>
-            <input type="text" id="slctuser" class="srchandsort hyeon-input" placeholder="Enter Nickname">
-            <input type="text" id="slctcoin" class="srchandsort hyeon-input" placeholder="Enter Coin">
+            <input type="text" id="slctuser" class="srchandsort hyeon-input" placeholder="닉네임 입력">
+            <input type="text" id="slctcoin" class="srchandsort hyeon-input" placeholder="코인 입력">
             <select id="txscope" class="srchandsort hyeon-select">
                 <option>선택</option>
                 <option>초과</option>
@@ -156,17 +156,17 @@
                 <option>이하</option>
                 <option>미만</option>
             </select><br><br>
-            <span id="font-30">Transactions</span>
+            <span id="font-30">거래 내역</span>
             <table class="table table-striped transactions">
                 <thead>
                     <tr>
-                        <th scope="col">BLOCK_NO</th>
-                        <th scope="col">TX_INDEX</th>
-                        <th scope="col">FROM</th>
-                        <th scope="col">TO</th>
-                        <th scope="col">COIN</th>
-                        <th scope="col">FEE</th>
-                        <th scope="col">TX_DATE</th>
+                        <th scope="col">블록번호</th>
+                        <th scope="col">거래인덱스</th>
+                        <th scope="col">보낸사람</th>
+                        <th scope="col">받는사람</th>
+                        <th scope="col">코인</th>
+                        <th scope="col">수수료</th>
+                        <th scope="col">거래처리날짜</th>
                     </tr>
                 </thead>
                 <tbody id="txlist">
@@ -243,16 +243,16 @@
         </div>
         <div id="empty_last"></div>
         <div id="side_list">
-            <label>MyPage</label><hr>
-            <a class="fixed-right-tab btn btn-outline-secondary" href="#header2">Channel Information</a>
-            <a class="fixed-right-tab btn btn-outline-secondary" href="#account_info">Account Information</a>
-            <a class="fixed-right-tab btn btn-outline-secondary" href="#user_modify">Modify User Information</a>
+            <label>내 정보</label><hr>
+            <a class="fixed-right-tab btn btn-outline-secondary" href="#header2">활동 내역</a>
+            <a class="fixed-right-tab btn btn-outline-secondary" href="#account_info">거래 내역</a>
+            <a class="fixed-right-tab btn btn-outline-secondary" href="#user_modify">회원정보 수정</a>
         </div>
         <div class="modal fade" id="buy_view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Buy</h5>
+                        <h5 class="modal-title">구매</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -260,14 +260,14 @@
                     <form method="POST" action="/buy">
                         <div class="modal-body tal">
                                 <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
-                                <div><input type="text" class="coin hyeon-input" name="coin" placeholder="Buy Coin"></div>
+                                <div><input type="text" class="coin hyeon-input" name="coin" placeholder="코인 입력"></div>
                                 <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
-                                <div>Current Coin : <%= Number(coin).toFixed(5) %> C</div>
-                                <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> C</div>
+                                <div>보유 코인 : <%= Number(coin).toFixed(5) %> C</div>
+                                <div>거래 후 : <label id="brc" class="rc" save="<%= coin %>"></label> C</div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Buy</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                            <button type="submit" class="btn btn-primary">구매</button>
                         </div>
                     </form>
                 </div>
@@ -277,7 +277,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Sell</h5>
+                        <h5 class="modal-title">판매</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -286,23 +286,23 @@
                         <div class="modal-body tal">
                             <input type="hidden" name="sender" value="<%= my.rows[0][4] %>">
                             <div>
-                                <input type="text" class="coin hyeon-input" name="coin" placeholder="Sell Coin">
+                                <input type="text" class="coin hyeon-input" name="coin" placeholder="코인 입력">
                                 <select id="percentage" class="hyeon-select">
                                     <option>선택</option>
-                                    <option>ALL</option>
+                                    <option>전체</option>
                                     <option>50%</option>
                                     <option>25%</option>
                                     <option>10%</option>
                                 </select>
                             </div>
                             <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
-                            <div>Fee : <label id="fee"></label> C</div>
-                            <div>Current Coin : <label id="coin"><%= Number(coin).toFixed(5) %></label> C</div>
-                            <div>Result Coin : <label id="src" class="rc" save="<%= coin %>"></label> C</div>
+                            <div>수수료 : <label id="fee"></label> C</div>
+                            <div>보유 코인 : <label id="coin"><%= Number(coin).toFixed(5) %></label> C</div>
+                            <div>거래 후 : <label id="src" class="rc" save="<%= coin %>"></label> C</div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Sell</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                            <button type="submit" class="btn btn-primary">판매</button>
                         </div>
                     </form>
                 </div>

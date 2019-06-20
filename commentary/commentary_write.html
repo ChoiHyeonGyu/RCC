@@ -35,7 +35,7 @@
                         if (result['result'] == true) {
                             resultSet = result['msg'];
                         }
-                        var option = "<option value=0>all</option>";
+                        var option = "<option value=0>전체</option>";
                         for (var i = 0; i < resultSet.rows.length; i++) {
                             option += "<option value=" + resultSet.rows[i][0] + ">" + resultSet.rows[i][2] + "</option>"
                         }
@@ -49,7 +49,7 @@
                 //ajax실행하여 세부 리스트를 가져옴
                 var resultSet;
                 if (this.value == 0) {
-                    $("#detailBox").find('option').remove().end().append("<option value='0'>all</option>");
+                    $("#detailBox").find('option').remove().end().append("<option value='0'>전체</option>");
                     return;
                 }
                 $.ajax({
@@ -61,7 +61,7 @@
                         if (result['result'] == true) {
                             resultSet = result['msg'];
                         }
-                        var option = "<option value=0>all</option>";
+                        var option = "<option value=0>전체</option>";
                         for (var i = 0; i < resultSet.rows.length; i++) {
                             option += "<option value=" + resultSet.rows[i][0] + ">" + resultSet.rows[i][2] + "</option>"
                         }
@@ -81,7 +81,7 @@
             <% if(commentaryResult!=null){ %><input type='hidden' value='<%= postResult.rows[0][0] %>' name='modify'><%}%>
             <div class='dropboxDiv'>
                 <select class='selectBox' name='category' id="selectBox">
-                    <option value='0'>all</option>
+                    <option value='0'>전체</option>
                     <%
                             var option = "";
                             for(var i=0;i<categoryList.rows.length;i++){
@@ -91,28 +91,25 @@
                     <%- option %>
                 </select>
                 <select class='selectBox' name='detail' id="detailBox">
-                    <option value='0'>all</option>
+                    <option value='0'>전체</option>
                 </select>
             </div>
             <div>
-                <div class='divBox cw65'><span class='titleWord'>Title</span> <input type='text' name='commtitle'
-                        placeholder="title"
+                <div class='divBox cw65'><span class='titleWord'>제목</span> <input type='text' name='commtitle'
+                        placeholder="제목"
                         value='<% if(commentaryResult!=null){ %><%= commentaryResult.rows[0][2] %><% } %>'>
                 </div>
-                <div class='divBox cw65'><span class='titleWord'>Contents</span> <textarea placeholder="contents"
+                <div class='divBox cw65'><span class='titleWord'>내용</span> <textarea placeholder="내용"
                         name='commta' class="autosize ofyh" oninput='resizeTa();'><% if(commentaryResult!=null){ %><%- commentaryResult.rows[0][3].split("<br>").join("") %><% } %></textarea>
                 </div>
-            </div>
-            <div class="fileDiv">
-                <input type="file">
             </div>
             <div class='optionContainer'>
                 <div class='dib w100'>
                     <div class='divBox cw100 w65 dib r0'><input class='inputText' name='hashTag' id='hashtag'
                             type='text' placeholder="hashtag"></div>
-                    <input type='button' value="write" class='btn btn-light writeButton r0'
+                    <input type='button' value="작성" class='btn btn-light writeButton r0'
                         style='border: 1px solid #dee2e6;' onclick="postSubmit();">
-                    <input type='button' value="cancel" class='btn btn-light writeButton r0'
+                    <input type='button' value="취소" class='btn btn-light writeButton r0'
                         style='border: 1px solid #dee2e6;' onclick="history.back();">
                 </div>
             </div>

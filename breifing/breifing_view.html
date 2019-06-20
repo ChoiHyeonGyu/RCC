@@ -62,14 +62,14 @@
                 <% 
                     var writer="";
                     if(user == postResult.rows[0][1]){
-                        writer+="<button class='btn btn-light fr' value='Delete' onclick='deleteClick();''>Delete</button>";
-                        writer+="<button class='btn btn-light fr' value='Modify' onclick=location.href='/breifing_write?preURL=document.referrer&postNo="+postResult.rows[0][0]+"'>Modify</button>";
+                        writer+="<button class='btn btn-light fr' value='Delete' onclick='deleteClick();''>삭제</button>";
+                        writer+="<button class='btn btn-light fr' value='Modify' onclick=location.href='/breifing_write?preURL=document.referrer&postNo="+postResult.rows[0][0]+"'>수정</button>";
                     }
                 %>
                 <%- writer %>
             </div>
             <div class="showHeader showallContents">
-                <span class="showspan">Header</span>
+                <span class="showspan">헤드라인</span>
                 <div class="headerURL dib">
                     <%
                         var headline="";
@@ -81,13 +81,13 @@
                 </div>
             </div>
             <div class="showSummary showallContents">
-                <span class="showspan">Summary</span>
+                <span class="showspan">요약</span>
                 <div class="summaryDiv dib">
                     <%- summaryResult.rows[0][2] %>
                 </div>
             </div>
             <div class="showHash showallContents">
-                <span class="showspan">HashTag</span>
+                <span class="showspan">해시태그</span>
                 <div class="hashDiv dib">
                     <%
                         var hash="";
@@ -98,9 +98,9 @@
                     <%- hash %>
                 </div>
             </div>
-            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">Subscribe</button>
-            <button class="btn btn-light" value="Donate" onclick="checkLogin()">Donate</button><% } %>
-            <button class="btn btn-light" onclick="location.href=document.referrer;">Back</button>
+            <% if(user!=postResult.rows[0][1]){ %><button class="btn <% if(subscribeResult){%>btn-primary<% } %>" value="Subscribe" onclick="subscribeClick();" id="subBtn">구독</button>
+            <button class="btn btn-light" value="Donate" onclick="checkLogin()">후원</button><% } %>
+            <button class="btn btn-light" onclick="location.href=document.referrer;">뒤로가기</button>
         </div>
     </div>
     <div id="footer"><%- footer %></div>
