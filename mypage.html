@@ -262,7 +262,6 @@
                                 <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
                                 <div><input type="text" class="coin hyeon-input" name="coin" placeholder="Buy Coin"></div>
                                 <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
-                                <div>Fee : <label class="fee"></label> C</div>
                                 <div>Current Coin : <%= Number(coin).toFixed(5) %> C</div>
                                 <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> C</div>
                         </div>
@@ -297,7 +296,7 @@
                                 </select>
                             </div>
                             <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
-                            <div>Fee : <label class="fee"></label> C</div>
+                            <div>Fee : <label id="fee"></label> C</div>
                             <div>Current Coin : <label id="coin"><%= Number(coin).toFixed(5) %></label> C</div>
                             <div>Result Coin : <label id="src" class="rc" save="<%= coin %>"></label> C</div>
                         </div>

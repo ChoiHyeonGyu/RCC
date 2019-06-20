@@ -65,25 +65,25 @@
 }
 
 @media screen and (min-width: 150px) {
-    #mycoin, #sending_money {
+    #mycoin, #sending_coin {
         margin-left: -43%;
     }
 }
 
 @media screen and (min-width: 576px) {
-    #mycoin, #sending_money {
+    #mycoin, #sending_coin {
         margin-left: -50%;
     }
 }
 
 @media screen and (min-width: 768px) {
-    #mycoin, #sending_money {
+    #mycoin, #sending_coin {
         margin-left: -14.2%;
     }
 }
 
 @media screen and (min-width: 992px) {
-    #mycoin, #sending_money {
+    #mycoin, #sending_coin {
         margin-left: 0%;
     }
 }

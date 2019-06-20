@@ -52,9 +52,11 @@ RCC는 본 서비스가 타지역에서의 사용에 적절하다거나 가능�
                 <div class="row">
                     <div class="col hyeon-font2">
                         MyCoin : <%= coin %> C<br><br>
-                        <input type="text" id="sending_money" name="coin" class="hyeon-input" placeholder="Sending Coin">
+                        <input type="text" id="sending_coin" name="coin" class="hyeon-input" placeholder="Sending Coin">
                     </div>
-                    <div class="col"></div>
+                    <div class="col hyeon-font2">
+                        <div>Fee : <label id="fee"></label> C</div>
+                    </div>
                 </div>
                 <button id="send_btn" class="btn btn-primary">Send</button><button type="button" id="cancel_btn" class="btn btn-primary">Cancel</button>
             </form>

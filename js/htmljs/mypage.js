@@ -309,7 +309,7 @@ $(function(){
 
     $('.coin').keyup(function(){
         $('.won').val(($(this).val() * 100000).toLocaleString());
-        $('.fee').text(($(this).val() * 0.00054).toFixed(5));
+        $('#fee').text(($(this).val() * 0.00054).toFixed(5));
         $('#brc').text((Number($(this).val()) + Number($('.rc').attr('save'))).toFixed(5));
         $('#src').text((Number($('.rc').attr('save')) - Number($(this).val()) - ($(this).val() * 0.00054)).toFixed(5));
     });
@@ -322,7 +322,7 @@ $(function(){
     $('button[data-dismiss]').click(function(){
         $('.coin').val('');
         $('.won').val('');
-        $('.fee').text('');
+        $('#fee').text('');
         $('.rc').text('');
     });
 
@@ -338,7 +338,7 @@ $(function(){
         } else {
             $('.coin').val('');
             $('.won').val('');
-            $('.fee').text('');
+            $('#fee').text('');
             $('.rc').text('');
         }
         $('.coin').keyup();
