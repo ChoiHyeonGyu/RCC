@@ -124,15 +124,7 @@ router.post("/id_find", function (req, res) {
     var cellphone = req.body.cellphone1;
     var id23 = "";
     var str = ""
-    console.log(name);
-    console.log(email);
-    console.log(cellphone);
     dbconn.resultQuery("select ID from users where name='" + name + "' and email='" + email + "' and cellphone='" + cellphone + "'", function (result) {
-        // console.log(result); //{ metaData: [ { name: 'ID' } ], rows: [ [ 'chg' ] ] }
-        // console.log(result.rows[0]); //[ 'chg' ]
-        // console.log(result.rows[0][0]); //chg
-        // console.log(str.length); // 갯수
-
         if (result.rows.length == 0) {//false
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
             res.write("<script>alert('회원정보가 없습니다!')</script>");
@@ -148,8 +140,6 @@ router.post("/id_find", function (req, res) {
 
             }
             var str1 = "id:" + id23;
-            console.log(str1);
-            console.log(id23);
             res.write("<script>alert('" + str1 + "');</script>");
             res.end('<script>history.go(-2);</script>');
         }
@@ -165,7 +155,6 @@ router.post("/pw_find", function (req, res) {
     var id23 = "";
     var str = ""
     dbconn.resultQuery("select id,pw,name,email,cellphone from users where id='" + id + "' and name='" + name + "' and email='" + email + "' and cellphone='" + cellphone + "'", function (result) {
-        console.log(result);
         name = "";
         if (result.rows.length == 0) {//false
             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });

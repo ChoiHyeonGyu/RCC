@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col">
                     <span id="channel_name" class="channel_num"><%= my.rows[0][3] %></span><span class="channel_num hyeon-font">Subscriber <%= my.rows[0][8] %></span>
-                    <span class="channel_num hyeon-font">Donate <%= dntl %> ETH</span><span class="channel_num hyeon-font">Post <%= my.rows[0][9] %></span><span class="channel_num hyeon-font">Reply <%= my.rows[0][10] %></span>
+                    <span class="channel_num hyeon-font">Donate <%= dntl %> C</span><span class="channel_num hyeon-font">Post <%= my.rows[0][9] %></span><span class="channel_num hyeon-font">Reply <%= my.rows[0][10] %></span>
                 </div>
             </div><br>
             <div class="row">
@@ -134,7 +134,7 @@
         </div>
         <div id="empty"></div>
         <div id="account_info">
-            <span id="account_address" class="account_num">Account Address</span><span class="account_num  hyeon-font"><%= my.rows[0][4] %></span><span class="account_num  hyeon-font">Coin <%= coin %> ETH</span>
+            <span id="account_address" class="account_num">Account Address</span><span class="account_num  hyeon-font"><%= my.rows[0][4] %></span><span class="account_num  hyeon-font">Coin <%= coin %> C</span>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buy_view">Buy</button>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sell_view">Sell</button><br><br>
             <select id="txsc" class="srchandsort hyeon-select">
@@ -262,9 +262,9 @@
                                 <input type="hidden" name="receiver" value="<%= my.rows[0][4] %>">
                                 <div><input type="text" class="coin hyeon-input" name="coin" placeholder="Buy Coin"></div>
                                 <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
-                                <div>Fee : <label class="fee"></label> ETH</div>
-                                <div>Current Coin : <%= Number(coin).toFixed(5) %> ETH</div>
-                                <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> ETH</div>
+                                <div>Fee : <label class="fee"></label> C</div>
+                                <div>Current Coin : <%= Number(coin).toFixed(5) %> C</div>
+                                <div>Result Coin : <label id="brc" class="rc" save="<%= coin %>"></label> C</div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -297,9 +297,9 @@
                                 </select>
                             </div>
                             <div>￦ : <input type="text" class="won hyeon-input"> 원</div>
-                            <div>Fee : <label class="fee"></label> ETH</div>
-                            <div>Current Coin : <label id="coin"><%= Number(coin).toFixed(5) %></label> ETH</div>
-                            <div>Result Coin : <label id="src" class="rc" save="<%= coin %>"></label> ETH</div>
+                            <div>Fee : <label class="fee"></label> C</div>
+                            <div>Current Coin : <label id="coin"><%= Number(coin).toFixed(5) %></label> C</div>
+                            <div>Result Coin : <label id="src" class="rc" save="<%= coin %>"></label> C</div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -80,7 +80,7 @@
                         <th scope='rows'><%= result.rows[i][6] %> <%if(result.rows[i][8]!=null){%>[<%= result.rows[i][8] %>]<%}%></th>                    
                                 <td class=' tac' rowspan="2"><%= result.rows[i][10] %></td>
                         <td class='w10 tac' rowspan="2"><%= result.rows[i][9] %></td>
-                        <td class='w10 tac' rowspan="2"><%= result.rows[i][7] %>$</td>
+                        <td class='w10 tac' rowspan="2"><%= result.rows[i][7].toFixed(2) %>C</td>
                     </tr>
                     <tr>
                         <td class='commentaryHash'><%= result.rows[i][3] %></td>
@@ -126,7 +126,7 @@
                         <th scope='rows'><%= result.rows[i][2] %> <%if(result.rows[i][6]!=null){%>[<%= result.rows[i][6] %>]<%}%></th>                    
                                     <td class='' rowspan="2"><%= result.rows[i][7] %></td>
                         <td class='w10 tac' rowspan="2"><%= result.rows[i][4] %></td>
-                        <td class='w10 tac' rowspan="2"><%= result.rows[i][5] %>$</td>
+                        <td class='w10 tac' rowspan="2"><%= result.rows[i][5].toFixed(2) %>C</td>
                     </tr>
                     <tr>
                         <td class='commentaryHash'><%= result.rows[i][1] %></td>
