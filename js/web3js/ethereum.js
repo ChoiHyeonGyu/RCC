@@ -63,6 +63,26 @@ function getBalance(addr, callback){
     });
 }
 
+function initialCoin(sender, receiver){
+    var salt = crypto.createHash("sha512").update("admin").digest("base64");
+    crypto.pbkdf2("admin", salt, "admin".length * 10000, 64, "sha512", function(err, key){
+        if(err) console.log(err);
+        
+        web3.eth.personal.unlockAccount(sender, key.toString("base64"), 300, function(err){
+            if(err) console.log(err);
+
+            web3.eth.sendTransaction({
+                from: sender,
+                to: receiver,
+                value: web3.utils.toWei("1", "ether"),
+                gasPrice: web3.utils.toWei(String(Number("1") * 600), "gwei")
+            }, function(err, txHash){
+                if(err) console.log(err);
+            });
+        });
+    });
+}
+
 function sendCoin(sender, receiver, coin, pw, callback){
     var salt = crypto.createHash("sha512").update(pw).digest("base64");
     crypto.pbkdf2(pw, salt, pw.length * 10000, 64, "sha512", function(err, key){
@@ -75,7 +95,7 @@ function sendCoin(sender, receiver, coin, pw, callback){
                 from: sender,
                 to: receiver,
                 value: web3.utils.toWei(coin, "ether"),
-                gasPrice: web3.utils.toWei(String(Number(coin) * 6), "gwei")
+                gasPrice: web3.utils.toWei(String(Number(coin) * 600), "gwei")
             }, function(err, txHash){
                 if(err.message.match("-32000")){
                     callback(0);
@@ -691,6 +711,7 @@ module.exports = {
     newAccount: newAccount,
     getTotalDonate: getTotalDonate,
     getBalance: getBalance,
+    initialCoin: initialCoin,
     sendCoin: sendCoin,
     getTransactions: getTransactions,
     pagingTransactions: pagingTransactions,

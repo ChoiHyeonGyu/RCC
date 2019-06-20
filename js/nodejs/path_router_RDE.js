@@ -99,14 +99,18 @@ router.post("/signup", function (req, res) {
 
         ether.newAccount(id, function (addr) {
             dbconn.booleanQuery("insert into USERS values('" + id + "', '" + key.toString("base64") + "', '" + name + "', '" + nickname + "', '" + addr + "', '" + email + "', '" + cellphone + "', sysdate)", function (result) {
-                if (result == false) {//false
+                if (result == false) {
                     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-                    res.write("<script>alert('fail!');</script>")
-                    res.end('<script>history.back();</script>')
+                    res.write("<script>alert('fail!');</script>");
+                    res.end('<script>history.back();</script>');
                 } else {
+                    dbconn.resultQuery("select coinaddress from users where id = 'admin'", function(result){
+                        ether.initialCoin(result.rows[0][0], addr);
+                    });
+
                     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-                    res.write("<script>alert('signup!');</script>")
-                    res.end('<script>self.close()</script>')
+                    res.write("<script>alert('signup!');</script>");
+                    res.end('<script>self.close()</script>');
                 }
             });
         });

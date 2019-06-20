@@ -308,14 +308,14 @@ $(function(){
     });
 
     $('.coin').keyup(function(){
-        $('.won').val(($(this).val() * 100000).toLocaleString());
-        $('#fee').text(($(this).val() * 0.00054).toFixed(5));
+        $('.won').val(($(this).val() * 1000).toLocaleString());
+        $('#fee').text(($(this).val() * 0.054).toFixed(5));
         $('#brc').text((Number($(this).val()) + Number($('.rc').attr('save'))).toFixed(5));
-        $('#src').text((Number($('.rc').attr('save')) - Number($(this).val()) - ($(this).val() * 0.00054)).toFixed(5));
+        $('#src').text((Number($('.rc').attr('save')) - Number($(this).val()) - ($(this).val() * 0.054)).toFixed(5));
     });
 
     $('.won').keyup(function(){
-        $('.coin').val($(this).val().replace(/,/g, '') / 100000);
+        $('.coin').val($(this).val().replace(/,/g, '') / 1000);
         $('.coin').keyup();
     });
 
@@ -328,13 +328,13 @@ $(function(){
 
     $('#percentage').change(function(){
         if($(this).val() == "ALL"){
-            $('.coin').val((Number($('#coin').text()) - ($('#coin').text() * 0.00054)).toFixed(5));
+            $('.coin').val((Number($('#coin').text()) - ($('#coin').text() * 0.054)).toFixed(5));
         } else if($(this).val() == "50%") {
-            $('.coin').val(((Number($('#coin').text()) / 2) - ((Number($('#coin').text()) / 2) * 0.00054)).toFixed(5));
+            $('.coin').val(((Number($('#coin').text()) / 2) - ((Number($('#coin').text()) / 2) * 0.054)).toFixed(5));
         } else if($(this).val() == "25%") {
-            $('.coin').val(((Number($('#coin').text()) / 4) - ((Number($('#coin').text()) / 4) * 0.00054)).toFixed(5));
+            $('.coin').val(((Number($('#coin').text()) / 4) - ((Number($('#coin').text()) / 4) * 0.054)).toFixed(5));
         } else if($(this).val() == "10%") {
-            $('.coin').val(((Number($('#coin').text()) / 10) - ((Number($('#coin').text()) / 10) * 0.00054)).toFixed(5));
+            $('.coin').val(((Number($('#coin').text()) / 10) - ((Number($('#coin').text()) / 10) * 0.054)).toFixed(5));
         } else {
             $('.coin').val('');
             $('.won').val('');

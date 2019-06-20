@@ -1,6 +1,6 @@
 $(function(){
     $('#sending_coin').keyup(function(){
-        $('#fee').text(($(this).val() * 0.00054).toFixed(5));
+        $('#fee').text(($(this).val() * 0.054).toFixed(5));
     });
 
     $('form').submit(function(){
